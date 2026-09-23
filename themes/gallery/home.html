@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <div class="gintro content">{{{content}}}</div>
+  {{#if recent}}
+  <ul class="masonry">{{#each recent}}<li><a href="{{url}}">{{#if image}}<img src="{{base_path}}{{image}}" alt="{{image_alt}}" loading="lazy">{{/if}}<span class="cap">{{title}}</span></a></li>{{/each}}</ul>
+  <p class="more"><a href="{{list_url}}">See all {{site_section_title}}</a></p>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

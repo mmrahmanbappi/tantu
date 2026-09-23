@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="entry">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a></p>
+    <h1>{{title}}</h1>
+    <dl class="facts">
+      <div><dt>When</dt><dd>{{start_display}}</dd></div>
+      {{#if location}}<div><dt>Where</dt><dd>{{location}}</dd></div>{{/if}}
+      {{#if speaker}}<div><dt>Speaker</dt><dd>{{speaker}}</dd></div>{{/if}}
+    </dl>
+    <div class="content">{{{content}}}</div>
+    {{#if site_register_url}}<p><a class="btn" href="{{site_register_url}}">Register for free</a></p>{{/if}}
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="home">
+  <section class="ehero">
+    <div class="wrap">
+      <p class="when">{{site_event_dates}} / {{site_event_venue}}</p>
+      <div class="content">{{{content}}}</div>
+      {{#if site_register_url}}<p><a class="btn" href="{{site_register_url}}">Register for free</a></p>{{/if}}
+    </div>
+  </section>
+  {{#if posts}}
+  <section class="wrap" aria-labelledby="sched">
+    <h2 id="sched">{{site_section_title}}</h2>
+    <ol class="sched">
+      {{#each posts}}<li><span class="time">{{start_display}}</span><div><a href="{{url}}">{{title}}</a>{{#if speaker}}<span class="meta">{{speaker}}</span>{{/if}}{{#if location}}<span class="meta">{{location}}</span>{{/if}}</div></li>{{/each}}
+    </ol>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="entry">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a></p>
+    <h1>{{title}}</h1>
+    <p class="lead">{{description}}</p>
+    {{#if price}}<p class="price big">From {{price}} {{site_currency}}</p>{{/if}}
+    {{#if image}}<img class="cover" src="{{base_path}}{{image}}" alt="{{image_alt}}">{{/if}}
+    <div class="content">{{{content}}}</div>
+    <p class="ctas">{{#if site_phone}}<a class="btn" href="tel:{{site_phone}}">Call {{site_phone}}</a>{{/if}}<a class="btn alt" href="{{base_path}}/contact/">Ask a question</a></p>
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

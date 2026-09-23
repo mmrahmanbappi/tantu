@@ -38,3 +38,7 @@ Thumbs.db
 tests/tmp/
 tests/tantu-test
 public/
+
+src/embedded.c
+tools/embed
+/tantu.com

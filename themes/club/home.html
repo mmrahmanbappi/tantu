@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="home">
+  <section class="banner">
+    <div class="wrap content">{{{content}}}<p><a class="btn" href="{{base_path}}/join/">Join the club</a></p></div>
+  </section>
+  {{#if recent}}
+  <section class="wrap news" aria-labelledby="news">
+    <h2 id="news">Latest {{site_section_title}}</h2>
+    <ul class="cards">
+      {{#each recent}}
+      <li><a href="{{url}}"><span class="meta">{{date_display}}</span><h3>{{title}}</h3><p>{{description}}</p></a></li>
+      {{/each}}
+    </ul>
+    <p><a href="{{list_url}}">All {{site_section_title}}</a></p>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

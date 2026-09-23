@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="entry">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a> / <time datetime="{{date}}">{{date_display}}</time></p>
+    <h1>{{title}}</h1>
+    {{#if image}}<img class="cover" src="{{base_path}}{{image}}" alt="{{image_alt}}">{{/if}}
+    <div class="content">{{{content}}}</div>
+    <p class="joinbox">Want to take part? <a href="{{base_path}}/join/">Join the club</a>.</p>
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

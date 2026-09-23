@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <h1>{{title}}</h1>
+  {{#if posts}}<ul class="svc">{{#each posts}}<li><a href="{{url}}"><h3>{{title}}</h3><p>{{description}}</p>{{#if price}}<span class="price">From {{price}} {{site_currency}}</span>{{/if}}</a></li>{{/each}}</ul>{{else}}<p>Nothing here yet. Add a Markdown file to content/posts and build again.</p>{{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

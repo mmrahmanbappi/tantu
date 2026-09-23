@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="paper">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a></p>
+    <h1>{{title}}</h1>
+    <p class="au">{{authors}}</p>
+    <p class="ve">{{#if venue}}<em>{{venue}}</em>, {{/if}}<time datetime="{{date}}">{{date_display}}</time></p>
+    <p class="links">{{#if pdf}}<a href="{{pdf}}">Read the PDF</a>{{/if}}{{#if doi}}<a href="https://doi.org/{{doi}}">DOI: {{doi}}</a>{{/if}}{{#if code}}<a href="{{code}}">Code and data</a>{{/if}}</p>
+    <h2>Abstract</h2>
+    <div class="content">{{{content}}}</div>
+    {{#if citation}}<h2>How to cite</h2><p class="cite">{{citation}}</p>{{/if}}
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="entry lesson">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a> / Lesson {{position}}{{#if minutes}} / {{minutes}} minutes{{/if}}</p>
+    <h1>{{title}}</h1>
+    <div class="content">{{{content}}}</div>
+    <nav class="pager" aria-label="Lessons">
+      {{#if prev_url}}<a href="{{prev_url}}"><span>Previous lesson</span>{{prev_title}}</a>{{else}}<span></span>{{/if}}
+      {{#if next_url}}<a href="{{next_url}}"><span>Next lesson</span>{{next_title}}</a>{{/if}}
+    </nav>
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

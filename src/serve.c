@@ -18,6 +18,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+void serve_static(int fd, const char *root, const char *base, const char *method, char *raw);
+
 static const char *mime(const char *path) {
     const char *dot = strrchr(path, '.');
     if (!dot) return "application/octet-stream";
@@ -34,7 +36,7 @@ static const char *mime(const char *path) {
     return "application/octet-stream";
 }
 
-static void send_all(int fd, const char *d, size_t n) {
+void send_all(int fd, const char *d, size_t n) {
     while (n) {
         ssize_t w = write(fd, d, n);
         if (w <= 0) return;
@@ -43,7 +45,7 @@ static void send_all(int fd, const char *d, size_t n) {
     }
 }
 
-static void respond(int fd, int code, const char *status, const char *type, const char *body,
+void http_respond(int fd, int code, const char *status, const char *type, const char *body,
                     size_t len, int head, const char *extra) {
     buf h = {0};
     buf_printf(&h,
@@ -79,16 +81,20 @@ static void handle(int fd, const char *root, const char *base) {
     req[n] = '\0';
     char method[8] = {0}, raw[4096] = {0};
     if (sscanf(req, "%7s %4095s", method, raw) != 2) return;
+    serve_static(fd, root, base, method, raw);
+}
+
+void serve_static(int fd, const char *root, const char *base, const char *method, char *raw) {
     int head = !strcmp(method, "HEAD");
     if (strcmp(method, "GET") && !head) {
-        respond(fd, 405, "Method Not Allowed", "text/plain", "Method not allowed\n", 19, 0,
+        http_respond(fd, 405, "Method Not Allowed", "text/plain", "Method not allowed\n", 19, 0,
                 "Allow: GET, HEAD\r\n");
         return;
     }
     char *q = strpbrk(raw, "?#");
     if (q) *q = '\0';
     if (url_decode(raw) != 0 || raw[0] != '/' || strstr(raw, "..") || strchr(raw, '\\')) {
-        respond(fd, 400, "Bad Request", "text/plain", "Bad request\n", 12, head, NULL);
+        http_respond(fd, 400, "Bad Request", "text/plain", "Bad request\n", 12, head, NULL);
         return;
     }
     const char *path = raw;
@@ -101,7 +107,7 @@ static void handle(int fd, const char *root, const char *base) {
         if (path[strlen(path) - 1] != '/') {
             buf loc = {0};
             buf_printf(&loc, "Location: %s/\r\n", raw);
-            respond(fd, 301, "Moved Permanently", "text/plain", "", 0, head, loc.s);
+            http_respond(fd, 301, "Moved Permanently", "text/plain", "", 0, head, loc.s);
             buf_free(&loc);
             free(file);
             printf("301 %s\n", raw);
@@ -114,13 +120,13 @@ static void handle(int fd, const char *root, const char *base) {
     size_t len;
     char *data = is_file(file) ? read_file(file, &len) : NULL;
     if (data) {
-        respond(fd, 200, "OK", mime(file), data, len, head, NULL);
+        http_respond(fd, 200, "OK", mime(file), data, len, head, NULL);
         printf("200 %s\n", raw);
     } else {
         char *nf = path_join(root, "404.html");
         char *body = read_file(nf, &len);
-        if (body) respond(fd, 404, "Not Found", "text/html; charset=utf-8", body, len, head, NULL);
-        else respond(fd, 404, "Not Found", "text/plain", "Not found\n", 10, head, NULL);
+        if (body) http_respond(fd, 404, "Not Found", "text/html; charset=utf-8", body, len, head, NULL);
+        else http_respond(fd, 404, "Not Found", "text/plain", "Not found\n", 10, head, NULL);
         printf("404 %s\n", raw);
         free(body);
         free(nf);

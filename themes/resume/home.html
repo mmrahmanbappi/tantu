@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <div class="cv content">{{{content}}}</div>
+  {{#if recent}}
+  <section class="cv-projects" aria-labelledby="projects">
+    <h2 id="projects">{{site_section_title}}</h2>
+    <ul class="plist">
+      {{#each recent}}<li><a href="{{url}}">{{title}}</a> <span class="meta">{{description}}</span></li>{{/each}}
+    </ul>
+  </section>
+  {{/if}}
+  <p class="meta no-print">To save this page as a PDF, use Print in your browser and choose Save as PDF.</p>
+</main>
+{{> footer}}
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <article class="entry">
+    <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a></p>
+    <h1>{{title}}</h1>
+    <p class="lead">{{description}}</p>
+    {{#if image}}<img class="cover" src="{{base_path}}{{image}}" alt="{{image_alt}}">{{/if}}
+    <div class="content">{{{content}}}</div>
+  </article>
+</main>
+{{> footer}}
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <figure class="work">
+    {{#if image}}<img src="{{base_path}}{{image}}" alt="{{image_alt}}">{{/if}}
+    <figcaption>
+      <h1>{{title}}</h1>
+      <p class="meta">{{medium}}{{#if year}}, {{year}}{{/if}}</p>
+      <div class="content">{{{content}}}</div>
+    </figcaption>
+  </figure>
+  <nav class="pager" aria-label="Works">
+    {{#if prev_url}}<a href="{{prev_url}}"><span>Previous</span>{{prev_title}}</a>{{else}}<span></span>{{/if}}
+    {{#if next_url}}<a href="{{next_url}}"><span>Next</span>{{next_title}}</a>{{/if}}
+  </nav>
+</main>
+{{> footer}}
+</body>
+</html>

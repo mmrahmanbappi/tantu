@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>tantu dashboard</title>
+<style>
+:root {
+  --ink: #1f2a5c; --text: #22263a; --muted: #5d6378; --line: #dde1ea; --bg: #f5f6fa; --card: #fff;
+  --red: #b23a3a; --gold: #c8912b; --green: #1d7a4f; --blue: #2e3f8f;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #aab8f5; --text: #e6e8f0; --muted: #a2a8bc; --line: #2d3247; --bg: #151826; --card: #1d2133;
+          --red: #f08a8a; --gold: #e5b862; --green: #6fd3a2; --blue: #9fb0ff; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif; background: var(--bg); color: var(--text); }
+a { color: var(--blue); }
+button, input, textarea, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.app { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+.side { background: var(--card); border-right: 1px solid var(--line); padding: 1.2rem 1rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.brand { font-weight: 800; font-size: 1.4rem; color: var(--ink); margin: 0 .5rem .2rem; letter-spacing: -.02em; }
+.sitename { margin: 0 .5rem 1.4rem; color: var(--muted); font-size: .95rem; word-break: break-word; }
+.side nav button { display: block; width: 100%; text-align: left; background: none; border: 0; padding: .6rem .7rem; border-radius: 8px; cursor: pointer; font-size: 1rem; color: var(--text); }
+.side nav button:hover { background: var(--bg); }
+.side nav button[aria-current="page"] { background: var(--ink); color: var(--card); font-weight: 600; }
+.side .viewsite { display: block; margin: 1.5rem .7rem 0; font-weight: 600; }
+main { padding: 2rem 2.5rem 4rem; max-width: 1200px; }
+h1 { font-size: 1.9rem; margin: 0 0 .3rem; color: var(--ink); letter-spacing: -.01em; }
+h2 { font-size: 1.25rem; margin: 2rem 0 .8rem; }
+.sub { color: var(--muted); margin: 0 0 1.5rem; }
+.row { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
+.btn { display: inline-block; border: 2px solid var(--ink); background: var(--ink); color: var(--card); padding: .55rem 1.1rem; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; }
+.btn:hover { filter: brightness(1.12); }
+.btn.alt { background: transparent; color: var(--ink); }
+.btn.danger { background: transparent; color: var(--red); border-color: var(--red); }
+.btn.small { padding: .3rem .7rem; font-size: .9rem; border-width: 1.5px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.2rem; }
+.stat b { display: block; font-size: 2rem; color: var(--ink); line-height: 1.2; }
+.stat span { color: var(--muted); }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1.2rem 1.4rem; margin-bottom: 1.2rem; }
+table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: .9rem; color: var(--muted); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.t { font-weight: 600; }
+.score { font-weight: 700; }
+.good { color: var(--green); } .ok { color: var(--gold); } .bad { color: var(--red); }
+.pill { font-size: .8rem; padding: .1rem .5rem; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.pill.draft { border-color: var(--gold); color: var(--gold); }
+.empty { color: var(--muted); padding: 1rem 0; }
+label { display: block; font-weight: 600; margin: 1rem 0 .3rem; }
+.hint { font-weight: 400; color: var(--muted); font-size: .9rem; }
+input[type=text], input[type=date], textarea, select { width: 100%; padding: .6rem .7rem; border: 1.5px solid var(--line); border-radius: 8px; background: var(--card); }
+input:focus, textarea:focus { border-color: var(--ink); outline: none; }
+.editor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
+.editor textarea.body { min-height: 60vh; font: 15px/1.6 ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; resize: vertical; }
+.preview { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.4rem; min-height: 60vh; overflow: auto; font-family: Georgia, serif; font-size: 1.05rem; line-height: 1.7; }
+.preview img { max-width: 100%; }
+.preview pre { background: var(--bg); padding: .8rem; overflow: auto; border-radius: 6px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; }
+.fields .full { grid-column: 1 / -1; }
+.counter { float: right; font-weight: 400; font-size: .85rem; color: var(--muted); }
+.counter.over { color: var(--red); }
+.checks { margin: 0; padding-left: 1.2rem; }
+.checks li { margin: .3rem 0; }
+.status { color: var(--muted); font-size: .95rem; }
+.media { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1rem; }
+.media figure { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.media img { width: 100%; height: 120px; object-fit: cover; display: block; background: var(--bg); }
+.media figcaption { padding: .5rem .6rem; font-size: .85rem; word-break: break-all; }
+.themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.theme { background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .6rem; }
+.theme.current { border-color: var(--ink); }
+.theme h3 { margin: 0; font-size: 1.15rem; }
+.theme p { margin: 0; color: var(--muted); flex: 1; }
+.theme .pill, .theme .btn { align-self: flex-start; }
+pre.log { background: var(--bg); border: 1px solid var(--line); padding: .8rem 1rem; border-radius: 8px; white-space: pre-wrap; font-size: .9rem; max-height: 260px; overflow: auto; }
+.warn { border-left: 4px solid var(--gold); padding: .7rem 1rem; background: var(--card); border-radius: 0 8px 8px 0; margin: 1rem 0; }
+.toast { position: fixed; bottom: 1.2rem; right: 1.2rem; background: var(--ink); color: var(--card); padding: .7rem 1.1rem; border-radius: 10px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 90vw; }
+.toast.show { opacity: 1; }
+.toast.err { background: var(--red); }
+ol.steps li { margin: .4rem 0; }
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .side { position: static; height: auto; }
+  .side nav { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .side nav button { width: auto; }
+  main { padding: 1.2rem; }
+  .editor, .fields { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <p class="brand">tantu</p>
+    <p class="sitename" id="sitename">Loading...</p>
+    <nav aria-label="Dashboard">
+      <button data-view="overview">Overview</button>
+      <button data-view="posts">Posts</button>
+      <button data-view="pages">Pages</button>
+      <button data-view="media">Images</button>
+      <button data-view="themes">Themes</button>
+      <button data-view="settings">Settings</button>
+      <button data-view="publish">Publish</button>
+    </nav>
+    <a class="viewsite" id="viewsite" href="#" target="_blank" rel="noopener">View your site</a>
+  </aside>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+const params = new URLSearchParams(location.search);
+if (params.get("t")) { sessionStorage.setItem("tantu-token", params.get("t")); history.replaceState(null, "", "/_tantu/"); }
+const TOKEN = sessionStorage.getItem("tantu-token") || "";
+const main = document.getElementById("main");
+let state = null, view = "overview", editing = null;
+
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  return e;
+}
+function toast(msg, err) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast show" + (err ? " err" : "");
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.className = "toast", err ? 5000 : 2200);
+}
+async function api(path, opts = {}) {
+  opts.headers = Object.assign({ "X-Tantu-Token": TOKEN }, opts.headers || {});
+  const r = await fetch("/_tantu/api/" + path, opts);
+  const type = r.headers.get("content-type") || "";
+  if (!r.ok) {
+    let msg = "Something went wrong.";
+    if (type.includes("json")) { try { msg = (await r.json()).error || msg; } catch (e) {} }
+    throw new Error(msg);
+  }
+  if (type.includes("json")) return r.json();
+  if (type.includes("zip")) return r.blob();
+  return r.text();
+}
+function scoreClass(s) { return s >= 85 ? "good" : s >= 65 ? "ok" : "bad"; }
+function siteUrl(path) { return path || ((state && state.base_path) || "") + "/"; }
+
+async function load() {
+  if (!TOKEN) { main.replaceChildren(el("h1", {}, "Open the dashboard link"), el("p", {}, "Use the full link printed in the terminal window where tantu is running. It contains a security code.")); return; }
+  try { state = await api("state"); } catch (e) { main.replaceChildren(el("h1", {}, "Cannot load your site"), el("p", {}, e.message)); return; }
+  document.getElementById("sitename").textContent = state.site.title || "Untitled site";
+  document.getElementById("viewsite").href = siteUrl();
+  document.title = (state.site.title || "Site") + " | tantu dashboard";
+}
+async function build(quiet) {
+  const r = await api("build", { method: "POST" });
+  if (!r.ok) toast("Build failed: " + r.output.trim().split("\n").pop(), true);
+  else if (!quiet) toast("Site built");
+  return r;
+}
+async function show(v, arg) {
+  view = v;
+  document.querySelectorAll(".side nav button").forEach(b => b.setAttribute("aria-current", b.dataset.view === v ? "page" : "false"));
+  if (v !== "editor") await load();
+  if (!state) return;
+  const views = { overview, posts: () => list("posts"), pages: () => list("pages"), media, themes, settings, publish, editor: () => editor(arg) };
+  main.replaceChildren(...[].concat(await views[v]()));
+  main.focus({ preventScroll: true });
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll(".side nav button").forEach(b => b.addEventListener("click", () => show(b.dataset.view)));
+
+async function newDoc(kind) {
+  const title = prompt(kind === "post" ? "Title of your new post:" : "Title of your new page:");
+  if (!title) return;
+  try { const r = await api("new?kind=" + kind + "&title=" + encodeURIComponent(title), { method: "POST" }); show("editor", r.path); }
+  catch (e) { toast(e.message, true); }
+}
+
+/* ---------- views ---------- */
+function overview() {
+  const docs = state.posts.concat(state.pages);
+  const avg = docs.length ? Math.round(docs.reduce((a, d) => a + d.score, 0) / docs.length) : 0;
+  const drafts = state.posts.filter(p => p.draft).length;
+  const attention = docs.filter(d => d.score < 85).sort((a, b) => a.score - b.score);
+  const warn = /yourname/.test(state.site.base_url || "") ? el("p", { class: "warn" }, "Your site address is still the example. Set it in ", el("a", { href: "#", onclick: e => { e.preventDefault(); show("settings"); } }, "Settings"), " before you publish, so links and search previews are correct.") : null;
+  return [
+    el("h1", {}, "Hello"),
+    el("p", { class: "sub" }, "Here is how your site is doing."),
+    warn,
+    el("div", { class: "row" },
+      el("button", { class: "btn", onclick: () => newDoc("post") }, "Write a new post"),
+      el("button", { class: "btn alt", onclick: () => show("editor", "content/index.md") }, "Edit home page"),
+      el("button", { class: "btn alt", onclick: async () => { await build(); window.open(siteUrl(), "_blank"); } }, "Build and preview")),
+    el("div", { class: "stats" },
+      el("div", { class: "stat" }, el("b", {}, state.posts.length), el("span", {}, "posts" + (drafts ? " (" + drafts + " draft" + (drafts > 1 ? "s" : "") + ")" : ""))),
+      el("div", { class: "stat" }, el("b", {}, state.pages.length), el("span", {}, "pages")),
+      el("div", { class: "stat" }, el("b", {}, state.media.length), el("span", {}, "images")),
+      el("div", { class: "stat" }, el("b", { class: scoreClass(avg) }, avg), el("span", {}, "average SEO score"))),
+    el("h2", {}, "Needs attention"),
+    attention.length ? docTable(attention, true) : el("p", { class: "empty" }, "Every page scores 85 or more. Nice work.")
+  ];
+}
+function docTable(docs, showIssue) {
+  return el("table", {},
+    el("thead", {}, el("tr", {}, el("th", {}, "Title"), el("th", {}, showIssue ? "First thing to fix" : "Date"), el("th", {}, "Status"), el("th", {}, "SEO"), el("th", {}, ""))),
+    el("tbody", {}, docs.map(d => el("tr", {},
+      el("td", { class: "t" }, d.title),
+      el("td", {}, showIssue ? (d.issues[0] || "") : (d.date || "")),
+      el("td", {}, el("span", { class: "pill" + (d.draft ? " draft" : "") }, d.draft ? "Draft" : "Published")),
+      el("td", {}, el("span", { class: "score " + scoreClass(d.score) }, d.score)),
+      el("td", {}, el("div", { class: "row" },
+        el("button", { class: "btn small", onclick: () => show("editor", d.path) }, "Edit"),
+        d.draft ? null : el("a", { class: "btn small alt", href: d.url, target: "_blank", rel: "noopener" }, "View")))))));
+}
+function list(kind) {
+  const docs = state[kind];
+  const isPost = kind === "posts";
+  return [
+    el("h1", {}, isPost ? (state.site.section_title || "Posts") : "Pages"),
+    el("p", { class: "sub" }, isPost ? "Posts appear in lists on your site, newest first unless your theme sorts them differently." : "Pages are for things like About and Contact."),
+    el("div", { class: "row" }, el("button", { class: "btn", onclick: () => newDoc(isPost ? "post" : "page") }, isPost ? "New post" : "New page")),
+    el("div", { style: "height:1rem" }),
+    docs.length ? docTable(docs, false) : el("p", { class: "empty" }, "Nothing here yet.")
+  ];
+}
+
+function parseDoc(text) {
+  const fm = {}, order = [];
+  let body = text;
+  if (text.startsWith("---")) {
+    const end = text.indexOf("\n---", 3);
+    if (end !== -1) {
+      text.slice(text.indexOf("\n") + 1, end).split("\n").forEach(line => {
+        const i = line.indexOf(":");
+        if (i > 0) { const k = line.slice(0, i).trim(); fm[k] = line.slice(i + 1).trim(); order.push(k); }
+      });
+      body = text.slice(text.indexOf("\n", end + 1) + 1).replace(/^\n/, "");
+    }
+  }
+  return { fm, order, body };
+}
+function buildDoc(fm, order, body) {
+  const keys = order.slice();
+  for (const k of Object.keys(fm)) if (!keys.includes(k)) keys.push(k);
+  const lines = keys.filter(k => fm[k] !== undefined && !(k === "draft" && fm[k] === "false")).map(k => k + ": " + String(fm[k]).replace(/[\r\n]+/g, " "));
+  return "---\n" + lines.join("\n") + "\n---\n\n" + body;
+}
+
+async function editor(path) {
+  let text;
+  try { text = await api("file?path=" + encodeURIComponent(path)); } catch (e) { toast(e.message, true); return overview(); }
+  const doc = parseDoc(text);
+  const isHome = path === "content/index.md", isPost = path.startsWith("content/posts/");
+  const all = state.posts.concat(state.pages).find(d => d.path === path);
+  editing = { path, dirty: false };
+  const status = el("span", { class: "status" }, "All changes saved");
+  const preview = el("div", { class: "preview", "aria-label": "Preview" });
+  const body = el("textarea", { class: "body", "aria-label": "Text", spellcheck: "true" });
+  body.value = doc.body;
+  const inputs = {};
+  function field(key, label, hint, opts = {}) {
+    const id = "f-" + key;
+    const inp = el("input", { type: opts.type || "text", id, placeholder: opts.ph || "" });
+    inp.value = doc.fm[key] || "";
+    inputs[key] = inp;
+    const lab = el("label", { for: id }, label, hint ? el("span", { class: "hint" }, " " + hint) : null);
+    if (opts.max) {
+      const c = el("span", { class: "counter" });
+      const upd = () => { c.textContent = inp.value.length + " / " + opts.max; c.classList.toggle("over", inp.value.length > opts.max); };
+      inp.addEventListener("input", upd); upd(); lab.append(c);
+    }
+    inp.addEventListener("input", changed);
+    return el("div", { class: opts.full ? "full" : "" }, lab, inp);
+  }
+  const draft = el("input", { type: "checkbox", id: "f-draft" });
+  draft.checked = doc.fm.draft === "true";
+  draft.addEventListener("change", changed);
+
+  let saveTimer, previewTimer;
+  function changed() { editing.dirty = true; status.textContent = "Unsaved changes"; clearTimeout(saveTimer); saveTimer = setTimeout(save, 2500); }
+  body.addEventListener("input", () => { changed(); clearTimeout(previewTimer); previewTimer = setTimeout(renderPreview, 350); });
+  async function renderPreview() {
+    try { preview.innerHTML = await api("preview", { method: "POST", body: body.value }); } catch (e) {}
+  }
+  async function save() {
+    clearTimeout(saveTimer);
+    for (const [k, inp] of Object.entries(inputs)) { if (inp.value.trim() || doc.fm[k] !== undefined) doc.fm[k] = inp.value.trim(); }
+    if (!isHome && (isPost || doc.fm.draft !== undefined)) doc.fm.draft = draft.checked ? "true" : "false";
+    status.textContent = "Saving...";
+    try {
+      await api("file?path=" + encodeURIComponent(path), { method: "POST", body: buildDoc(doc.fm, doc.order, body.value) });
+      editing.dirty = false; status.textContent = "Saved";
+      build(true);
+    } catch (e) { status.textContent = "Not saved"; toast(e.message, true); }
+  }
+  editing.save = save;
+
+  const checks = el("ul", { class: "checks" }, (all && all.issues.length ? all.issues : ["No problems found."]).map(i => el("li", {}, i)));
+  const left = [
+    el("div", { class: "fields" },
+      isHome ? null : field("title", "Title", "", { max: 60, full: true }),
+      field("description", "Description", "shown in Google and social previews", { max: 160, full: true }),
+      isPost ? field("date", "Date", "", { type: "date" }) : null,
+      isPost ? field("tags", "Tags", "separate with commas") : null,
+      isHome ? null : field("image", "Cover image", "for example /images/photo.png", { ph: "/images/..." }),
+      isHome ? null : field("image_alt", "Image description", "for people who cannot see it"),
+      isHome ? null : field("slug", "Web address", "leave empty to use the title")),
+    isHome ? null : el("label", {}, draft, " Draft (not published yet)"),
+    el("label", {}, "Text ", el("span", { class: "hint" }, "Markdown: ## heading, **bold**, *italic*, [link](https://...), - list")),
+    body
+  ];
+  const right = [
+    el("label", {}, "Preview"), preview,
+    el("div", { class: "panel", style: "margin-top:1rem" }, el("h2", { style: "margin-top:0" }, "SEO check", all ? el("span", { class: "score " + scoreClass(all.score), style: "float:right" }, all.score) : null), checks,
+      el("p", { class: "hint", style: "margin-bottom:0" }, "The check updates when you save and reopen the page."))
+  ];
+  renderPreview();
+  return [
+    el("div", { class: "row", style: "justify-content:space-between" },
+      el("div", {}, el("h1", {}, isHome ? "Home page" : (doc.fm.title || "Untitled")), el("p", { class: "sub", style: "margin:0" }, path)),
+      el("div", { class: "row" }, status,
+        el("button", { class: "btn", onclick: save }, "Save"),
+        all && !all.draft ? el("a", { class: "btn alt", href: all.url, target: "_blank", rel: "noopener" }, "View") : null,
+        isHome ? null : el("button", { class: "btn danger", onclick: async () => {
+          if (!confirm("Delete this file? It will be moved to content/.trash so you can get it back.")) return;
+          try { await api("delete?path=" + encodeURIComponent(path), { method: "POST" }); toast("Deleted"); build(true); show(isPost ? "posts" : "pages"); } catch (e) { toast(e.message, true); }
+        } }, "Delete"))),
+    el("div", { style: "height:1rem" }),
+    el("div", { class: "editor" }, el("div", {}, left), el("div", {}, right))
+  ];
+}
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "s" && view === "editor" && editing) { e.preventDefault(); editing.save(); }
+});
+window.addEventListener("beforeunload", e => { if (view === "editor" && editing && editing.dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+function media() {
+  const file = el("input", { type: "file", accept: "image/png,image/jpeg,image/gif,image/webp", id: "up", multiple: true });
+  file.addEventListener("change", async () => {
+    for (const f of file.files) {
+      try { const r = await api("upload?name=" + encodeURIComponent(f.name), { method: "POST", body: f }); toast("Uploaded " + r.path); }
+      catch (e) { toast(f.name + ": " + e.message, true); }
+    }
+    await build(true); show("media");
+  });
+  return [
+    el("h1", {}, "Images"),
+    el("p", { class: "sub" }, "Upload PNG, JPEG, GIF or WebP images up to 10 MB. Use the path in a post, for example ![A short description](/images/photo.png)."),
+    el("div", { class: "panel" }, el("label", { for: "up", style: "margin-top:0" }, "Upload images"), file),
+    state.media.length ? el("div", { class: "media" }, state.media.map(n => {
+      const p = "/images/" + n;
+      return el("figure", {}, el("img", { src: state.base_path + p, alt: "", loading: "lazy" }),
+        el("figcaption", {}, p, " ", el("button", { class: "btn small alt", onclick: () => { navigator.clipboard && navigator.clipboard.writeText(p); toast("Copied " + p); } }, "Copy")));
+    })) : el("p", { class: "empty" }, "No images yet.")
+  ];
+}
+
+function themes() {
+  return [
+    el("h1", {}, "Themes"),
+    el("p", { class: "sub" }, "Change how your site looks. Your writing stays the same. Each theme works best with its own kind of content, so check your site after switching."),
+    el("div", { class: "themes" }, state.themes.map(t => {
+      const cur = t.id === state.site.theme;
+      return el("div", { class: "theme" + (cur ? " current" : "") }, el("h3", {}, t.name), el("p", {}, t.description),
+        cur ? el("span", { class: "pill" }, "In use") : el("button", { class: "btn small", onclick: async () => {
+          try { await api("theme?name=" + encodeURIComponent(t.id), { method: "POST" }); await build(true); toast("Now using " + t.name); show("themes"); } catch (e) { toast(e.message, true); }
+        } }, "Use this theme"));
+    }))
+  ];
+}
+
+const SETTINGS = [
+  ["Basics", [["title", "Site name"], ["tagline", "Tagline", "a few words under the name"], ["description", "Site description", "used by Google, keep it under 160 characters"], ["author", "Your name or organization"]]],
+  ["Address and language", [["base_url", "Site address", "for example https://yourname.github.io"], ["language", "Language code", "for example en"], ["locale", "Locale", "for example en_US"]]],
+  ["Menu", [["menu", "Menu links", "Label:/path/ separated by commas, for example Home:/, Blog:/blog/, About:/about/"], ["section_title", "Name of your posts section"]]],
+  ["Search and social", [["social", "Social profile links", "separate with commas"], ["og_image", "Default social image", "for example /images/og-default.png"], ["twitter", "X (Twitter) handle", "for example @yourname"], ["google_verification", "Google Search Console code"], ["bing_verification", "Bing Webmaster code"]]]
+];
+function settings() {
+  const inputs = {}, shown = new Set(["theme", "section", "sort", "home_schema", "post_schema"]);
+  const groups = SETTINGS.map(([name, fields]) => el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, name), fields.map(([k, label, hint]) => {
+    shown.add(k);
+    const inp = el("input", { type: "text", id: "s-" + k }); inp.value = state.site[k] || ""; inputs[k] = inp;
+    return el("div", {}, el("label", { for: "s-" + k }, label, hint ? el("span", { class: "hint" }, " " + hint) : null), inp);
+  })));
+  const extra = Object.keys(state.site).filter(k => !shown.has(k));
+  if (extra.length) groups.push(el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "More settings for your theme"), extra.map(k => {
+    const inp = el("input", { type: "text", id: "s-" + k }); inp.value = state.site[k] || ""; inputs[k] = inp;
+    return el("div", {}, el("label", { for: "s-" + k }, k.replace(/_/g, " ")), inp);
+  })));
+  return [
+    el("h1", {}, "Settings"),
+    el("p", { class: "sub" }, "These are saved in site.conf in your site folder."),
+    groups,
+    el("button", { class: "btn", onclick: async () => {
+      const body = new URLSearchParams();
+      for (const [k, inp] of Object.entries(inputs)) body.set(k, inp.value);
+      try { await api("settings", { method: "POST", body: body.toString(), headers: { "Content-Type": "application/x-www-form-urlencoded" } }); await build(true); toast("Settings saved"); show("settings"); }
+      catch (e) { toast(e.message, true); }
+    } }, "Save settings")
+  ];
+}
+
+function publish() {
+  const log = el("pre", { class: "log" }, "Press Build to check your site.");
+  const warn = /yourname/.test(state.site.base_url || "") ? el("p", { class: "warn" }, "Your site address is still " + state.site.base_url + ". Change it in Settings first.") : null;
+  return [
+    el("h1", {}, "Publish"),
+    el("p", { class: "sub" }, "Your finished site is plain HTML. It works on free hosts and on any shared hosting plan."),
+    warn,
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "1. Build and download"),
+      el("div", { class: "row" },
+        el("button", { class: "btn alt", onclick: async () => { log.textContent = "Building..."; const r = await build(); log.textContent = r.output || "Done."; } }, "Build"),
+        el("button", { class: "btn", onclick: async () => {
+          try { toast("Preparing ZIP..."); const blob = await api("export"); const a = el("a", { href: URL.createObjectURL(blob), download: "site.zip" }); document.body.append(a); a.click(); a.remove(); }
+          catch (e) { toast(e.message, true); }
+        } }, "Download site as ZIP")), log),
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "2. Put it online"),
+      el("h3", {}, "Shared hosting"),
+      el("ol", { class: "steps" }, el("li", {}, "Unzip site.zip on your computer."), el("li", {}, "Open your hosting file manager or an FTP app."), el("li", {}, "Upload everything inside the folder into public_html (or the folder for your subdomain)."), el("li", {}, "Make sure the hidden .htaccess file is uploaded too. It adds security headers and the 404 page.")),
+      el("h3", {}, "GitHub Pages (free)"),
+      el("ol", { class: "steps" }, el("li", {}, "Create a repository on GitHub."), el("li", {}, "Upload the unzipped files."), el("li", {}, "Open Settings, then Pages, and publish from the main branch.")),
+      el("h3", {}, "Cloudflare Pages (free)"),
+      el("ol", { class: "steps" }, el("li", {}, "Create a Pages project and choose direct upload."), el("li", {}, "Drag in the unzipped folder."))),
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "3. Tell search engines"),
+      el("p", {}, "Add your site to Google Search Console and Bing Webmaster Tools, then submit your sitemap: ", el("code", {}, (state.site.base_url || "").replace(/\/$/, "") + "/sitemap.xml")),
+      el("p", {}, "Paste their verification codes in Settings so tantu adds them to every page."))
+  ];
+}
+
+show("overview");
+</script>
+</body>
+</html>

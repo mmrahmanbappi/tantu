@@ -8,51 +8,44 @@ tantu turns simple Markdown files into a complete website with SEO, schema, Open
 
 tantu is made for students and anyone who wants a good website without paying for it. The name is an old Sanskrit word for thread or fiber: the framework is woven from small modules, one thread at a time.
 
-> **Status: v0.1.0, early release.** The command line tool works today with two themes. The dashboard and more themes are planned. See [the full plan](docs/PLAN.md).
+> **Status: v0.5.0.** Dashboard, ten themes and one download for Windows, macOS and Linux. Publishing over FTP and site search are next. See [the full plan](docs/PLAN.md).
 
 ## What works today
 
-- Markdown to HTML for pages and posts, with drafts and front matter
-- Two themes: **blog** and **portfolio**, both responsive, accessible and with dark mode
-- Full SEO: title, meta description, canonical, robots, sitemap.xml, robots.txt, Atom feed
-- Open Graph and Twitter/X cards on every page
-- JSON-LD schema: WebSite, Person or Organization, WebPage, BlogPosting, CollectionPage, ProfilePage, BreadcrumbList and more
-- Security: all content is HTML escaped, unsafe links are removed, and `.htaccess` plus `_headers` files add security headers on shared hosting, Cloudflare Pages and Netlify
-- Works in a sub-folder, for example `yourname.github.io/my-site`
-- A local preview server that only listens on your own computer
-- Builds a small site in a few milliseconds
+- **Dashboard in your browser:** write posts and pages with live preview and autosave, upload images, switch themes, edit settings and download the finished site as a ZIP
+- **SEO score for every page** with plain advice, such as a missing description or image text
+- **Ten themes:** blog, portfolio, resume, research, club, event, docs, course, business and gallery
+- **Full SEO:** title, meta description, canonical, robots, sitemap.xml, robots.txt, Atom feed
+- **Open Graph and Twitter/X cards** on every page
+- **Schema (JSON-LD)** that fits each theme: BlogPosting, ScholarlyArticle, Event, Course, LearningResource, TechArticle, LocalBusiness, Service, VisualArtwork, ProfilePage, BreadcrumbList and more
+- **Security:** content is escaped, unsafe links are removed, and `.htaccess` plus `_headers` files add security headers. The dashboard only listens on your own computer and needs a secret token
+- **One file, nothing to install.** Themes are built into the program
+- Works on a subdomain or in a sub-folder, for example `yourname.github.io/my-site`
 
 ## Quick start
 
-### Option 1: download (Linux)
+### Download (Windows, macOS, Linux)
 
-Download `tantu-0.1.0-linux-x86_64.tar.gz` from the [releases page](https://github.com/mmrahmanbappi/tantu/releases), then:
+Download from the [releases page](https://github.com/mmrahmanbappi/tantu/releases):
 
-```sh
-tar xzf tantu-0.1.0-linux-x86_64.tar.gz
-cd tantu-0.1.0-linux-x86_64
-./tantu new mysite
-cd mysite
-../tantu serve
-```
+- **Windows:** `tantu.exe`. Put it in a folder and double click it.
+- **macOS and Linux:** `tantu`. Open a terminal in that folder and run `chmod +x tantu && ./tantu`.
 
-### Option 2: build from source (Linux, macOS, Windows with WSL)
+The first time, tantu creates a sample site in a folder called `mysite` and opens the dashboard in your browser. Keep the window open while you work.
 
-You need a C compiler and `make`. On Linux and macOS they are usually installed already. On Windows, use WSL for now.
+On macOS, if you see a warning that the app cannot be checked, run `xattr -d com.apple.quarantine tantu` once. On Windows, if SmartScreen appears, choose More info, then Run anyway. The program is open source and not signed yet.
+
+### Build from source
+
+You need a C compiler and `make`.
 
 ```sh
 git clone https://github.com/mmrahmanbappi/tantu.git
 cd tantu
 make
-
 ./tantu new mysite --theme blog
-cd mysite
-../tantu serve
+./tantu dashboard mysite
 ```
-
-Open http://127.0.0.1:8000 in your browser. Edit `site.conf` and the files in `content/`, then refresh.
-
-When you are happy, run `tantu build` and upload the `public` folder to your host.
 
 ## Your site folder
 
@@ -99,18 +92,22 @@ Set `base_url` in `site.conf` to your real address before you build.
 ## Commands
 
 ```
-tantu new <folder> [--theme blog|portfolio]
-tantu build [folder]
-tantu serve [folder] [--port 8000]
-tantu version
+tantu                                   open the dashboard (creates mysite the first time)
+tantu new <folder> [--theme NAME]       start a new site
+tantu dashboard [folder] [--port 8080]  edit your site in the browser
+tantu build [folder]                    build the site into public/
+tantu serve [folder] [--port 8000]      preview the built site
+tantu themes                            list the ten themes
 ```
 
 ## Project layout
 
 | Folder | What is inside |
 |---|---|
-| `src/` | The C source: markdown, template, seo, serve and util modules |
-| `themes/` | Built-in themes |
+| `src/` | The C source: markdown, template, seo, serve, dashboard, zip and util modules |
+| `ui/` | The dashboard page (HTML, CSS and JavaScript) |
+| `tools/` | Small build helpers, such as the file embedder |
+| `themes/` | The ten built-in themes |
 | `starters/` | Sample content used by `tantu new` |
 | `tests/` | Tests, run with `make test` under AddressSanitizer and UBSan |
 | `docs/` | The full plan and other documents |

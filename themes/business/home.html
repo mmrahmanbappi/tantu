@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="home">
+  <section class="bhero">
+    <div class="wrap bgrid">
+      <div class="content">{{{content}}}
+        <p class="ctas">{{#if site_phone}}<a class="btn" href="tel:{{site_phone}}">Call {{site_phone}}</a>{{/if}}<a class="btn alt" href="{{base_path}}/contact/">Contact us</a></p>
+      </div>
+      <aside class="info" aria-label="Opening hours and address">
+        {{#if site_hours_display}}<h2>Opening hours</h2><p>{{site_hours_display}}</p>{{/if}}
+        {{#if site_address_street}}<h2>Find us</h2><p>{{site_address_street}}<br>{{site_address_city}} {{site_address_postal}}</p>{{/if}}
+        {{#if site_map_url}}<p><a href="{{site_map_url}}">Open in maps</a></p>{{/if}}
+      </aside>
+    </div>
+  </section>
+  {{#if recent}}
+  <section class="wrap" aria-labelledby="services">
+    <h2 id="services">Our {{site_section_title}}</h2>
+    <ul class="svc">{{#each recent}}<li><a href="{{url}}"><h3>{{title}}</h3><p>{{description}}</p>{{#if price}}<span class="price">From {{price}} {{site_currency}}</span>{{/if}}</a></li>{{/each}}</ul>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

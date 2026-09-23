@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <div class="bio content">{{{content}}}</div>
+  {{#if recent}}
+  <section aria-labelledby="pubs">
+    <h2 id="pubs">Recent {{site_section_title}}</h2>
+    <ol class="pubs">
+      {{#each recent}}
+      <li>
+        <a class="pt" href="{{url}}">{{title}}</a>
+        <span class="au">{{authors}}</span>
+        <span class="ve">{{#if venue}}<em>{{venue}}</em>, {{/if}}{{date_display}}</span>
+        <span class="links">{{#if pdf}}<a href="{{pdf}}">PDF</a>{{/if}}{{#if doi}}<a href="https://doi.org/{{doi}}">DOI</a>{{/if}}{{#if code}}<a href="{{code}}">Code</a>{{/if}}</span>
+      </li>
+      {{/each}}
+    </ol>
+    <p><a href="{{list_url}}">All {{site_section_title}}</a></p>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

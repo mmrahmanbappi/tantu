@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <div class="docs">
+    <nav class="side" aria-label="Documentation">
+      <p class="side-title"><a href="{{list_url}}">{{site_section_title}}</a></p>
+      <ol>{{#each posts}}<li><a href="{{url}}">{{title}}</a></li>{{/each}}</ol>
+    </nav>
+    <article class="entry">
+      <h1>{{title}}</h1>
+      <div class="content">{{{content}}}</div>
+      <nav class="pager" aria-label="Pages">
+        {{#if prev_url}}<a href="{{prev_url}}"><span>Previous</span>{{prev_title}}</a>{{else}}<span></span>{{/if}}
+        {{#if next_url}}<a href="{{next_url}}"><span>Next</span>{{next_title}}</a>{{/if}}
+      </nav>
+    </article>
+  </div>
+</main>
+{{> footer}}
+</body>
+</html>

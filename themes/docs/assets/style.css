@@ -1,0 +1,52 @@
+/* tantu docs theme */
+:root { --bg: #ffffff; --text: #1b1e24; --muted: #5d6470; --line: #e3e5ea; --accent: #5b35c9; --soft: #f3f2f9; --max: 76rem; }
+@media (prefers-color-scheme: dark) { :root { --bg: #14151a; --text: #e6e7ec; --muted: #a0a4b0; --line: #2a2c35; --accent: #b3a0ff; --soft: #1e1f27; } }
+body { font: 1.04rem/1.7 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif; }
+.site-header { border-bottom: 1px solid var(--line); }
+h1 { font-size: 2.1rem; line-height: 1.2; margin: 0 0 1rem; }
+h2 { font-size: 1.45rem; margin: 2.2rem 0 .8rem; padding-top: .5rem; }
+h3 { font-size: 1.15rem; margin: 1.6rem 0 .5rem; }
+.toc { padding-left: 1.4rem; }
+.toc li { padding: .5rem 0; }
+.toc a { font-weight: 600; }
+.toc .meta { display: block; }
+.docs { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 3rem; }
+.side { position: sticky; top: 1rem; align-self: start; font-size: .97rem; border-right: 1px solid var(--line); padding-right: 1.5rem; }
+.side-title { font-weight: 700; margin-bottom: .5rem; }
+.side-title a { color: var(--text); text-decoration: none; }
+.side ol { list-style: none; padding: 0; margin: 0; }
+.side li a { display: block; padding: .3rem .6rem; border-radius: 6px; color: var(--muted); text-decoration: none; }
+.side li a:hover { background: var(--soft); color: var(--text); }
+.entry { max-width: 46rem; }
+@media (max-width: 800px) { .docs { grid-template-columns: 1fr; gap: 1.5rem; } .side { position: static; border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 1rem; } }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); }
+a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+img { max-width: 100%; height: auto; display: block; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--text); color: var(--bg); padding: .5rem 1rem; z-index: 10; }
+.wrap { max-width: var(--max, 64rem); margin: 0 auto; padding-left: 1.25rem; padding-right: 1.25rem; }
+.narrow { max-width: 44rem; }
+p { margin: 0 0 1.1rem; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1.5rem; padding-top: 1.1rem; padding-bottom: 1.1rem; }
+.site-title { font-weight: 700; font-size: 1.15rem; color: inherit; text-decoration: none; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 1.3rem; font-size: 1rem; }
+.site-header nav a { color: inherit; text-decoration: none; opacity: .85; }
+.site-header nav a:hover { opacity: 1; text-decoration: underline; }
+main { padding-top: 2.5rem; padding-bottom: 4rem; }
+.content blockquote { margin: 1.5rem 0; padding-left: 1.2rem; border-left: 4px solid var(--accent); opacity: .85; }
+.content code { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: .9em; background: var(--soft); padding: .1em .35em; border-radius: 4px; }
+.content pre { background: var(--soft); padding: 1rem 1.2rem; border-radius: 8px; overflow-x: auto; line-height: 1.55; }
+.content pre code { background: none; padding: 0; }
+.content ul, .content ol { padding-left: 1.4rem; }
+.content hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
+.meta { font-size: .95rem; color: var(--muted); }
+.site-footer { border-top: 1px solid var(--line); font-size: .95rem; color: var(--muted); }
+.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.site-footer p { margin: 0; }
+.pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.pager a { text-decoration: none; }
+.pager span { display: block; font-size: .9rem; color: var(--muted); }
+@media print { .site-header nav, .site-footer, .skip, .no-print { display: none !important; } body { background: #fff; color: #000; } }

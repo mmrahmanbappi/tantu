@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <div class="content intro">{{{content}}}</div>
+  {{#if posts}}<ol class="toc">{{#each posts}}<li><a href="{{url}}">{{title}}</a><span class="meta">{{description}}</span></li>{{/each}}</ol>{{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

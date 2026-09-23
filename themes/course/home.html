@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <section class="chero">
+    <div class="content">{{{content}}}</div>
+  </section>
+  {{#if posts}}
+  <section aria-labelledby="lessons">
+    <h2 id="lessons">{{site_section_title}}</h2>
+    <ol class="lessons">{{#each posts}}<li><a href="{{url}}"><span class="num">{{position}}</span><span class="lt">{{title}}</span><span class="meta">{{description}}</span></a></li>{{/each}}</ol>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

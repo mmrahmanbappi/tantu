@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define GENERATOR "tantu 0.1.0"
+#define GENERATOR "tantu 0.5.0"
 
 static const char *get(const map *m, const char *k) {
     const char *v = map_get(m, k);
@@ -213,8 +213,13 @@ void seo_head(const map *site, const map *page, buf *o) {
         site_id = buf_take(&t);
         buf_printf(&t, "%s#owner", home);
         owner_id = buf_take(&t);
-        const char *owner_type =
-            !strcmp(get(site, "owner_type"), "Organization") ? "Organization" : "Person";
+        const char *ot = get(site, "owner_type");
+        const char *owner_type = "Person";
+        if (!strcmp(ot, "Organization") || !strcmp(ot, "LocalBusiness") ||
+            !strcmp(ot, "EducationalOrganization") || !strcmp(ot, "Store") ||
+            !strcmp(ot, "Restaurant") || !strcmp(ot, "ProfessionalService"))
+            owner_type = ot;
+        int is_person = !strcmp(owner_type, "Person");
 
         buf_puts(o, "<script type=\"application/ld+json\">\n{\"@context\":\"https://schema.org\",\"@graph\":[");
 
@@ -237,13 +242,32 @@ void seo_head(const map *site, const map *page, buf *o) {
         jstr(o, "@id", owner_id, &f);
         jstr(o, "name", get(site, "author"), &f);
         jstr(o, "url", home, &f);
-        jstr(o, strcmp(owner_type, "Person") ? "description" : "jobTitle",
-             get(site, strcmp(owner_type, "Person") ? "description" : "job_title"), &f);
+        jstr(o, is_person ? "jobTitle" : "description",
+             get(site, is_person ? "job_title" : "description"), &f);
         if (*get(site, "logo")) {
             char *logo = abs_image(site, get(site, "logo"));
-            jstr(o, strcmp(owner_type, "Person") ? "logo" : "image", logo, &f);
+            jstr(o, is_person ? "image" : "logo", logo, &f);
+            if (!is_person) jstr(o, "image", logo, &f);
             free(logo);
         }
+        jstr(o, "email", get(site, "email"), &f);
+        jstr(o, "telephone", get(site, "phone"), &f);
+        if (!is_person && *get(site, "address_city")) {
+            if (!f) buf_putc(o, ',');
+            f = 0;
+            int g = 1;
+            buf_puts(o, "\"address\":{");
+            jstr(o, "@type", "PostalAddress", &g);
+            jstr(o, "streetAddress", get(site, "address_street"), &g);
+            jstr(o, "addressLocality", get(site, "address_city"), &g);
+            jstr(o, "addressRegion", get(site, "address_region"), &g);
+            jstr(o, "postalCode", get(site, "address_postal"), &g);
+            jstr(o, "addressCountry", get(site, "address_country"), &g);
+            buf_putc(o, '}');
+        }
+        jlist_csv(o, "openingHours", get(site, "opening_hours"), &f);
+        jstr(o, "priceRange", get(site, "price_range"), &f);
+        jstr(o, "areaServed", get(site, "area_served"), &f);
         jlist_csv(o, "sameAs", get(site, "social"), &f);
         buf_putc(o, '}');
 
@@ -261,15 +285,105 @@ void seo_head(const map *site, const map *page, buf *o) {
         char *pid = buf_take(&t2);
         jstr(o, "@id", pid, &f);
         jstr(o, "url", canon, &f);
-        if (is_post) {
-            jstr(o, "headline", title, &f);
+        const map *ev = is_home ? site : page; /* event fields live in site.conf on home pages */
+        if (!strcmp(ptype, "Event")) {
+            jstr(o, "name", is_home ? site_title : title, &f);
+            const char *start = is_home ? get(site, "event_start") : get(page, "start");
+            if (!*start) start = get(page, "date");
+            jstr(o, "startDate", start, &f);
+            jstr(o, "endDate", is_home ? get(site, "event_end") : get(page, "end"), &f);
+            jstr(o, "eventStatus", "https://schema.org/EventScheduled", &f);
+            int online = !strcmp(get(ev, is_home ? "event_attendance" : "attendance"), "online");
+            jstr(o, "eventAttendanceMode", online ? "https://schema.org/OnlineEventAttendanceMode"
+                                                  : "https://schema.org/OfflineEventAttendanceMode", &f);
+            const char *venue = is_home ? get(site, "event_venue") : get(page, "location");
+            if (!*venue) venue = get(site, "event_venue");
+            const char *addr = get(site, "event_address");
+            if (*venue || online) {
+                if (!f) buf_putc(o, ',');
+                f = 0;
+                int g = 1;
+                buf_puts(o, "\"location\":{");
+                if (online) {
+                    jstr(o, "@type", "VirtualLocation", &g);
+                    jstr(o, "url", canon, &g);
+                } else {
+                    jstr(o, "@type", "Place", &g);
+                    jstr(o, "name", venue, &g);
+                    jstr(o, "address", addr, &g);
+                }
+                buf_putc(o, '}');
+            }
+            jref(o, "organizer", owner_id, &f);
+            if (*get(page, "speaker")) {
+                if (!f) buf_putc(o, ',');
+                f = 0;
+                buf_puts(o, "\"performer\":{\"@type\":\"Person\",\"name\":\"");
+                esc_json(o, get(page, "speaker"));
+                buf_puts(o, "\"}");
+            }
+        } else if (!strcmp(ptype, "Course")) {
+            jstr(o, "name", is_home ? site_title : title, &f);
+            jref(o, "provider", owner_id, &f);
+            jref(o, "isPartOf", site_id, &f);
+        } else if (!strcmp(ptype, "Service")) {
+            jstr(o, "name", title, &f);
+            jstr(o, "serviceType", title, &f);
+            jref(o, "provider", owner_id, &f);
+            jstr(o, "areaServed", get(site, "area_served"), &f);
+            if (*get(page, "price")) {
+                if (!f) buf_putc(o, ',');
+                f = 0;
+                buf_puts(o, "\"offers\":{\"@type\":\"Offer\",\"price\":\"");
+                esc_json(o, get(page, "price"));
+                buf_puts(o, "\",\"priceCurrency\":\"");
+                esc_json(o, *get(site, "currency") ? get(site, "currency") : "USD");
+                buf_puts(o, "\"}");
+            }
+        } else if (is_post) {
+            jstr(o, !strcmp(ptype, "VisualArtwork") || !strcmp(ptype, "LearningResource") ? "name" : "headline",
+                 title, &f);
             jstr(o, "datePublished", get(page, "date"), &f);
             jstr(o, "dateModified", *get(page, "updated") ? get(page, "updated") : get(page, "date"), &f);
-            jref(o, "author", owner_id, &f);
-            jref(o, "publisher", owner_id, &f);
+            if (*get(page, "authors")) {
+                if (!f) buf_putc(o, ',');
+                f = 0;
+                buf_puts(o, "\"author\":[");
+                char *au = xstrdup(get(page, "authors"));
+                int first_a = 1;
+                for (char *tok = strtok(au, ","); tok; tok = strtok(NULL, ",")) {
+                    char *nm = trim(tok);
+                    if (!*nm) continue;
+                    if (!first_a) buf_putc(o, ',');
+                    first_a = 0;
+                    buf_puts(o, "{\"@type\":\"Person\",\"name\":\"");
+                    esc_json(o, nm);
+                    buf_puts(o, "\"}");
+                }
+                free(au);
+                buf_putc(o, ']');
+            } else {
+                jref(o, !strcmp(ptype, "VisualArtwork") ? "creator" : "author", owner_id, &f);
+            }
+            if (strcmp(ptype, "VisualArtwork")) jref(o, "publisher", owner_id, &f);
             jstr(o, "mainEntityOfPage", canon, &f);
             jlist_csv(o, "keywords", get(page, "tags"), &f);
-            if (*get(page, "word_count")) jraw(o, "wordCount", get(page, "word_count"), &f);
+            if (*get(page, "venue")) {
+                if (!f) buf_putc(o, ',');
+                f = 0;
+                buf_puts(o, "\"isPartOf\":{\"@type\":\"Periodical\",\"name\":\"");
+                esc_json(o, get(page, "venue"));
+                buf_puts(o, "\"}");
+            }
+            if (*get(page, "doi")) {
+                buf dl = {0};
+                buf_printf(&dl, "https://doi.org/%s", get(page, "doi"));
+                jstr(o, "sameAs", dl.s, &f);
+                buf_free(&dl);
+            }
+            jstr(o, "educationalLevel", get(page, "level"), &f);
+            jstr(o, "timeRequired", get(page, "time_required"), &f);
+            if (*get(page, "word_count") && strcmp(ptype, "VisualArtwork")) jraw(o, "wordCount", get(page, "word_count"), &f);
         } else {
             jstr(o, "name", is_home ? full.s : title, &f);
             jref(o, "isPartOf", site_id, &f);

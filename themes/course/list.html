@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <h1>{{title}}</h1>
+  {{#if posts}}<ol class="lessons">{{#each posts}}<li><a href="{{url}}"><span class="num">{{position}}</span><span class="lt">{{title}}</span><span class="meta">{{description}}</span></a></li>{{/each}}</ol>{{else}}<p>Nothing here yet. Add a Markdown file to content/posts and build again.</p>{{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

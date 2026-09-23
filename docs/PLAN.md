@@ -2,41 +2,46 @@
 
 tantu helps students build fast, secure websites for free. Every finished site is plain HTML, so it runs on any shared hosting plan or free subdomain such as GitHub Pages or Cloudflare Pages.
 
-Items marked **[done]** are in v0.1.0. Everything else is planned.
+Items marked **[done]** are available now (v0.5.0). Everything else is planned.
 
 ## Releases
 
 | Version | What it includes |
 |---|---|
 | **v0.1** | Command line tool, Markdown to HTML, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed, security headers **[done]** |
-| v0.5 | Dashboard in the browser, editor, media library, one click publishing over FTP or SFTP, six themes, SEO panel |
-| v1.0 | Ten themes, site search, automatic social images, install wizard, full documentation |
+| **v0.5** | Dashboard in the browser, editor with live preview, image uploads, SEO score per page, theme switcher, ZIP export, all ten themes, one download for Windows, macOS and Linux **[done]** |
+| v1.0 | FTP and SFTP publishing, site search, automatic social images, image resizing, setup wizard, full documentation |
 
 ## 1. Install and setup
 
 - [done] Build from source with one `make` command, no other libraries needed
 - [done] `tantu new`, `tantu build`, `tantu serve`
 - [done] Works offline
-- One download for Windows, macOS and Linux, no install needed
-- Smaller than 10 MB and runs on old laptops
-- Double click to open the dashboard
-- First run wizard: pick a name, theme and language, and see a site in three minutes
-- Portable mode to run from a USB drive in computer labs
+- [done] One download for Windows, macOS and Linux, no install needed
+- [done] Smaller than 10 MB and runs on old laptops
+- [done] Double click to open the dashboard
+- [done] First run creates a sample site and opens the dashboard
+- Full setup wizard with name, theme and language
+- [done] Portable: runs from any folder, including a USB drive
 - One click update that keeps your site safe
 
 ## 2. Dashboard
 
-- Overview: number of pages and posts, last publish, SEO issues
-- Editor with Markdown and visual modes, live preview and autosave
-- Pages and posts with drafts, categories, tags and dates
-- Media library with drag and drop, automatic resizing and alt text
+- [done] Overview: number of pages and posts, last publish, SEO issues
+- [done] Editor with Markdown, live preview and autosave
+- Visual editing mode
+- [done] Pages and posts with drafts, tags and dates
+- [done] Image uploads with type and size checks
+- Drag and drop, automatic resizing
 - Menu builder with drag and drop
-- Theme switcher with color and font options
-- SEO panel with a score and a list of fixes for every page
-- Publishing: FTP or SFTP (only changed files), GitHub Pages push, ZIP export
+- [done] Theme switcher with all ten themes
+- Color and font options per theme
+- [done] SEO panel with a score and a list of fixes for every page
+- [done] Download the finished site as a ZIP file
+- Publishing over FTP or SFTP (only changed files) and GitHub Pages push
 - Backup and restore in one file
-- Settings for site details, social links, analytics and verification codes
-- Dark mode and keyboard shortcuts
+- [done] Settings for site details, social links and verification codes
+- [done] Dark mode and keyboard shortcuts
 
 ## 3. SEO
 
@@ -45,7 +50,7 @@ Per page:
 - [done] Clean URLs and custom slugs
 - [done] Canonical URL
 - [done] Robots meta (index or noindex)
-- Length counters and warnings in the dashboard
+- [done] Length counters and warnings in the dashboard
 - Focus keyword check
 
 Site wide:
@@ -63,16 +68,17 @@ Schema (JSON-LD):
 - [done] WebSite, WebPage, Person, Organization
 - [done] BlogPosting, CreativeWork, CollectionPage, ProfilePage, AboutPage, ContactPage
 - [done] BreadcrumbList
-- FAQPage, HowTo, Event, Course
-- LocalBusiness, ScholarlyArticle
+- [done] Event, Course, LearningResource, TechArticle, Service, VisualArtwork
+- FAQPage, HowTo
+- [done] LocalBusiness, ScholarlyArticle
 
 Checks in the dashboard:
-- Missing image alt text
+- [done] Missing image alt text
 - Heading order
 - Broken links
 - Internal link suggestions
-- Duplicate titles or descriptions
-- Very short pages
+- [done] Duplicate titles or descriptions
+- [done] Very short pages
 
 ## 4. Open Graph and social
 
@@ -96,9 +102,10 @@ Checks in the dashboard:
 
 Dashboard:
 - [done] Preview server on 127.0.0.1 only
-- Optional password with Argon2 hashing
-- CSRF tokens and session timeout
-- Upload checks for file type and size
+- [done] A random security token for every dashboard session, which also blocks cross-site requests
+- [done] Host header check against DNS rebinding
+- [done] Upload checks for file type, content and size (SVG uploads refused)
+- [done] File access limited to content, images and site.conf
 - FTP passwords stored encrypted, SFTP preferred
 
 Finished site:
@@ -132,14 +139,14 @@ tantu itself:
 |---|---|---|
 | Blog [done] | Writers and students | Tags, reading time, feed |
 | Portfolio [done] | Designers and developers | Project grid, case studies |
-| Resume | Job seekers | One page CV that prints well |
-| Research | Thesis and research students | Publications, citations, ScholarlyArticle schema |
-| Club | University clubs | Members, activities, notices |
-| Event | Hackathons and meetups | Schedule, speakers, Event schema |
-| Docs | Open source projects | Sidebar, search, versions |
-| Course Notes | Teachers and tutors | Chapters, code blocks, Course schema |
-| Small Business | Shops and freelancers | Services, prices, map link, LocalBusiness schema |
-| Gallery | Photographers and artists | Image grid, lightbox |
+| Resume [done] | Job seekers | One page CV that prints well |
+| Research [done] | Thesis and research students | Publications, citations, ScholarlyArticle schema |
+| Club [done] | University clubs | Members, activities, notices |
+| Event [done] | Hackathons and meetups | Schedule, speakers, Event schema |
+| Docs [done] | Open source projects | Sidebar, search, versions |
+| Course Notes [done] | Teachers and tutors | Chapters, code blocks, Course schema |
+| Small Business [done] | Shops and freelancers | Services, prices, map link, LocalBusiness schema |
+| Gallery [done] | Photographers and artists | Image grid, lightbox |
 
 ## 9. Framework modules
 
@@ -153,14 +160,16 @@ These C modules are built along the way and can be used on their own.
 | seo | Meta tags, schema, sitemap, feed, headers | done |
 | serve | Local preview server | done |
 | config | TOML settings | planned |
-| router | URL routing for the dashboard | planned |
+| dashboard | Browser dashboard and its API | done |
+| zip | ZIP export | done |
+| embedded | Themes and starters built into the program | done |
 | json | JSON reading and writing | planned |
 | watch | Rebuild when files change | planned |
 | image | Resizing, WebP and AVIF, social images | planned |
 | minify | Smaller HTML and CSS | planned |
 | search | Search index for the browser | planned |
 | crypto | Password hashing and checksums | planned |
-| upload | Safe file uploads | planned |
+| upload | Safe image uploads | done |
 | publish | FTP, SFTP, ZIP and GitHub | planned |
 | i18n | Multiple languages | planned |
 

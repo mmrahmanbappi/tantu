@@ -13,18 +13,21 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "embedded.h"
 #include "markdown.h"
+#include "site.h"
+#include "dashboard.h"
 #include "seo.h"
 #include "serve.h"
 #include "template.h"
 #include "util.h"
 
-#define VERSION "0.1.0"
+#define VERSION "0.5.0"
 #define OUT "public"
 
 /* ---------- config and front matter ---------- */
 
-static void parse_conf(const char *text, map *m) {
+void parse_conf(const char *text, map *m) {
     char *copy = xstrdup(text);
     char *save = NULL;
     for (char *line = strtok_r(copy, "\n", &save); line; line = strtok_r(NULL, "\n", &save)) {
@@ -45,7 +48,7 @@ static void parse_conf(const char *text, map *m) {
 }
 
 /* Reads "---\nkey: value\n---" at the top of a file. Returns the body. */
-static const char *front_matter(const char *src, map *m) {
+const char *front_matter(const char *src, map *m) {
     if (strncmp(src, "---", 3) != 0) return src;
     const char *p = strchr(src, '\n');
     if (!p) return src;
@@ -81,7 +84,7 @@ static const char *get(const map *m, const char *k) {
     return v ? v : "";
 }
 
-static int valid_date(const char *d) {
+int valid_date(const char *d) {
     if (strlen(d) != 10) return 0;
     for (int i = 0; i < 10; i++) {
         if (i == 4 || i == 7) { if (d[i] != '-') return 0; }
@@ -116,9 +119,23 @@ static void push(doclist *l, map *m) {
     l->items[l->n++] = m;
 }
 
-static int by_date_desc(const void *a, const void *b) {
+static const char *sort_key = "date";
+
+/* "date" sorts newest first. Any other key (order, start, ...) sorts
+ * ascending, numerically when both values are numbers. */
+static int by_sort_key(const void *a, const void *b) {
     const map *x = *(map *const *)a, *y = *(map *const *)b;
-    int c = strcmp(get(y, "date"), get(x, "date"));
+    int c;
+    if (!strcmp(sort_key, "date")) {
+        c = strcmp(get(y, "date"), get(x, "date"));
+    } else {
+        const char *vx = get(x, sort_key), *vy = get(y, sort_key);
+        char *ex, *ey;
+        double dx = strtod(vx, &ex), dy = strtod(vy, &ey);
+        if (*vx && *vy && !*ex && !*ey) c = (dx > dy) - (dx < dy);
+        else if (!*vx || !*vy) c = (!*vx) - (!*vy); /* items without a value go last */
+        else c = strcmp(vx, vy);
+    }
     return c ? c : strcmp(get(x, "title"), get(y, "title"));
 }
 
@@ -159,6 +176,21 @@ static map *load_doc(const char *path, const char *fname, const char *base, int 
         fprintf(stderr, "tantu: warning: %s: date should look like 2026-09-23\n", path);
     char *dd = date_display(get(m, "date"));
     map_set(m, "date_display", dd);
+    /* Event times: "2026-11-14T09:00" -> "14 November 2026, 09:00" */
+    const char *st = get(m, "start");
+    if (strlen(st) >= 16 && st[10] == 'T') {
+        char d[11];
+        memcpy(d, st, 10);
+        d[10] = '\0';
+        if (valid_date(d)) {
+            char *sd = date_display(d);
+            buf t = {0};
+            buf_printf(&t, "%s, %.5s", sd, st + 11);
+            map_set(m, "start_display", t.s);
+            buf_free(&t);
+            free(sd);
+        }
+    }
 
     if (!*get(m, "description")) {
         char *d = strip_tags(html.s ? html.s : "", 155);
@@ -260,7 +292,7 @@ static void write_text(const char *path, buf *b) {
     buf_free(b);
 }
 
-static int cmd_build(const char *dir, int quiet) {
+int cmd_build(const char *dir, int quiet) {
     if (dir && chdir(dir) != 0) die("folder not found: %s", dir);
     char *conf = read_file("site.conf", NULL);
     if (!conf) die("no site.conf here. Run this inside a site folder, or create one with: tantu new mysite");
@@ -353,7 +385,8 @@ static int cmd_build(const char *dir, int quiet) {
     doclist posts = {0}, pages = {0};
     load_dir("content/posts", base, &posts, &skipped);
     load_dir("content/pages", base, &pages, &skipped);
-    qsort(posts.items, (size_t)posts.n, sizeof(map *), by_date_desc);
+    sort_key = *get(&s.cfg, "sort") ? get(&s.cfg, "sort") : "date";
+    qsort(posts.items, (size_t)posts.n, sizeof(map *), by_sort_key);
 
     for (int i = 0; i < posts.n; i++) {
         buf u = {0};
@@ -362,6 +395,19 @@ static int cmd_build(const char *dir, int quiet) {
         map_set(posts.items[i], "kind", "post");
         map_set(posts.items[i], "list_url", list_url);
         buf_free(&u);
+    }
+    for (int i = 0; i < posts.n; i++) {
+        if (i > 0) {
+            map_set(posts.items[i], "prev_url", get(posts.items[i - 1], "url"));
+            map_set(posts.items[i], "prev_title", get(posts.items[i - 1], "title"));
+        }
+        if (i + 1 < posts.n) {
+            map_set(posts.items[i], "next_url", get(posts.items[i + 1], "url"));
+            map_set(posts.items[i], "next_title", get(posts.items[i + 1], "title"));
+        }
+        char idx[16];
+        snprintf(idx, sizeof idx, "%d", i + 1);
+        map_set(posts.items[i], "position", idx);
     }
     for (int i = 0; i < pages.n; i++) {
         const char *sl = get(pages.items[i], "slug");
@@ -524,47 +570,24 @@ static int cmd_build(const char *dir, int quiet) {
 
 /* ---------- new ---------- */
 
-static char *tantu_home(const char *argv0) {
-    const char *env = getenv("TANTU_HOME");
-    if (env && is_dir(env)) return xstrdup(env);
-    char exe[PATH_MAX];
-    char *found = NULL;
-    ssize_t n = readlink("/proc/self/exe", exe, sizeof exe - 1);
-    if (n > 0) {
-        exe[n] = '\0';
-        found = xstrdup(exe);
-    } else if (realpath(argv0, exe)) {
-        found = xstrdup(exe);
-    }
-    if (found) {
-        char *slash = strrchr(found, '/');
-        if (slash) *slash = '\0';
-        char *t = path_join(found, "themes");
-        int ok = is_dir(t);
-        free(t);
-        if (ok) return found;
-        free(found);
-    }
-    if (is_dir("themes") && is_dir("starters")) return xstrdup(".");
-    return NULL;
-}
-
-static int cmd_new(const char *dir, const char *theme, const char *argv0) {
+static int cmd_new(const char *dir, const char *theme) {
     if (is_dir(dir) || is_file(dir)) die("\"%s\" already exists. Pick a new folder name.", dir);
-    char *home = tantu_home(argv0);
-    if (!home) die("cannot find the themes folder. Keep it next to the tantu program, or set TANTU_HOME.");
-    char *tsrc = path_join(home, "themes");
-    char *tsrc2 = path_join(tsrc, theme);
-    char *ssrc = path_join(home, "starters");
-    char *ssrc2 = path_join(ssrc, theme);
-    if (!is_dir(tsrc2) || !is_dir(ssrc2)) die("unknown theme \"%s\". Try: blog or portfolio", theme);
-    if (copy_tree(ssrc2, dir) != 0) die("could not create %s", dir);
-    char *tdst = path_join(dir, "themes");
-    char *tdst2 = path_join(tdst, theme);
-    copy_tree(tsrc2, tdst2);
-    printf("Created a new %s site in \"%s\".\n\nNext steps:\n  cd %s\n  tantu serve\n\n"
-           "Then edit site.conf and the files in content/.\n", theme, dir, dir);
-    free(home); free(tsrc); free(tsrc2); free(ssrc); free(ssrc2); free(tdst); free(tdst2);
+    if (!theme_exists(theme)) {
+        fprintf(stderr, "tantu: unknown theme \"%s\". Available themes:\n", theme);
+        list_themes(stderr);
+        return 1;
+    }
+    buf sp = {0}, tp = {0}, td = {0};
+    buf_printf(&sp, "starters/%s/", theme);
+    buf_printf(&tp, "themes/%s/", theme);
+    buf_printf(&td, "%s/themes/%s", dir, theme);
+    if (extract_prefix(sp.s, dir) <= 0) die("could not create %s", dir);
+    extract_prefix(tp.s, td.s);
+    buf_free(&sp);
+    buf_free(&tp);
+    buf_free(&td);
+    printf("Created a new %s site in \"%s\".\n\nNext steps:\n  cd %s\n  tantu dashboard\n\n"
+           "Or edit site.conf and the files in content/, then run: tantu serve\n", theme, dir, dir);
     return 0;
 }
 
@@ -573,58 +596,81 @@ static int cmd_new(const char *dir, const char *theme, const char *argv0) {
 static void usage(void) {
     puts("tantu " VERSION ": build fast, secure websites from Markdown\n\n"
          "Usage:\n"
-         "  tantu new <folder> [--theme blog|portfolio]   start a new site\n"
-         "  tantu build [folder]                          build the site into public/\n"
-         "  tantu serve [folder] [--port 8000]            build and preview on your computer\n"
-         "  tantu version                                 show the version\n\n"
+         "  tantu                                  open the dashboard (creates \"mysite\" the first time)\n"
+         "  tantu new <folder> [--theme NAME]      start a new site\n"
+         "  tantu dashboard [folder] [--port 8080] edit your site in the browser\n"
+         "  tantu build [folder]                   build the site into public/\n"
+         "  tantu serve [folder] [--port 8000]     build and preview on your computer\n"
+         "  tantu themes                           list the built-in themes\n"
+         "  tantu version                          show the version\n\n"
          "Upload the public/ folder to any web host, GitHub Pages or Cloudflare Pages.");
 }
 
+static char *base_path_of(void) {
+    map cfg = {0};
+    char *conf = read_file("site.conf", NULL);
+    parse_conf(conf ? conf : "", &cfg);
+    free(conf);
+    const char *bu = get(&cfg, "base_url");
+    const char *sc = strstr(bu, "://");
+    char *base = xstrdup("");
+    if (sc) {
+        const char *sl = strchr(sc + 3, '/');
+        if (sl) {
+            free(base);
+            base = xstrdup(sl);
+            size_t l = strlen(base);
+            while (l && base[l - 1] == '/') base[--l] = '\0';
+        }
+    }
+    map_free(&cfg);
+    return base;
+}
+
 int main(int argc, char **argv) {
-    if (argc < 2 || !strcmp(argv[1], "help") || !strcmp(argv[1], "--help") || !strcmp(argv[1], "-h")) {
+    if (argc < 2) {
+        /* Double click or plain "tantu": open the dashboard */
+        if (is_file("site.conf")) return dashboard_run(NULL, 8080, 1);
+        if (!is_file("mysite/site.conf")) {
+            if (is_dir("mysite")) die("a folder named mysite exists without a site.conf");
+            cmd_new("mysite", "blog");
+        }
+        return dashboard_run("mysite", 8080, 1);
+    }
+    const char *cmd = argv[1];
+    if (!strcmp(cmd, "help") || !strcmp(cmd, "--help") || !strcmp(cmd, "-h")) {
         usage();
         return 0;
     }
-    const char *cmd = argv[1];
     if (!strcmp(cmd, "version") || !strcmp(cmd, "--version")) {
         puts("tantu " VERSION);
         return 0;
     }
+    if (!strcmp(cmd, "themes")) {
+        list_themes(stdout);
+        return 0;
+    }
     const char *folder = NULL, *theme = "blog";
-    int port = 8000;
+    int port = 0, no_browser = 0;
     for (int i = 2; i < argc; i++) {
         if (!strcmp(argv[i], "--theme") && i + 1 < argc) theme = argv[++i];
         else if (!strcmp(argv[i], "--port") && i + 1 < argc) port = atoi(argv[++i]);
+        else if (!strcmp(argv[i], "--no-browser")) no_browser = 1;
         else if (argv[i][0] != '-' && !folder) folder = argv[i];
         else die("unknown option: %s", argv[i]);
     }
+    if (port < 0 || port > 65535) die("port must be between 1 and 65535");
     if (!strcmp(cmd, "new")) {
         if (!folder) die("give the new site a folder name, for example: tantu new mysite");
-        return cmd_new(folder, theme, argv[0]);
+        return cmd_new(folder, theme);
     }
     if (!strcmp(cmd, "build")) return cmd_build(folder, 0);
+    if (!strcmp(cmd, "dashboard")) return dashboard_run(folder, port ? port : 8080, !no_browser);
     if (!strcmp(cmd, "serve")) {
-        if (port < 1 || port > 65535) die("port must be between 1 and 65535");
         cmd_build(folder, 0);
-        map cfg = {0};
-        char *conf = read_file("site.conf", NULL);
-        parse_conf(conf ? conf : "", &cfg);
-        free(conf);
-        const char *bu = get(&cfg, "base_url");
-        const char *sc = strstr(bu, "://");
-        char *base = xstrdup("");
-        if (sc) {
-            const char *sl = strchr(sc + 3, '/');
-            if (sl) {
-                free(base);
-                base = xstrdup(sl);
-                size_t l = strlen(base);
-                while (l && base[l - 1] == '/') base[--l] = '\0';
-            }
-        }
-        int rc = serve_dir(OUT, base, port);
+        char *base = base_path_of();
+        int rc = serve_dir(OUT, base, port ? port : 8000);
         free(base);
-        map_free(&cfg);
         return rc;
     }
     usage();
