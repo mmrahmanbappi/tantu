@@ -32,3 +32,9 @@ compile_commands.json
 *.swp
 .DS_Store
 Thumbs.db
+
+# tantu
+/tantu
+tests/tmp/
+tests/tantu-test
+public/

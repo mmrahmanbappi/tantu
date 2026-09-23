@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <h1>{{title}}</h1>
+  {{#if posts}}
+  <ul class="post-list">
+    {{#each posts}}
+    <li>
+      <h2><a href="{{url}}">{{title}}</a></h2>
+      <p class="meta"><time datetime="{{date}}">{{date_display}}</time> <span aria-hidden="true">/</span> {{reading_time}}</p>
+      <p>{{description}}</p>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>Nothing here yet. Add a Markdown file to content/posts and build again.</p>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

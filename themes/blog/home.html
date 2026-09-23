@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap narrow">
+  <section class="intro content">{{{content}}}</section>
+  {{#if recent}}
+  <section class="latest" aria-labelledby="latest">
+    <h2 id="latest">Latest writing</h2>
+    <ul class="post-list">
+      {{#each recent}}
+      <li>
+        <h3><a href="{{url}}">{{title}}</a></h3>
+        <p class="meta"><time datetime="{{date}}">{{date_display}}</time> <span aria-hidden="true">/</span> {{reading_time}}</p>
+        <p>{{description}}</p>
+      </li>
+      {{/each}}
+    </ul>
+    <p class="more"><a href="{{list_url}}">See all posts</a></p>
+  </section>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

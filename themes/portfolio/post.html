@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <article class="project">
+    <header class="project-head narrow">
+      <p class="meta"><a href="{{list_url}}">{{site_section_title}}</a>{{#if date}} <span aria-hidden="true">/</span> <time datetime="{{date}}">{{date_display}}</time>{{/if}}</p>
+      <h1>{{title}}</h1>
+      <p class="lead">{{description}}</p>
+      {{#if tags}}<p class="tags">{{tags}}</p>{{/if}}
+    </header>
+    {{#if image}}<img class="cover" src="{{base_path}}{{image}}" alt="{{image_alt}}" width="1200" height="750">{{/if}}
+    <div class="content narrow">{{{content}}}</div>
+  </article>
+  <p class="more narrow"><a href="{{list_url}}">Back to all {{site_section_title}}</a></p>
+</main>
+{{> footer}}
+</body>
+</html>

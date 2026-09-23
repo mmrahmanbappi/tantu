@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>tantu: Open-Source C Web Framework for Servers and IoT</title>
-<meta name="description" content="tantu is a free, open-source web framework written in C. One small API for web servers, ESP32 devices and WebAssembly. Read the roadmap or join us on GitHub.">
+<title>tantu: Free Website Builder in C for Students</title>
+<meta name="description" content="Build fast, secure websites for free with tantu, an open-source C tool. SEO, schema and Open Graph built in. Host on GitHub Pages or shared hosting.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="mmrahmanbappi">
 <link rel="canonical" href="https://mmrahmanbappi.github.io/tantu/">
@@ -12,8 +12,8 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="tantu">
-<meta property="og:title" content="tantu: Open-Source C Web Framework for Servers and IoT">
-<meta property="og:description" content="One small C API for web servers, ESP32 devices and WebAssembly. Free, MIT licensed, and open to contributors.">
+<meta property="og:title" content="tantu: Free Website Builder in C for Students">
+<meta property="og:description" content="Turn Markdown into a fast, secure website with SEO and schema built in. Free, open source, and hosts anywhere.">
 <meta property="og:url" content="https://mmrahmanbappi.github.io/tantu/">
 <meta property="og:image" content="https://mmrahmanbappi.github.io/tantu/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -21,8 +21,8 @@
 <meta property="og:image:alt" content="tantu, a web framework in C, built one thread at a time">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="tantu: Open-Source C Web Framework for Servers and IoT">
-<meta name="twitter:description" content="One small C API for web servers, ESP32 devices and WebAssembly. Free and MIT licensed.">
+<meta name="twitter:title" content="tantu: Free Website Builder in C for Students">
+<meta name="twitter:description" content="Turn Markdown into a fast, secure website with SEO and schema built in. Free and open source.">
 <meta name="twitter:image" content="https://mmrahmanbappi.github.io/tantu/og-image.png">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -39,15 +39,15 @@
       "@id": "https://mmrahmanbappi.github.io/tantu/#website",
       "url": "https://mmrahmanbappi.github.io/tantu/",
       "name": "tantu",
-      "description": "Open-source web framework written in C",
+      "description": "Free, open-source website builder and web framework written in C",
       "inLanguage": "en"
     },
     {
       "@type": "WebPage",
       "@id": "https://mmrahmanbappi.github.io/tantu/#webpage",
       "url": "https://mmrahmanbappi.github.io/tantu/",
-      "name": "tantu: Open-Source C Web Framework for Servers and IoT",
-      "description": "tantu is a free, open-source web framework written in C. One small API for web servers, ESP32 devices and WebAssembly.",
+      "name": "tantu: Free Website Builder in C for Students",
+      "description": "Build fast, secure websites for free with tantu, an open-source C tool. SEO, schema and Open Graph built in. Host on GitHub Pages or shared hosting.",
       "isPartOf": { "@id": "https://mmrahmanbappi.github.io/tantu/#website" },
       "about": { "@id": "https://mmrahmanbappi.github.io/tantu/#software" },
       "primaryImageOfPage": "https://mmrahmanbappi.github.io/tantu/og-image.png",
@@ -57,20 +57,35 @@
       "@type": "SoftwareSourceCode",
       "@id": "https://mmrahmanbappi.github.io/tantu/#software",
       "name": "tantu",
-      "description": "An open-source web framework written in C, built module by module. The goal is one small API that runs on servers, on microcontrollers like the ESP32, and in the browser or at the edge through WebAssembly.",
+      "description": "An open-source website builder and web framework written in C. It turns Markdown into static websites with SEO, schema, Open Graph and security headers, ready for free hosting or any shared hosting plan.",
       "url": "https://mmrahmanbappi.github.io/tantu/",
       "codeRepository": "https://github.com/mmrahmanbappi/tantu",
       "programmingLanguage": { "@type": "ComputerLanguage", "name": "C" },
       "runtimePlatform": ["Linux", "ESP32", "WebAssembly"],
       "license": "https://opensource.org/licenses/MIT",
       "isAccessibleForFree": true,
-      "creativeWorkStatus": "In development",
-      "keywords": "C web framework, HTTP server in C, ESP32 web server, WebAssembly, IoT, open source",
+      "version": "0.1.0",
+      "creativeWorkStatus": "Early release",
+      "keywords": "free website builder, static site generator, C web framework, SEO, schema, students, open source",
       "author": {
         "@type": "Person",
         "name": "mmrahmanbappi",
         "url": "https://github.com/mmrahmanbappi"
       }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://mmrahmanbappi.github.io/tantu/#app",
+      "name": "tantu",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows (WSL)",
+      "softwareVersion": "0.1.0",
+      "url": "https://mmrahmanbappi.github.io/tantu/",
+      "downloadUrl": "https://github.com/mmrahmanbappi/tantu/releases",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "mmrahmanbappi", "url": "https://github.com/mmrahmanbappi" }
     },
     {
       "@type": "FAQPage",
@@ -79,12 +94,22 @@
         {
           "@type": "Question",
           "name": "Is tantu ready to use?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Not yet. tantu is at an early stage and there is no release. The roadmap and design are public, and the first module, a small HTTP server, is the next step." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, for simple sites. Version 0.1 builds complete blog and portfolio websites from the command line. The browser dashboard and more themes are coming in later versions." }
         },
         {
           "@type": "Question",
           "name": "Is tantu free?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. tantu uses the MIT license, so you can use it in personal and commercial projects, change it, and share it." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. tantu uses the MIT license, so you can use it for personal and commercial sites, change it, and share it. There are no ads, no accounts and no tracking." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I host a tantu site for free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. tantu makes plain HTML files. You can host them for free on GitHub Pages or Cloudflare Pages, or upload them to any shared hosting plan, including on a subdomain." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to know C to use tantu?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. You write your pages in Markdown, which is plain text with a few symbols for headings and links. C is only needed if you want to help improve tantu itself." }
         },
         {
           "@type": "Question",
@@ -93,18 +118,8 @@
         },
         {
           "@type": "Question",
-          "name": "Can I run tantu on shared hosting?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Usually not. Most shared hosting plans only run PHP and do not let you start your own server. You can run tantu on your own computer, on a VPS, or on a small device like the ESP32." }
-        },
-        {
-          "@type": "Question",
-          "name": "Why build a web framework in C and not Rust or Go?",
-          "acceptedAnswer": { "@type": "Answer", "text": "C runs almost everywhere, from tiny chips to large servers, and it compiles to WebAssembly. That makes one API for all of these places possible. Memory safety is handled with strict code review, sanitizers and fuzz testing." }
-        },
-        {
-          "@type": "Question",
           "name": "How can I help with tantu?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Start a conversation in GitHub Discussions, report a bug or idea in Issues, or send a pull request. Help with documentation and design reviews is just as welcome as code." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Start a conversation in GitHub Discussions, report a bug or idea in Issues, or send a pull request. New themes, documentation and testing are just as welcome as code." }
         }
       ]
     }
@@ -218,8 +233,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   <div class="wrap">
     <a class="brand" href="./">tantu</a>
     <nav aria-label="Main">
-      <a href="#why-c">Why C</a>
-      <a href="#roadmap">Roadmap</a>
+      <a href="#start">Get started</a>
+      <a href="#features">Features</a>
+      <a href="#plan">Plan</a>
       <a href="#help">Get involved</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/mmrahmanbappi/tantu">GitHub</a>
@@ -231,16 +247,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   <div class="hero">
     <div class="wrap">
       <div>
-        <h1>A web framework in C, built one thread at a time.</h1>
-        <p class="lead">tantu is a free, open-source framework for building web servers and APIs in C. The goal is one small, clear API that works on a Linux server, on a tiny chip like the ESP32, and in the browser through WebAssembly.</p>
+        <h1>Free websites for students, built one thread at a time.</h1>
+        <p class="lead">tantu turns simple text files into a fast, secure website with SEO already done. It is free and open source, and your site can live on GitHub Pages, Cloudflare Pages or any shared hosting plan without paying a thing.</p>
         <div class="actions">
-          <a class="btn main" href="https://github.com/mmrahmanbappi/tantu">View the code on GitHub</a>
-          <a class="btn alt" href="#roadmap">Read the roadmap</a>
+          <a class="btn main" href="#start">Build your first site</a>
+          <a class="btn alt" href="https://github.com/mmrahmanbappi/tantu">View on GitHub</a>
         </div>
-        <p class="status">tantu is at an early stage and there is no release yet. If you want a say in how it is designed, this is the best time to join.</p>
+        <p class="status">Version 0.1 is out. It builds complete blog and portfolio sites from the command line. A dashboard and eight more themes are on the way.</p>
       </div>
       <figure style="margin:0">
-        <svg class="weave" viewBox="0 0 640 414" role="img" aria-labelledby="weave-t"><title id="weave-t">Eight colored threads woven through a loom, each named after a tantu module: core, router, json, websocket, stream, auth, tls and wasm.</title><line x1="140.0" y1="18" x2="140.0" y2="396" class="warp"/><line x1="175.4" y1="18" x2="175.4" y2="396" class="warp"/><line x1="210.8" y1="18" x2="210.8" y2="396" class="warp"/><line x1="246.2" y1="18" x2="246.2" y2="396" class="warp"/><line x1="281.5" y1="18" x2="281.5" y2="396" class="warp"/><line x1="316.9" y1="18" x2="316.9" y2="396" class="warp"/><line x1="352.3" y1="18" x2="352.3" y2="396" class="warp"/><line x1="387.7" y1="18" x2="387.7" y2="396" class="warp"/><line x1="423.1" y1="18" x2="423.1" y2="396" class="warp"/><line x1="458.5" y1="18" x2="458.5" y2="396" class="warp"/><line x1="493.8" y1="18" x2="493.8" y2="396" class="warp"/><line x1="529.2" y1="18" x2="529.2" y2="396" class="warp"/><line x1="564.6" y1="18" x2="564.6" y2="396" class="warp"/><line x1="600.0" y1="18" x2="600.0" y2="396" class="warp"/><text x="100" y="51" class="lab" text-anchor="end">core</text><line x1="120" y1="46" x2="620" y2="46" class="weft w0" stroke="#B23A3A" style="--d:0.00s"/><text x="100" y="97" class="lab" text-anchor="end">router</text><line x1="120" y1="92" x2="620" y2="92" class="weft w1" stroke="#2E3F8F" style="--d:0.12s"/><text x="100" y="143" class="lab" text-anchor="end">json</text><line x1="120" y1="138" x2="620" y2="138" class="weft w2" stroke="#C8912B" style="--d:0.24s"/><text x="100" y="189" class="lab" text-anchor="end">websocket</text><line x1="120" y1="184" x2="620" y2="184" class="weft w3" stroke="#B23A3A" style="--d:0.36s"/><text x="100" y="235" class="lab" text-anchor="end">stream</text><line x1="120" y1="230" x2="620" y2="230" class="weft w4" stroke="#2E3F8F" style="--d:0.48s"/><text x="100" y="281" class="lab" text-anchor="end">auth</text><line x1="120" y1="276" x2="620" y2="276" class="weft w5" stroke="#C8912B" style="--d:0.60s"/><text x="100" y="327" class="lab" text-anchor="end">tls</text><line x1="120" y1="322" x2="620" y2="322" class="weft w6" stroke="#B23A3A" style="--d:0.72s"/><text x="100" y="373" class="lab" text-anchor="end">wasm</text><line x1="120" y1="368" x2="620" y2="368" class="weft w7" stroke="#2E3F8F" style="--d:0.84s"/><line x1="175.4" y1="35.0" x2="175.4" y2="57.0" class="gap"/><line x1="175.4" y1="35.0" x2="175.4" y2="57.0" class="over"/><line x1="246.2" y1="35.0" x2="246.2" y2="57.0" class="gap"/><line x1="246.2" y1="35.0" x2="246.2" y2="57.0" class="over"/><line x1="316.9" y1="35.0" x2="316.9" y2="57.0" class="gap"/><line x1="316.9" y1="35.0" x2="316.9" y2="57.0" class="over"/><line x1="387.7" y1="35.0" x2="387.7" y2="57.0" class="gap"/><line x1="387.7" y1="35.0" x2="387.7" y2="57.0" class="over"/><line x1="458.5" y1="35.0" x2="458.5" y2="57.0" class="gap"/><line x1="458.5" y1="35.0" x2="458.5" y2="57.0" class="over"/><line x1="529.2" y1="35.0" x2="529.2" y2="57.0" class="gap"/><line x1="529.2" y1="35.0" x2="529.2" y2="57.0" class="over"/><line x1="600.0" y1="35.0" x2="600.0" y2="57.0" class="gap"/><line x1="600.0" y1="35.0" x2="600.0" y2="57.0" class="over"/><line x1="140.0" y1="81.0" x2="140.0" y2="103.0" class="gap"/><line x1="140.0" y1="81.0" x2="140.0" y2="103.0" class="over"/><line x1="210.8" y1="81.0" x2="210.8" y2="103.0" class="gap"/><line x1="210.8" y1="81.0" x2="210.8" y2="103.0" class="over"/><line x1="281.5" y1="81.0" x2="281.5" y2="103.0" class="gap"/><line x1="281.5" y1="81.0" x2="281.5" y2="103.0" class="over"/><line x1="352.3" y1="81.0" x2="352.3" y2="103.0" class="gap"/><line x1="352.3" y1="81.0" x2="352.3" y2="103.0" class="over"/><line x1="423.1" y1="81.0" x2="423.1" y2="103.0" class="gap"/><line x1="423.1" y1="81.0" x2="423.1" y2="103.0" class="over"/><line x1="493.8" y1="81.0" x2="493.8" y2="103.0" class="gap"/><line x1="493.8" y1="81.0" x2="493.8" y2="103.0" class="over"/><line x1="564.6" y1="81.0" x2="564.6" y2="103.0" class="gap"/><line x1="564.6" y1="81.0" x2="564.6" y2="103.0" class="over"/><line x1="175.4" y1="127.0" x2="175.4" y2="149.0" class="gap"/><line x1="175.4" y1="127.0" x2="175.4" y2="149.0" class="over"/><line x1="246.2" y1="127.0" x2="246.2" y2="149.0" class="gap"/><line x1="246.2" y1="127.0" x2="246.2" y2="149.0" class="over"/><line x1="316.9" y1="127.0" x2="316.9" y2="149.0" class="gap"/><line x1="316.9" y1="127.0" x2="316.9" y2="149.0" class="over"/><line x1="387.7" y1="127.0" x2="387.7" y2="149.0" class="gap"/><line x1="387.7" y1="127.0" x2="387.7" y2="149.0" class="over"/><line x1="458.5" y1="127.0" x2="458.5" y2="149.0" class="gap"/><line x1="458.5" y1="127.0" x2="458.5" y2="149.0" class="over"/><line x1="529.2" y1="127.0" x2="529.2" y2="149.0" class="gap"/><line x1="529.2" y1="127.0" x2="529.2" y2="149.0" class="over"/><line x1="600.0" y1="127.0" x2="600.0" y2="149.0" class="gap"/><line x1="600.0" y1="127.0" x2="600.0" y2="149.0" class="over"/><line x1="140.0" y1="173.0" x2="140.0" y2="195.0" class="gap"/><line x1="140.0" y1="173.0" x2="140.0" y2="195.0" class="over"/><line x1="210.8" y1="173.0" x2="210.8" y2="195.0" class="gap"/><line x1="210.8" y1="173.0" x2="210.8" y2="195.0" class="over"/><line x1="281.5" y1="173.0" x2="281.5" y2="195.0" class="gap"/><line x1="281.5" y1="173.0" x2="281.5" y2="195.0" class="over"/><line x1="352.3" y1="173.0" x2="352.3" y2="195.0" class="gap"/><line x1="352.3" y1="173.0" x2="352.3" y2="195.0" class="over"/><line x1="423.1" y1="173.0" x2="423.1" y2="195.0" class="gap"/><line x1="423.1" y1="173.0" x2="423.1" y2="195.0" class="over"/><line x1="493.8" y1="173.0" x2="493.8" y2="195.0" class="gap"/><line x1="493.8" y1="173.0" x2="493.8" y2="195.0" class="over"/><line x1="564.6" y1="173.0" x2="564.6" y2="195.0" class="gap"/><line x1="564.6" y1="173.0" x2="564.6" y2="195.0" class="over"/><line x1="175.4" y1="219.0" x2="175.4" y2="241.0" class="gap"/><line x1="175.4" y1="219.0" x2="175.4" y2="241.0" class="over"/><line x1="246.2" y1="219.0" x2="246.2" y2="241.0" class="gap"/><line x1="246.2" y1="219.0" x2="246.2" y2="241.0" class="over"/><line x1="316.9" y1="219.0" x2="316.9" y2="241.0" class="gap"/><line x1="316.9" y1="219.0" x2="316.9" y2="241.0" class="over"/><line x1="387.7" y1="219.0" x2="387.7" y2="241.0" class="gap"/><line x1="387.7" y1="219.0" x2="387.7" y2="241.0" class="over"/><line x1="458.5" y1="219.0" x2="458.5" y2="241.0" class="gap"/><line x1="458.5" y1="219.0" x2="458.5" y2="241.0" class="over"/><line x1="529.2" y1="219.0" x2="529.2" y2="241.0" class="gap"/><line x1="529.2" y1="219.0" x2="529.2" y2="241.0" class="over"/><line x1="600.0" y1="219.0" x2="600.0" y2="241.0" class="gap"/><line x1="600.0" y1="219.0" x2="600.0" y2="241.0" class="over"/><line x1="140.0" y1="265.0" x2="140.0" y2="287.0" class="gap"/><line x1="140.0" y1="265.0" x2="140.0" y2="287.0" class="over"/><line x1="210.8" y1="265.0" x2="210.8" y2="287.0" class="gap"/><line x1="210.8" y1="265.0" x2="210.8" y2="287.0" class="over"/><line x1="281.5" y1="265.0" x2="281.5" y2="287.0" class="gap"/><line x1="281.5" y1="265.0" x2="281.5" y2="287.0" class="over"/><line x1="352.3" y1="265.0" x2="352.3" y2="287.0" class="gap"/><line x1="352.3" y1="265.0" x2="352.3" y2="287.0" class="over"/><line x1="423.1" y1="265.0" x2="423.1" y2="287.0" class="gap"/><line x1="423.1" y1="265.0" x2="423.1" y2="287.0" class="over"/><line x1="493.8" y1="265.0" x2="493.8" y2="287.0" class="gap"/><line x1="493.8" y1="265.0" x2="493.8" y2="287.0" class="over"/><line x1="564.6" y1="265.0" x2="564.6" y2="287.0" class="gap"/><line x1="564.6" y1="265.0" x2="564.6" y2="287.0" class="over"/><line x1="175.4" y1="311.0" x2="175.4" y2="333.0" class="gap"/><line x1="175.4" y1="311.0" x2="175.4" y2="333.0" class="over"/><line x1="246.2" y1="311.0" x2="246.2" y2="333.0" class="gap"/><line x1="246.2" y1="311.0" x2="246.2" y2="333.0" class="over"/><line x1="316.9" y1="311.0" x2="316.9" y2="333.0" class="gap"/><line x1="316.9" y1="311.0" x2="316.9" y2="333.0" class="over"/><line x1="387.7" y1="311.0" x2="387.7" y2="333.0" class="gap"/><line x1="387.7" y1="311.0" x2="387.7" y2="333.0" class="over"/><line x1="458.5" y1="311.0" x2="458.5" y2="333.0" class="gap"/><line x1="458.5" y1="311.0" x2="458.5" y2="333.0" class="over"/><line x1="529.2" y1="311.0" x2="529.2" y2="333.0" class="gap"/><line x1="529.2" y1="311.0" x2="529.2" y2="333.0" class="over"/><line x1="600.0" y1="311.0" x2="600.0" y2="333.0" class="gap"/><line x1="600.0" y1="311.0" x2="600.0" y2="333.0" class="over"/><line x1="140.0" y1="357.0" x2="140.0" y2="379.0" class="gap"/><line x1="140.0" y1="357.0" x2="140.0" y2="379.0" class="over"/><line x1="210.8" y1="357.0" x2="210.8" y2="379.0" class="gap"/><line x1="210.8" y1="357.0" x2="210.8" y2="379.0" class="over"/><line x1="281.5" y1="357.0" x2="281.5" y2="379.0" class="gap"/><line x1="281.5" y1="357.0" x2="281.5" y2="379.0" class="over"/><line x1="352.3" y1="357.0" x2="352.3" y2="379.0" class="gap"/><line x1="352.3" y1="357.0" x2="352.3" y2="379.0" class="over"/><line x1="423.1" y1="357.0" x2="423.1" y2="379.0" class="gap"/><line x1="423.1" y1="357.0" x2="423.1" y2="379.0" class="over"/><line x1="493.8" y1="357.0" x2="493.8" y2="379.0" class="gap"/><line x1="493.8" y1="357.0" x2="493.8" y2="379.0" class="over"/><line x1="564.6" y1="357.0" x2="564.6" y2="379.0" class="gap"/><line x1="564.6" y1="357.0" x2="564.6" y2="379.0" class="over"/></svg>
+        <svg class="weave" viewBox="0 0 640 414" role="img" aria-labelledby="weave-t"><title id="weave-t">Eight colored threads woven through a loom, each named after a tantu module: markdown, template, seo, serve, image, search, publish and dashboard.</title><line x1="140.0" y1="18" x2="140.0" y2="396" class="warp"/><line x1="175.4" y1="18" x2="175.4" y2="396" class="warp"/><line x1="210.8" y1="18" x2="210.8" y2="396" class="warp"/><line x1="246.2" y1="18" x2="246.2" y2="396" class="warp"/><line x1="281.5" y1="18" x2="281.5" y2="396" class="warp"/><line x1="316.9" y1="18" x2="316.9" y2="396" class="warp"/><line x1="352.3" y1="18" x2="352.3" y2="396" class="warp"/><line x1="387.7" y1="18" x2="387.7" y2="396" class="warp"/><line x1="423.1" y1="18" x2="423.1" y2="396" class="warp"/><line x1="458.5" y1="18" x2="458.5" y2="396" class="warp"/><line x1="493.8" y1="18" x2="493.8" y2="396" class="warp"/><line x1="529.2" y1="18" x2="529.2" y2="396" class="warp"/><line x1="564.6" y1="18" x2="564.6" y2="396" class="warp"/><line x1="600.0" y1="18" x2="600.0" y2="396" class="warp"/><text x="100" y="51" class="lab" text-anchor="end">markdown</text><line x1="120" y1="46" x2="620" y2="46" class="weft w0" stroke="#B23A3A" style="--d:0.00s"/><text x="100" y="97" class="lab" text-anchor="end">template</text><line x1="120" y1="92" x2="620" y2="92" class="weft w1" stroke="#2E3F8F" style="--d:0.12s"/><text x="100" y="143" class="lab" text-anchor="end">seo</text><line x1="120" y1="138" x2="620" y2="138" class="weft w2" stroke="#C8912B" style="--d:0.24s"/><text x="100" y="189" class="lab" text-anchor="end">serve</text><line x1="120" y1="184" x2="620" y2="184" class="weft w3" stroke="#B23A3A" style="--d:0.36s"/><text x="100" y="235" class="lab" text-anchor="end">image</text><line x1="120" y1="230" x2="620" y2="230" class="weft w4" stroke="#2E3F8F" style="--d:0.48s"/><text x="100" y="281" class="lab" text-anchor="end">search</text><line x1="120" y1="276" x2="620" y2="276" class="weft w5" stroke="#C8912B" style="--d:0.60s"/><text x="100" y="327" class="lab" text-anchor="end">publish</text><line x1="120" y1="322" x2="620" y2="322" class="weft w6" stroke="#B23A3A" style="--d:0.72s"/><text x="100" y="373" class="lab" text-anchor="end">dashboard</text><line x1="120" y1="368" x2="620" y2="368" class="weft w7" stroke="#2E3F8F" style="--d:0.84s"/><line x1="175.4" y1="35.0" x2="175.4" y2="57.0" class="gap"/><line x1="175.4" y1="35.0" x2="175.4" y2="57.0" class="over"/><line x1="246.2" y1="35.0" x2="246.2" y2="57.0" class="gap"/><line x1="246.2" y1="35.0" x2="246.2" y2="57.0" class="over"/><line x1="316.9" y1="35.0" x2="316.9" y2="57.0" class="gap"/><line x1="316.9" y1="35.0" x2="316.9" y2="57.0" class="over"/><line x1="387.7" y1="35.0" x2="387.7" y2="57.0" class="gap"/><line x1="387.7" y1="35.0" x2="387.7" y2="57.0" class="over"/><line x1="458.5" y1="35.0" x2="458.5" y2="57.0" class="gap"/><line x1="458.5" y1="35.0" x2="458.5" y2="57.0" class="over"/><line x1="529.2" y1="35.0" x2="529.2" y2="57.0" class="gap"/><line x1="529.2" y1="35.0" x2="529.2" y2="57.0" class="over"/><line x1="600.0" y1="35.0" x2="600.0" y2="57.0" class="gap"/><line x1="600.0" y1="35.0" x2="600.0" y2="57.0" class="over"/><line x1="140.0" y1="81.0" x2="140.0" y2="103.0" class="gap"/><line x1="140.0" y1="81.0" x2="140.0" y2="103.0" class="over"/><line x1="210.8" y1="81.0" x2="210.8" y2="103.0" class="gap"/><line x1="210.8" y1="81.0" x2="210.8" y2="103.0" class="over"/><line x1="281.5" y1="81.0" x2="281.5" y2="103.0" class="gap"/><line x1="281.5" y1="81.0" x2="281.5" y2="103.0" class="over"/><line x1="352.3" y1="81.0" x2="352.3" y2="103.0" class="gap"/><line x1="352.3" y1="81.0" x2="352.3" y2="103.0" class="over"/><line x1="423.1" y1="81.0" x2="423.1" y2="103.0" class="gap"/><line x1="423.1" y1="81.0" x2="423.1" y2="103.0" class="over"/><line x1="493.8" y1="81.0" x2="493.8" y2="103.0" class="gap"/><line x1="493.8" y1="81.0" x2="493.8" y2="103.0" class="over"/><line x1="564.6" y1="81.0" x2="564.6" y2="103.0" class="gap"/><line x1="564.6" y1="81.0" x2="564.6" y2="103.0" class="over"/><line x1="175.4" y1="127.0" x2="175.4" y2="149.0" class="gap"/><line x1="175.4" y1="127.0" x2="175.4" y2="149.0" class="over"/><line x1="246.2" y1="127.0" x2="246.2" y2="149.0" class="gap"/><line x1="246.2" y1="127.0" x2="246.2" y2="149.0" class="over"/><line x1="316.9" y1="127.0" x2="316.9" y2="149.0" class="gap"/><line x1="316.9" y1="127.0" x2="316.9" y2="149.0" class="over"/><line x1="387.7" y1="127.0" x2="387.7" y2="149.0" class="gap"/><line x1="387.7" y1="127.0" x2="387.7" y2="149.0" class="over"/><line x1="458.5" y1="127.0" x2="458.5" y2="149.0" class="gap"/><line x1="458.5" y1="127.0" x2="458.5" y2="149.0" class="over"/><line x1="529.2" y1="127.0" x2="529.2" y2="149.0" class="gap"/><line x1="529.2" y1="127.0" x2="529.2" y2="149.0" class="over"/><line x1="600.0" y1="127.0" x2="600.0" y2="149.0" class="gap"/><line x1="600.0" y1="127.0" x2="600.0" y2="149.0" class="over"/><line x1="140.0" y1="173.0" x2="140.0" y2="195.0" class="gap"/><line x1="140.0" y1="173.0" x2="140.0" y2="195.0" class="over"/><line x1="210.8" y1="173.0" x2="210.8" y2="195.0" class="gap"/><line x1="210.8" y1="173.0" x2="210.8" y2="195.0" class="over"/><line x1="281.5" y1="173.0" x2="281.5" y2="195.0" class="gap"/><line x1="281.5" y1="173.0" x2="281.5" y2="195.0" class="over"/><line x1="352.3" y1="173.0" x2="352.3" y2="195.0" class="gap"/><line x1="352.3" y1="173.0" x2="352.3" y2="195.0" class="over"/><line x1="423.1" y1="173.0" x2="423.1" y2="195.0" class="gap"/><line x1="423.1" y1="173.0" x2="423.1" y2="195.0" class="over"/><line x1="493.8" y1="173.0" x2="493.8" y2="195.0" class="gap"/><line x1="493.8" y1="173.0" x2="493.8" y2="195.0" class="over"/><line x1="564.6" y1="173.0" x2="564.6" y2="195.0" class="gap"/><line x1="564.6" y1="173.0" x2="564.6" y2="195.0" class="over"/><line x1="175.4" y1="219.0" x2="175.4" y2="241.0" class="gap"/><line x1="175.4" y1="219.0" x2="175.4" y2="241.0" class="over"/><line x1="246.2" y1="219.0" x2="246.2" y2="241.0" class="gap"/><line x1="246.2" y1="219.0" x2="246.2" y2="241.0" class="over"/><line x1="316.9" y1="219.0" x2="316.9" y2="241.0" class="gap"/><line x1="316.9" y1="219.0" x2="316.9" y2="241.0" class="over"/><line x1="387.7" y1="219.0" x2="387.7" y2="241.0" class="gap"/><line x1="387.7" y1="219.0" x2="387.7" y2="241.0" class="over"/><line x1="458.5" y1="219.0" x2="458.5" y2="241.0" class="gap"/><line x1="458.5" y1="219.0" x2="458.5" y2="241.0" class="over"/><line x1="529.2" y1="219.0" x2="529.2" y2="241.0" class="gap"/><line x1="529.2" y1="219.0" x2="529.2" y2="241.0" class="over"/><line x1="600.0" y1="219.0" x2="600.0" y2="241.0" class="gap"/><line x1="600.0" y1="219.0" x2="600.0" y2="241.0" class="over"/><line x1="140.0" y1="265.0" x2="140.0" y2="287.0" class="gap"/><line x1="140.0" y1="265.0" x2="140.0" y2="287.0" class="over"/><line x1="210.8" y1="265.0" x2="210.8" y2="287.0" class="gap"/><line x1="210.8" y1="265.0" x2="210.8" y2="287.0" class="over"/><line x1="281.5" y1="265.0" x2="281.5" y2="287.0" class="gap"/><line x1="281.5" y1="265.0" x2="281.5" y2="287.0" class="over"/><line x1="352.3" y1="265.0" x2="352.3" y2="287.0" class="gap"/><line x1="352.3" y1="265.0" x2="352.3" y2="287.0" class="over"/><line x1="423.1" y1="265.0" x2="423.1" y2="287.0" class="gap"/><line x1="423.1" y1="265.0" x2="423.1" y2="287.0" class="over"/><line x1="493.8" y1="265.0" x2="493.8" y2="287.0" class="gap"/><line x1="493.8" y1="265.0" x2="493.8" y2="287.0" class="over"/><line x1="564.6" y1="265.0" x2="564.6" y2="287.0" class="gap"/><line x1="564.6" y1="265.0" x2="564.6" y2="287.0" class="over"/><line x1="175.4" y1="311.0" x2="175.4" y2="333.0" class="gap"/><line x1="175.4" y1="311.0" x2="175.4" y2="333.0" class="over"/><line x1="246.2" y1="311.0" x2="246.2" y2="333.0" class="gap"/><line x1="246.2" y1="311.0" x2="246.2" y2="333.0" class="over"/><line x1="316.9" y1="311.0" x2="316.9" y2="333.0" class="gap"/><line x1="316.9" y1="311.0" x2="316.9" y2="333.0" class="over"/><line x1="387.7" y1="311.0" x2="387.7" y2="333.0" class="gap"/><line x1="387.7" y1="311.0" x2="387.7" y2="333.0" class="over"/><line x1="458.5" y1="311.0" x2="458.5" y2="333.0" class="gap"/><line x1="458.5" y1="311.0" x2="458.5" y2="333.0" class="over"/><line x1="529.2" y1="311.0" x2="529.2" y2="333.0" class="gap"/><line x1="529.2" y1="311.0" x2="529.2" y2="333.0" class="over"/><line x1="600.0" y1="311.0" x2="600.0" y2="333.0" class="gap"/><line x1="600.0" y1="311.0" x2="600.0" y2="333.0" class="over"/><line x1="140.0" y1="357.0" x2="140.0" y2="379.0" class="gap"/><line x1="140.0" y1="357.0" x2="140.0" y2="379.0" class="over"/><line x1="210.8" y1="357.0" x2="210.8" y2="379.0" class="gap"/><line x1="210.8" y1="357.0" x2="210.8" y2="379.0" class="over"/><line x1="281.5" y1="357.0" x2="281.5" y2="379.0" class="gap"/><line x1="281.5" y1="357.0" x2="281.5" y2="379.0" class="over"/><line x1="352.3" y1="357.0" x2="352.3" y2="379.0" class="gap"/><line x1="352.3" y1="357.0" x2="352.3" y2="379.0" class="over"/><line x1="423.1" y1="357.0" x2="423.1" y2="379.0" class="gap"/><line x1="423.1" y1="357.0" x2="423.1" y2="379.0" class="over"/><line x1="493.8" y1="357.0" x2="493.8" y2="379.0" class="gap"/><line x1="493.8" y1="357.0" x2="493.8" y2="379.0" class="over"/><line x1="564.6" y1="357.0" x2="564.6" y2="379.0" class="gap"/><line x1="564.6" y1="357.0" x2="564.6" y2="379.0" class="over"/></svg>
         <figcaption class="caption">Each thread is a module. Together they make the framework.</figcaption>
       </figure>
     </div>
@@ -253,66 +269,100 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
       </div>
       <div class="prose">
         <p>Tantu is an old Sanskrit word for thread or fiber. A piece of cloth is made from thousands of threads crossing each other. The web works the same way, and so does this framework.</p>
-        <p>Instead of starting with one giant codebase, tantu grows from real projects. Each project adds one small, well-tested module, like a router or a WebSocket server. You only pull in the threads you need.</p>
+        <p>Instead of starting with one giant codebase, tantu grows from real projects. Each project adds one small, well-tested module, like a Markdown parser or a template engine. You only pull in the threads you need.</p>
       </div>
     </div>
   </section>
 
-  <section id="why-c" class="tint">
-    <div class="wrap">
-      <div class="prose">
-        <h2>Why write a web framework in C?</h2>
-        <p>Most web frameworks are tied to one kind of machine. C is different. It runs on almost anything with a processor, uses very little memory, and starts in milliseconds. That is what makes one API for all of these places possible:</p>
-      </div>
-      <ul class="places">
-        <li style="--c:var(--indigo)"><h3>Servers</h3><p>A fast HTTP server and API toolkit for Linux machines and VPS plans, small enough to read and understand.</p></li>
-        <li style="--c:var(--madder)"><h3>Small devices</h3><p>The same code on microcontrollers like the ESP32, so a smart home panel or sensor can serve a real web page.</p></li>
-        <li style="--c:var(--turmeric)"><h3>Browser and edge</h3><p>Compiled to WebAssembly, tantu code can run in the browser or on edge platforms close to your users.</p></li>
-        <li style="--c:var(--ink)"><h3>AI apps</h3><p>Streaming responses, gateways for AI APIs, and vector search, planned as regular modules instead of add-ons.</p></li>
-      </ul>
-      <div class="prose" style="margin-top:2.5rem">
-        <p>C also asks for care. Mistakes with memory can become security problems. That is why every module will be built with strict warnings, tested with AddressSanitizer and UndefinedBehaviorSanitizer, and fuzz tested before it is merged.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="goal">
+  <section id="start" class="tint">
     <div class="wrap split">
       <div class="prose">
-        <h2>What a tantu app should look like</h2>
-        <p>This is the kind of code we are aiming for. It is a design sketch, not working code yet. Short, readable, and plain C with no magic.</p>
-        <p class="note">Have an opinion on this API? Share it in GitHub Discussions before it is set in stone.</p>
+        <h2>Get started in a few minutes</h2>
+        <p>You need a computer with Linux or macOS, or Windows with WSL. Download tantu, create a site, and preview it in your browser.</p>
+        <p>Your pages are Markdown files in the content folder. Change a file, refresh the page, and see the result. When you are happy, run the build command and upload the public folder.</p>
+        <p class="note">A one click download for Windows, macOS and Linux is planned for version 1.0.</p>
       </div>
-      <pre><code>#include &lt;tantu.h&gt;
+      <pre><code>git clone https://github.com/mmrahmanbappi/tantu.git
+cd tantu
+make
 
-static void hello(tt_req *req, tt_res *res) {
-    tt_json(res, 200, "{\"message\": \"hello\"}");
-}
+./tantu new mysite --theme blog
+cd mysite
+../tantu serve
 
-int main(void) {
-    tt_app *app = tt_app_new();
-    tt_get(app, "/hello", hello);
-    return tt_listen(app, 8080);
-}</code></pre>
+# open http://127.0.0.1:8000
+# then build the final site:
+../tantu build</code></pre>
     </div>
   </section>
 
-  <section id="roadmap" class="tint">
+  <section id="features">
     <div class="wrap">
       <div class="prose">
-        <h2>Roadmap</h2>
-        <p>tantu is built in eight phases. Each phase is a set of useful projects, and each project leaves behind a module for the framework.</p>
+        <h2>What you get in version 0.1</h2>
+        <p>Everything a small website needs to look good, show up on Google and stay safe, without extra setup.</p>
+      </div>
+      <ul class="places">
+        <li style="--c:var(--indigo)"><h3>SEO done for you</h3><p>Titles, meta descriptions, canonical links, sitemap.xml, robots.txt and an Atom feed on every build.</p></li>
+        <li style="--c:var(--madder)"><h3>Schema and social previews</h3><p>JSON-LD for your site, posts, projects and breadcrumbs, plus Open Graph and Twitter cards so shared links look right.</p></li>
+        <li style="--c:var(--turmeric)"><h3>Safe by default</h3><p>Content is escaped, unsafe links are removed, and security headers are added for shared hosting, Cloudflare Pages and Netlify.</p></li>
+        <li style="--c:var(--ink)"><h3>Fast on any phone</h3><p>No JavaScript in the themes, system fonts and lazy images. A small site builds in a few milliseconds.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="hosting" class="tint">
+    <div class="wrap">
+      <div class="prose">
+        <h2>Host your site for free</h2>
+        <p>tantu makes plain HTML files, so they work almost anywhere. Set your address in site.conf, build, and upload.</p>
+      </div>
+      <ul class="places">
+        <li style="--c:var(--indigo)"><h3>GitHub Pages</h3><p>Upload the public folder to a repository and turn on Pages. Your site lives at yourname.github.io.</p></li>
+        <li style="--c:var(--madder)"><h3>Cloudflare Pages</h3><p>Create a free Pages project and drag in the public folder. Security headers are applied automatically.</p></li>
+        <li style="--c:var(--turmeric)"><h3>Shared hosting</h3><p>Upload the public folder into public_html with FTP or the file manager. The included .htaccess file adds security headers and a proper 404 page.</p></li>
+        <li style="--c:var(--ink)"><h3>Subdomains</h3><p>Works the same on a subdomain like blog.yoursite.com or in a sub-folder like yourname.github.io/my-site.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="wrap split">
+      <div class="prose">
+        <h2>Themes made for students</h2>
+        <p>Every theme is responsive, readable, works in dark mode and includes all the SEO features. Two are ready now.</p>
+        <p class="note">Want to design a theme? Copy the blog theme and send a pull request.</p>
+      </div>
+      <div class="prose">
+        <p><strong>Ready now:</strong> Blog and Portfolio.</p>
+        <p><strong>Coming next:</strong> Resume, Research, Club, Event, Docs, Course Notes, Small Business and Gallery.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="plan" class="tint">
+    <div class="wrap">
+      <div class="prose">
+        <h2>The plan</h2>
+        <p>tantu grows in three releases. Each one adds features students asked for, and each feature becomes a module that other people can reuse. The <a href="https://github.com/mmrahmanbappi/tantu/blob/main/docs/PLAN.md">full plan</a> lists every item.</p>
       </div>
       <ol class="road">
-        <li class="now"><h3>Foundation <span class="tag">Next up</span></h3><p>A small HTTP server, a JSON toolkit and a URL router.</p><p class="mods">Modules: core, json, router</p></li>
-        <li><h3>Real-time</h3><p>A WebSocket chat server, a live dashboard with server-sent events, and a simple publish and subscribe broker.</p><p class="mods">Modules: websocket, stream, bus</p></li>
-        <li><h3>AI</h3><p>A gateway for AI APIs with caching and rate limits, a local model server, vector search, and document search.</p><p class="mods">Modules: client, serve, vector</p></li>
-        <li><h3>Edge and WebAssembly</h3><p>A WASI build for edge platforms, a browser target, and an edge cache.</p><p class="mods">Modules: port, wasm, cache</p></li>
-        <li><h3>IoT</h3><p>A web server for the ESP32, a time-series API for sensor data, and a bridge between MQTT and HTTP.</p><p class="mods">Modules: embedded, timeseries, adapters</p></li>
-        <li><h3>Security</h3><p>Login with JWT, OAuth2 and passkeys, a web application firewall, and automatic HTTPS with Let's Encrypt.</p><p class="mods">Modules: auth, guard, tls</p></li>
-        <li><h3>Modern protocols</h3><p>HTTP/3 over QUIC for faster connections on mobile networks.</p><p class="mods">Module: h3</p></li>
-        <li><h3>Developer tools</h3><p>A command line tool to start new projects, hot reload while you work, and bindings for Python, Node.js and PHP.</p><p class="mods">Modules: cli, dev, bindings</p></li>
+        <li class="now"><h3>Version 0.1 <span class="tag">Available</span></h3><p>Command line tool, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed and security headers.</p></li>
+        <li><h3>Version 0.5</h3><p>A dashboard in your browser with an editor, media library, SEO score for every page, and one click publishing to shared hosting over FTP or SFTP. Six themes.</p></li>
+        <li><h3>Version 1.0</h3><p>Ten themes, search inside your site, automatic social images, a setup wizard and a single download for Windows, macOS and Linux.</p></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="why-c">
+    <div class="wrap split">
+      <div class="prose">
+        <h2>Why write it in C?</h2>
+      </div>
+      <div class="prose">
+        <p>C runs on almost any computer, uses very little memory and starts instantly. That means tantu works well on old laptops and in computer labs, and the finished tool is one small program with nothing else to install.</p>
+        <p>Building it in the open is also a way to learn. Students can read how a Markdown parser, a template engine or a web server works, and improve it. Every change is tested with AddressSanitizer and UndefinedBehaviorSanitizer.</p>
+      </div>
     </div>
   </section>
 
@@ -336,12 +386,12 @@ int main(void) {
   <section id="faq" class="tint">
     <div class="wrap faq">
       <h2>Frequently asked questions</h2>
-      <details><summary>Is tantu ready to use?</summary><p>Not yet. tantu is at an early stage and there is no release. The roadmap and design are public, and the first module, a small HTTP server, is the next step.</p></details>
-      <details><summary>Is tantu free?</summary><p>Yes. tantu uses the MIT license, so you can use it in personal and commercial projects, change it, and share it.</p></details>
+      <details><summary>Is tantu ready to use?</summary><p>Yes, for simple sites. Version 0.1 builds complete blog and portfolio websites from the command line. The browser dashboard and more themes are coming in later versions.</p></details>
+      <details><summary>Is tantu free?</summary><p>Yes. tantu uses the MIT license, so you can use it for personal and commercial sites, change it, and share it. There are no ads, no accounts and no tracking.</p></details>
+      <details><summary>Can I host a tantu site for free?</summary><p>Yes. tantu makes plain HTML files. You can host them for free on GitHub Pages or Cloudflare Pages, or upload them to any shared hosting plan, including on a subdomain.</p></details>
+      <details><summary>Do I need to know C to use tantu?</summary><p>No. You write your pages in Markdown, which is plain text with a few symbols for headings and links. C is only needed if you want to help improve tantu itself.</p></details>
       <details><summary>What does the name tantu mean?</summary><p>Tantu is an old Sanskrit word for thread or fiber. A web is made of many threads, and the framework is made of many small modules.</p></details>
-      <details><summary>Can I run tantu on shared hosting?</summary><p>Usually not. Most shared hosting plans only run PHP and do not let you start your own server. You can run tantu on your own computer, on a VPS, or on a small device like the ESP32.</p></details>
-      <details><summary>Why build a web framework in C and not Rust or Go?</summary><p>C runs almost everywhere, from tiny chips to large servers, and it compiles to WebAssembly. That makes one API for all of these places possible. Memory safety is handled with strict code review, sanitizers and fuzz testing.</p></details>
-      <details><summary>How can I help with tantu?</summary><p>Start a conversation in GitHub Discussions, report a bug or idea in Issues, or send a pull request. Help with documentation and design reviews is just as welcome as code.</p></details>
+      <details><summary>How can I help with tantu?</summary><p>Start a conversation in GitHub Discussions, report a bug or idea in Issues, or send a pull request. New themes, documentation and testing are just as welcome as code.</p></details>
     </div>
   </section>
 </main>

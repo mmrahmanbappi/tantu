@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{site_language}}">
+<head>
+{{> head}}</head>
+<body>
+{{> header}}
+<main id="main" class="wrap">
+  <h1>{{title}}</h1>
+  {{#if posts}}
+  <ul class="grid">
+    {{#each posts}}
+    <li class="card">
+      <a href="{{url}}">
+        {{#if image}}<img src="{{base_path}}{{image}}" alt="{{image_alt}}" loading="lazy" width="800" height="500">{{/if}}
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+      </a>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p>Nothing here yet. Add a Markdown file to content/posts and build again.</p>
+  {{/if}}
+</main>
+{{> footer}}
+</body>
+</html>

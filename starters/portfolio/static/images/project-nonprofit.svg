@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Nonprofit website preview">
+<rect width="800" height="500" fill="#dcefe6"/>
+<rect x="120" y="70" width="560" height="360" rx="18" fill="#ffffff"/>
+<rect x="150" y="105" width="220" height="22" rx="6" fill="#1f6f5c"/>
+<rect x="150" y="150" width="500" height="120" rx="10" fill="#b3dcc9"/>
+<rect x="150" y="295" width="150" height="100" rx="10" fill="#b3dcc9" opacity=".6"/>
+<rect x="325" y="295" width="150" height="100" rx="10" fill="#b3dcc9" opacity=".6"/>
+<rect x="500" y="295" width="150" height="100" rx="10" fill="#b3dcc9" opacity=".6"/>
+</svg>
