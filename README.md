@@ -1,10 +1,10 @@
-# tantu
+# Tantu C Framework
 
 **Build fast, secure websites for free. Written in C.**
 
-Website: https://mmrahmanbappi.github.io/tantu/
+Website: https://mmrahmanbappi.github.io/tantu-c-framework/
 
-tantu turns simple Markdown files into a complete website with SEO, schema, Open Graph and security headers already done for you. The result is plain HTML, so you can host it for free on GitHub Pages or Cloudflare Pages, or upload it to any shared hosting plan.
+Tantu C Framework (tantu for short) turns simple Markdown files into a complete website with SEO, schema, Open Graph and security headers already done for you. The result is plain HTML, so you can host it for free on GitHub Pages or Cloudflare Pages, or upload it to any shared hosting plan.
 
 tantu is made for students and anyone who wants a good website without paying for it. The name is an old Sanskrit word for thread or fiber: the framework is woven from small modules, one thread at a time.
 
@@ -31,7 +31,7 @@ tantu is made for students and anyone who wants a good website without paying fo
 
 ### Download (Windows, macOS, Linux)
 
-Download from the [releases page](https://github.com/mmrahmanbappi/tantu/releases):
+Download from the [releases page](https://github.com/mmrahmanbappi/tantu-c-framework/releases):
 
 - **Windows:** `tantu.exe`. Put it in a folder and double click it.
 - **macOS and Linux:** `tantu`. Open a terminal in that folder and run `chmod +x tantu && ./tantu`.
@@ -45,7 +45,7 @@ On macOS, if you see a warning that the app cannot be checked, run `xattr -d com
 You need a C compiler and `make`.
 
 ```sh
-git clone https://github.com/mmrahmanbappi/tantu.git
+git clone https://github.com/mmrahmanbappi/tantu-c-framework.git
 cd tantu
 make
 ./tantu new mysite --theme blog

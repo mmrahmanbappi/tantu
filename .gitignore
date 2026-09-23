@@ -46,3 +46,5 @@ vendor.o
 vendor-cosmo.o
 tests/vendor-san.o
 .cache/
+*.elf
+*.dbg

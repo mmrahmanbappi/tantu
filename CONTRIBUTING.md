@@ -4,8 +4,8 @@ Thank you for your interest. You do not need to be a C expert: themes, docs, tes
 
 ## Good places to start
 
-- Issues labeled [good first issue](https://github.com/mmrahmanbappi/tantu/labels/good%20first%20issue) are small and well described
-- Issues labeled [help wanted](https://github.com/mmrahmanbappi/tantu/labels/help%20wanted) are bigger pieces from the plan
+- Issues labeled [good first issue](https://github.com/mmrahmanbappi/tantu-c-framework/labels/good%20first%20issue) are small and well described
+- Issues labeled [help wanted](https://github.com/mmrahmanbappi/tantu-c-framework/labels/help%20wanted) are bigger pieces from the plan
 - Read [docs/DEVELOPING.md](docs/DEVELOPING.md) to understand the code, and [docs/THEMES.md](docs/THEMES.md) to make a theme
 
 ## Ways to help

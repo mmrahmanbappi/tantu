@@ -8,7 +8,7 @@ Every post is a text file in the `content/posts` folder. The part between the tw
 
 ## Formatting basics
 
-Write **bold** with two stars and *italic* with one. Make a link like this: [tantu on GitHub](https://github.com/mmrahmanbappi/tantu).
+Write **bold** with two stars and *italic* with one. Make a link like this: [tantu on GitHub](https://github.com/mmrahmanbappi/tantu-c-framework).
 
 > A quote starts with a greater than sign.
 
