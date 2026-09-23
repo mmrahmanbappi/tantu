@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="mmrahmanbappi">
 <link rel="canonical" href="https://mmrahmanbappi.github.io/tantu-c-framework/">
-<meta name="theme-color" content="#1F2A5C">
+<meta name="theme-color" content="#eeeeea">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tantu C Framework">
@@ -28,7 +28,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script type="application/ld+json">
 {
@@ -227,6 +227,29 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   html{scroll-behavior:auto}
   .weave .weft{animation:none}
 }
+
+/* ---- Shared look with mmrahmanbappi.github.io ---- */
+:root{--ink:#171518;--text:#403b42;--muted:#5f5d61;--line:#d9d8d2;--paper:#eeeeea;--soft:#f6f6f2;--madder:#b23a0a;--tag-ink:#fff;
+ --display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--ink:#f2f1ed;--text:#d7d5d9;--muted:#a3a1a6;--line:#302f35;--paper:#141316;--soft:#1b1a1e;--madder:#ff7b4f;--tag-ink:#141316;color-scheme:dark}
+ pre{background:#0c0b0e;border:1px solid var(--line)}}
+body{font:1.04rem/1.65 var(--body)}
+a{color:var(--ink)}a:hover{color:var(--madder)}
+h1,h2,h3{letter-spacing:-.035em;line-height:1.05}h1{font-weight:560;font-size:clamp(2.4rem,4.8vw,3.9rem)}h2{font-weight:600}h3{font-weight:600;letter-spacing:-.02em}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px)}
+.brand{display:flex;align-items:center;gap:.6rem;font-size:1.05rem;letter-spacing:-.01em}
+.brand i{width:2.1rem;height:2.1rem;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-style:normal;font-size:.8rem;font-weight:800}
+.top nav{font-size:.95rem;align-items:center}.top nav a.gh{border:1.5px solid var(--ink);border-radius:999px;padding:.35rem 1rem;color:var(--ink);font-weight:600}
+.btn{border-radius:999px;font-weight:600;font-size:.98rem;border-width:1.5px;display:inline-flex;align-items:center;gap:.6rem}
+.btn.main{background:var(--ink);color:var(--paper);border-color:var(--ink)}.btn.main:hover{background:var(--ink);border-color:var(--ink);color:var(--paper);opacity:.9}
+.btn .arr{width:2rem;height:2rem;border-radius:50%;background:var(--madder);color:var(--tag-ink);display:grid;place-items:center;margin:-.4rem -1rem -.4rem 0}
+.lead{color:var(--text)}.status{border-left-color:var(--madder)}
+.weave .gap{stroke:var(--paper)}
+.road li.now::before{color:var(--tag-ink)}.tag{color:var(--tag-ink);border-radius:999px}
+section.tint{background:var(--soft)}
+.faq summary{font-weight:600;font-size:1.08rem}
+.tag.done{background:#565c74;color:#fff}.skip{color:var(--paper)}
+@media (max-width:860px){.top nav a:not(.gh){display:none}}
 </style>
 </head>
 <body>
@@ -234,7 +257,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="./">Tantu C Framework</a>
+    <a class="brand" href="./"><i aria-hidden="true">T</i>Tantu C Framework</a>
     <nav aria-label="Main">
       <a href="#start">Get started</a>
       <a href="#features">Features</a>
@@ -242,7 +265,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
       <a href="docs/">Docs</a>
       <a href="#help">Get involved</a>
       <a href="#faq">FAQ</a>
-      <a href="https://github.com/mmrahmanbappi/tantu-c-framework">GitHub</a>
+      <a href="https://mmrahmanbappi.github.io/">All projects</a>
+      <a class="gh" href="https://github.com/mmrahmanbappi/tantu-c-framework">GitHub</a>
     </nav>
   </div>
 </header>
@@ -254,7 +278,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
         <h1>Free websites for students, built one thread at a time.</h1>
         <p class="lead">tantu turns simple text files into a fast, secure website with SEO already done. It is free and open source, and your site can live on GitHub Pages, Cloudflare Pages or any shared hosting plan without paying a thing.</p>
         <div class="actions">
-          <a class="btn main" href="#start">Build your first site</a>
+          <a class="btn main" href="#start">Build your first site<span class="arr" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
           <a class="btn alt" href="https://github.com/mmrahmanbappi/tantu-c-framework">View on GitHub</a>
         </div>
         <p class="status">Version 1.0 is out: a dashboard in your browser, ten themes, site search, automatic social images and FTP publishing, in one download for Windows, macOS and Linux.</p>
@@ -351,8 +375,8 @@ make
         <p>tantu grows in three releases. Each one adds features students asked for, and each feature becomes a module that other people can reuse. The <a href="docs/plan.html">full plan</a> lists every item.</p>
       </div>
       <ol class="road">
-        <li><h3>Version 0.1 <span class="tag" style="background:#565C74">Done</span></h3><p>Command line tool, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed and security headers.</p></li>
-        <li><h3>Version 0.5 <span class="tag" style="background:#565C74">Done</span></h3><p>A dashboard in your browser with an editor, live preview, image uploads, SEO score for every page and ZIP export. All ten themes. One download for Windows, macOS and Linux.</p></li>
+        <li><h3>Version 0.1 <span class="tag done">Done</span></h3><p>Command line tool, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed and security headers.</p></li>
+        <li><h3>Version 0.5 <span class="tag done">Done</span></h3><p>A dashboard in your browser with an editor, live preview, image uploads, SEO score for every page and ZIP export. All ten themes. One download for Windows, macOS and Linux.</p></li>
         <li class="now"><h3>Version 1.0 <span class="tag">Available</span></h3><p>Publishing to shared hosting over FTP, search inside your site, automatic social images, responsive images and Google Analytics.</p></li>
         <li><h3>Next</h3><p>Encrypted FTPS and SFTP uploads, WebP images, a setup wizard and a visual editor.</p></li>
       </ol>
@@ -404,7 +428,7 @@ make
 <footer>
   <div class="wrap">
     <p>tantu is open source under the <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/LICENSE">MIT license</a>.</p>
-    <p>&copy; 2026 tantu contributors. <a href="https://github.com/mmrahmanbappi/tantu-c-framework">Source on GitHub</a></p>
+    <p>&copy; 2026 tantu contributors. <a href="https://github.com/mmrahmanbappi/tantu-c-framework">Source on GitHub</a> &nbsp; <a href="https://mmrahmanbappi.github.io/">More free projects by MM Rahman Bappi</a></p>
   </div>
 </footer>
 </body>
