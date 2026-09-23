@@ -1,0 +1,23 @@
+name: New theme
+description: Propose a theme for a new kind of site
+labels: [theme]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Theme name
+      placeholder: newsletter
+    validations:
+      required: true
+  - type: textarea
+    id: who
+    attributes:
+      label: Who is it for?
+      description: What kind of site, and what should the home page show?
+    validations:
+      required: true
+  - type: textarea
+    id: schema
+    attributes:
+      label: Schema type
+      description: Which schema.org type fits the posts, for example Recipe or Event?

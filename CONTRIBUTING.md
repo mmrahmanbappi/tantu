@@ -1,6 +1,12 @@
 # Contributing to tantu
 
-Thank you for your interest! tantu is at an early stage, so ideas and discussion are just as valuable as code.
+Thank you for your interest. You do not need to be a C expert: themes, docs, testing on Windows and macOS, and translations of the docs are all very welcome.
+
+## Good places to start
+
+- Issues labeled [good first issue](https://github.com/mmrahmanbappi/tantu/labels/good%20first%20issue) are small and well described
+- Issues labeled [help wanted](https://github.com/mmrahmanbappi/tantu/labels/help%20wanted) are bigger pieces from the plan
+- Read [docs/DEVELOPING.md](docs/DEVELOPING.md) to understand the code, and [docs/THEMES.md](docs/THEMES.md) to make a theme
 
 ## Ways to help
 
@@ -20,11 +26,15 @@ Thank you for your interest! tantu is at an early stage, so ideas and discussion
 
 ## Themes
 
-New themes are very welcome. A theme is a folder with `home.html`, `page.html`, `post.html`, `list.html`, a `partials` folder and an `assets` folder. Copy `themes/blog` to start. Themes must work without JavaScript, pass basic accessibility checks and avoid loading files from other websites.
+New themes are very welcome. A theme is a folder with `home.html`, `page.html`, `post.html`, `list.html`, a `partials` folder and an `assets` folder. Copy `themes/blog` to start and read [docs/THEMES.md](docs/THEMES.md). Themes must work without JavaScript, pass basic accessibility checks and avoid loading files from other websites.
 
 ## Security
 
 Please do not report security vulnerabilities in public issues. See [SECURITY.md](SECURITY.md).
+
+## Code of conduct
+
+Please follow our [code of conduct](CODE_OF_CONDUCT.md).
 
 ## Be kind
 

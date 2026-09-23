@@ -3,6 +3,10 @@
 CC      ?= cc
 CFLAGS  ?= -O2
 CFLAGS  += -std=c11 -Wall -Wextra -Wpedantic -Wshadow -Wformat=2
+ifeq ($(shell uname -s),Darwin)
+CFLAGS  += -D_DARWIN_C_SOURCE
+SANDEF  := -D_DARWIN_C_SOURCE
+endif
 SRC     := $(filter-out src/embedded.c src/vendor.c,$(wildcard src/*.c)) src/embedded.c
 VENDOR  := src/vendor.c
 ASSETS  := $(shell find themes starters ui assets -type f 2>/dev/null)
@@ -37,7 +41,7 @@ cosmo: $(SRC)
 # Builds with AddressSanitizer and UndefinedBehaviorSanitizer, then runs tests
 test: $(SRC) vendor.o
 	$(CC) -O1 -g -w -fsanitize=address -c $(VENDOR) -o tests/vendor-san.o
-	$(CC) -std=c11 -Wall -Wextra -Werror $(SAN) $(SRC) tests/vendor-san.o -lm -o tests/tantu-test
+	$(CC) -std=c11 -Wall -Wextra -Werror $(SANDEF) $(SAN) $(SRC) tests/vendor-san.o -lm -o tests/tantu-test
 	sh tests/run.sh tests/tantu-test
 
 clean:

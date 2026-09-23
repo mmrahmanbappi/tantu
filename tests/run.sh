@@ -45,7 +45,7 @@ echo "ok: base path"
 
 # Social images, search and analytics
 [ -f public/og/home.png ] || fail "home social image missing"
-head -c 8 public/og/home.png | od -An -c | grep -q "P   N   G" || fail "social image is not a PNG"
+[ "$(head -c 4 public/og/home.png | tail -c 3)" = PNG ] || fail "social image is not a PNG"
 has public/index.html 'og:image:width'
 [ -f public/search-index.json ] || fail "search index missing"
 [ -f public/search/index.html ] || fail "search page missing"

@@ -1,0 +1,23 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test helpers
+        run: python3 -m pip install --user --break-system-packages pillow pyftpdlib || python3 -m pip install --user pillow pyftpdlib
+      - name: Build
+        run: make
+      - name: Test with sanitizers
+        run: make test

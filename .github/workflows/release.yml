@@ -1,0 +1,45 @@
+name: release
+
+# Push a tag like v1.1.0 to build the single file for Windows, macOS and
+# Linux, test it, and attach it to a GitHub release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cosmocc
+        run: |
+          mkdir -p /opt/cosmo && cd /opt/cosmo
+          curl -sSL -o cosmocc.zip https://cosmo.zip/pub/cosmocc/cosmocc.zip
+          unzip -q cosmocc.zip
+          echo "/opt/cosmo/bin" >> "$GITHUB_PATH"
+      - name: Build
+        run: make src/embedded.c && make cosmo
+      - name: Test
+        run: |
+          python3 -m pip install --user --break-system-packages pillow pyftpdlib
+          sh tests/run.sh ./tantu.com
+      - name: Package
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          mkdir -p dist/tantu
+          cp tantu.com dist/tantu.exe && cp tantu.com dist/tantu && chmod +x dist/tantu
+          cp dist/tantu.exe dist/tantu/ && (cd dist && zip -q "tantu-$V-windows.zip" tantu/tantu.exe)
+          rm dist/tantu/tantu.exe && cp dist/tantu dist/tantu/ && (cd dist && zip -q "tantu-$V-macos-linux.zip" tantu/tantu)
+          (cd dist && sha256sum tantu.exe tantu *.zip > SHA256SUMS.txt)
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: false
+          files: |
+            dist/tantu.exe
+            dist/tantu
+            dist/*.zip
+            dist/SHA256SUMS.txt
