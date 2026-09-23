@@ -1,0 +1,34 @@
+# Build output
+build/
+bin/
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+*.wasm
+
+# Debug / profiling
+*.dSYM/
+*.gcda
+*.gcno
+*.gcov
+core
+vgcore.*
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
