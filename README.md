@@ -1,6 +1,8 @@
-# tantu 🧵
+# tantu
 
 **Weaving the web in C, from chip to cloud.**
+
+Website: https://mmrahmanbappi.github.io/tantu/
 
 *tantu* (তন্তু) is Bengali for "fiber" or "thread". A web is woven from many small threads, and this framework is built the same way: one small, focused module at a time.
 
@@ -25,7 +27,7 @@ tantu is extracted from real projects. Each project on the roadmap produces a re
 | 2. Real-time | WebSocket chat, live dashboard (SSE), pub/sub broker | websocket, stream, bus |
 | 3. AI | LLM API gateway, local model server, vector search, document search (RAG) | client/proxy, serve, vector |
 | 4. Edge & WebAssembly | WASI build, browser target, edge cache | portability layer, wasm, cache |
-| 5. IoT | ESP32 web server, sensor time-series API, MQTT ↔ HTTP bridge | embedded mode, timeseries, adapters |
+| 5. IoT | ESP32 web server, sensor time-series API, MQTT to HTTP bridge | embedded mode, timeseries, adapters |
 | 6. Security | Auth server (JWT/OAuth2/passkeys), WAF & rate limiter, automatic HTTPS | auth, guard, tls |
 | 7. Modern protocols | HTTP/3 (QUIC) server | h3 transport |
 | 8. Developer experience | CLI scaffolding, hot reload, Python/Node/PHP bindings | cli, dev tools, bindings |
