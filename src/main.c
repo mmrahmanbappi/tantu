@@ -12,8 +12,14 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <strings.h>
+#include <termios.h>
+#include <sys/stat.h>
 
 #include "embedded.h"
+#include "image.h"
+#include "zip.h"
+#include "ftp.h"
 #include "markdown.h"
 #include "site.h"
 #include "dashboard.h"
@@ -22,7 +28,7 @@
 #include "template.h"
 #include "util.h"
 
-#define VERSION "0.5.0"
+#define VERSION "1.0.0"
 #define OUT "public"
 
 /* ---------- config and front matter ---------- */
@@ -245,6 +251,203 @@ static char *load_template(site_t *s, const char *name) {
 
 static int pages_written = 0;
 
+/* ---------- images, social images, search ---------- */
+
+static map imgmap; /* "/images/a.jpg" -> "srcset|width|height" */
+static int og_made = 0, img_made = 0;
+
+static int is_raster(const char *n) {
+    size_t l = strlen(n);
+    const char *e = strrchr(n, '.');
+    if (!e || l < 5) return 0;
+    return !strcasecmp(e, ".jpg") || !strcasecmp(e, ".jpeg") || !strcasecmp(e, ".png");
+}
+
+/* Makes 480, 960 and 1600 pixel wide copies of every JPEG and PNG in
+ * static/images, cached in .cache/images so later builds are fast. */
+static void process_images(const char *base) {
+    static const int widths[] = {480, 960, 1600};
+    int n = 0;
+    char **files = list_files("static/images", NULL, &n);
+    for (int i = 0; i < n; i++) {
+        if (!is_raster(files[i])) continue;
+        char *src = path_join("static/images", files[i]);
+        int w = 0, h = 0;
+        if (img_info(src, &w, &h) != 0 || w <= 0) { free(src); continue; }
+        struct stat st;
+        stat(src, &st);
+        const char *dot = strrchr(files[i], '.');
+        char *stem = xstrndup(files[i], (size_t)(dot - files[i]));
+        buf set = {0};
+        for (int k = 0; k < 3; k++) {
+            if (widths[k] >= w) continue;
+            buf cache = {0}, out = {0};
+            buf_printf(&cache, ".cache/images/%s-%d-%lld-%lld%s", stem, widths[k], (long long)st.st_size,
+                       (long long)st.st_mtime, dot);
+            buf_printf(&out, OUT "/images/w/%s-%d%s", stem, widths[k], dot);
+            if (!is_file(cache.s)) {
+                if (img_resize(src, cache.s, widths[k]) != 0) { buf_free(&cache); buf_free(&out); continue; }
+                img_made++;
+            }
+            size_t len;
+            char *data = read_file(cache.s, &len);
+            if (data) write_file(out.s, data, len);
+            free(data);
+            buf_printf(&set, "%s/images/w/%s-%d%s %dw, ", base, stem, widths[k], dot, widths[k]);
+            buf_free(&cache);
+            buf_free(&out);
+        }
+        if (set.len) {
+            buf_printf(&set, "%s/images/%s %dw", base, files[i], w);
+            buf v = {0}, key = {0};
+            buf_printf(&v, "%s|%d|%d", set.s, w, h);
+            buf_printf(&key, "/images/%s", files[i]);
+            map_set(&imgmap, key.s, v.s);
+            buf_free(&v);
+            buf_free(&key);
+        } else {
+            buf v = {0}, key = {0};
+            buf_printf(&v, "|%d|%d", w, h);
+            buf_printf(&key, "/images/%s", files[i]);
+            map_set(&imgmap, key.s, v.s);
+            buf_free(&v);
+            buf_free(&key);
+        }
+        buf_free(&set);
+        free(stem);
+        free(src);
+    }
+    free_list(files, n);
+}
+
+/* Adds srcset, sizes, width and height to <img> tags for local images. */
+static char *enhance_images(const char *html, const char *base) {
+    if (!imgmap.n) return NULL;
+    buf o = {0};
+    const char *p = html;
+    size_t bl = strlen(base);
+    int changed = 0;
+    for (;;) {
+        const char *tag = strstr(p, "<img ");
+        if (!tag) break;
+        const char *end = strchr(tag, '>');
+        if (!end) break;
+        buf_put(&o, p, (size_t)(tag - p));
+        char *t = xstrndup(tag, (size_t)(end - tag));
+        const char *src = strstr(t, " src=\"");
+        const char *v = NULL;
+        if (src && !strstr(t, "srcset=")) {
+            src += 6;
+            const char *q = strchr(src, '"');
+            if (q) {
+                char *u = xstrndup(src, (size_t)(q - src));
+                const char *key = u;
+                if (bl && !strncmp(u, base, bl)) key = u + bl;
+                v = map_get(&imgmap, key);
+                if (v) {
+                    char *copy = xstrdup(v);
+                    char *a = strchr(copy, '|');
+                    char *b2 = a ? strchr(a + 1, '|') : NULL;
+                    if (a && b2) {
+                        *a = '\0';
+                        *b2 = '\0';
+                        buf_puts(&o, t);
+                        if (*copy) buf_printf(&o, " srcset=\"%s\" sizes=\"(max-width: 900px) 100vw, 900px\"", copy);
+                        if (!strstr(t, "width=")) buf_printf(&o, " width=\"%s\" height=\"%s\"", a + 1, b2 + 1);
+                        changed = 1;
+                    } else v = NULL;
+                    free(copy);
+                }
+                free(u);
+            }
+        }
+        if (!v) buf_puts(&o, t);
+        buf_putc(&o, '>');
+        free(t);
+        p = end + 1;
+    }
+    buf_puts(&o, p);
+    if (!changed) { buf_free(&o); return NULL; }
+    return buf_take(&o);
+}
+
+static map themecfg;
+
+/* Creates /og/<key>.png for pages without their own image. */
+static void make_og(site_t *s, map *page, const char *key) {
+    if (!strcmp(get(&s->cfg, "auto_social_images"), "false")) return;
+    if (*get(page, "image")) return;
+    const char *title = get(page, "title");
+    if (!strcmp(get(page, "kind"), "home") && *get(&s->cfg, "tagline")) title = get(&s->cfg, "tagline");
+    const char *bg = *get(&themecfg, "og_bg") ? get(&themecfg, "og_bg") : "#ffffff";
+    const char *fg = *get(&themecfg, "og_fg") ? get(&themecfg, "og_fg") : "#1c1f24";
+    const char *ac = *get(&themecfg, "og_accent") ? get(&themecfg, "og_accent") : "#1f2a5c";
+    const char *origin = get(&s->cfg, "origin");
+    const char *host = strstr(origin, "://");
+    host = host ? host + 3 : origin;
+    buf footer = {0}, sig = {0}, cache = {0}, out = {0}, url = {0};
+    buf_printf(&footer, "%s%s", host, get(&s->cfg, "base_path"));
+    buf_printf(&sig, "v1|%s|%s|%s|%s|%s|%s", get(&s->cfg, "title"), title, footer.s, bg, fg, ac);
+    char *slug = slugify(key);
+    buf_printf(&cache, ".cache/og/%08x.png", zip_crc32((const unsigned char *)sig.s, sig.len));
+    buf_printf(&out, OUT "/og/%s.png", slug);
+    int ok = 1;
+    if (!is_file(cache.s)) {
+        int rc = og_render(cache.s, get(&s->cfg, "title"), title, footer.s, bg, fg, ac);
+        ok = rc == 0;
+        if (ok) og_made++;
+    }
+    if (ok) {
+        size_t len;
+        char *data = read_file(cache.s, &len);
+        if (data && write_file(out.s, data, len) == 0) {
+            buf_printf(&url, "/og/%s.png", slug);
+            map_set(page, "og_auto", url.s);
+        }
+        free(data);
+    }
+    free(slug);
+    buf_free(&footer); buf_free(&sig); buf_free(&cache); buf_free(&out); buf_free(&url);
+}
+
+static void json_field(buf *o, const char *k, const char *v, int comma) {
+    if (comma) buf_putc(o, ',');
+    buf_printf(o, "\"%s\":\"", k);
+    esc_json(o, v);
+    buf_putc(o, '"');
+}
+
+static void add_to_index(buf *o, const map *d, int *first) {
+    if (!strcmp(get(d, "robots"), "noindex")) return;
+    if (!*first) buf_puts(o, ",\n");
+    *first = 0;
+    char *text = strip_tags(get(d, "content"), 1500);
+    buf_putc(o, '{');
+    json_field(o, "t", get(d, "title"), 0);
+    json_field(o, "u", get(d, "url"), 1);
+    json_field(o, "d", get(d, "description"), 1);
+    json_field(o, "g", get(d, "tags"), 1);
+    json_field(o, "x", text, 1);
+    buf_putc(o, '}');
+    free(text);
+}
+
+static void write_embedded(const char *path, const char *dst) {
+    size_t n = 0;
+    const unsigned char *d = embedded_get(path, &n);
+    if (d && write_file(dst, (const char *)d, n) != 0) die("cannot write %s", dst);
+}
+
+static int valid_ga(const char *id) {
+    size_t l = strlen(id);
+    if (l < 6 || l > 20 || strncmp(id, "G-", 2) != 0) return 0;
+    for (size_t i = 2; i < l; i++)
+        if (!isupper((unsigned char)id[i]) && !isdigit((unsigned char)id[i])) return 0;
+    return 1;
+}
+
+
+
 static void render(site_t *s, const char *tpl, map *page, const char *out_path) {
     buf head = {0};
     seo_head(&s->cfg, page, &head);
@@ -255,6 +458,12 @@ static void render(site_t *s, const char *tpl, map *page, const char *out_path) 
     tctx ctx = {page, &root, NULL, 0, NULL};
     buf o = {0};
     tpl_render(tpl, strlen(tpl), &ctx, &o);
+    char *better = enhance_images(o.s ? o.s : "", get(&s->cfg, "base_path"));
+    if (better) {
+        buf_free(&o);
+        o.s = better;
+        o.len = strlen(better);
+    }
     if (write_file(out_path, o.s ? o.s : "", o.len) != 0) die("cannot write %s", out_path);
     buf_free(&o);
     pages_written++;
@@ -354,6 +563,25 @@ int cmd_build(const char *dir, int quiet) {
     s.theme_dir = path_join("themes", get(&s.cfg, "theme"));
     if (!is_dir(s.theme_dir)) die("theme not found: %s", s.theme_dir);
     load_partials(&s);
+    {
+        map_free(&themecfg);
+        char *tc = path_join(s.theme_dir, "theme.conf");
+        char *tt = read_file(tc, NULL);
+        if (tt) parse_conf(tt, &themecfg);
+        free(tt);
+        free(tc);
+    }
+    int search_on = strcmp(get(&s.cfg, "search"), "false") != 0;
+    if (search_on) {
+        buf su = {0};
+        buf_printf(&su, "%s/search/", base);
+        map_set(&s.tvars, "search_url", su.s);
+        buf_free(&su);
+    }
+    if (*get(&s.cfg, "google_analytics") && !valid_ga(get(&s.cfg, "google_analytics"))) {
+        fprintf(stderr, "tantu: warning: google_analytics should look like G-XXXXXXXXXX, ignoring it\n");
+        map_set(&s.cfg, "google_analytics", "");
+    }
     char *t_home = load_template(&s, "home.html");
     char *t_page = load_template(&s, "page.html");
     char *t_post = load_template(&s, "post.html");
@@ -411,7 +639,8 @@ int cmd_build(const char *dir, int quiet) {
     }
     for (int i = 0; i < pages.n; i++) {
         const char *sl = get(pages.items[i], "slug");
-        if (!strcmp(sl, section) || !strcmp(sl, "assets") || !strcmp(sl, "index"))
+        if (!strcmp(sl, section) || !strcmp(sl, "assets") || !strcmp(sl, "index") || !strcmp(sl, "search") ||
+            !strcmp(sl, "og") || !strcmp(sl, "images"))
             die("page slug \"%s\" is reserved. Pick another slug in content/pages.", sl);
         buf u = {0};
         buf_printf(&u, "%s/%s/", base, sl);
@@ -439,6 +668,21 @@ int cmd_build(const char *dir, int quiet) {
     mkdir_p(OUT);
     write_file(OUT "/.tantu", "made by tantu\n", 14);
 
+    {
+        char *assets_dir = path_join(s.theme_dir, "assets");
+        if (is_dir(assets_dir)) copy_tree(assets_dir, OUT "/assets");
+        free(assets_dir);
+    }
+    if (is_dir("static")) copy_tree("static", OUT);
+    map_free(&imgmap);
+    og_made = img_made = 0;
+    if (is_dir("static/images")) process_images(base);
+    if (search_on) {
+        write_embedded("assets/site/tantu-search.js", OUT "/assets/tantu-search.js");
+        write_embedded("assets/site/tantu-search.css", OUT "/assets/tantu-search.css");
+    }
+    if (*get(&s.cfg, "google_analytics")) write_embedded("assets/site/tantu-analytics.js", OUT "/assets/tantu-analytics.js");
+
     doclist all = {0};
 
     /* Home page */
@@ -459,6 +703,7 @@ int cmd_build(const char *dir, int quiet) {
     buf_printf(&hu, "%s/", base);
     map_set(&home, "url", hu.s);
     buf_free(&hu);
+    make_og(&s, &home, "home");
     render(&s, t_home, &home, OUT "/index.html");
     push(&all, &home);
 
@@ -476,6 +721,7 @@ int cmd_build(const char *dir, int quiet) {
     buf_printf(&lo, "/%s/", section);
     char *list_out = out_for(lo.s);
     buf_free(&lo);
+    make_og(&s, &list, section);
     render(&s, t_list, &list, list_out);
     free(list_out);
     push(&all, &list);
@@ -484,6 +730,7 @@ int cmd_build(const char *dir, int quiet) {
         buf p = {0};
         buf_printf(&p, "/%s/", get(pages.items[i], "slug"));
         char *out = out_for(p.s);
+        make_og(&s, pages.items[i], get(pages.items[i], "slug"));
         render(&s, t_page, pages.items[i], out);
         free(out);
         buf_free(&p);
@@ -493,10 +740,52 @@ int cmd_build(const char *dir, int quiet) {
         buf p = {0};
         buf_printf(&p, "/%s/%s/", section, get(posts.items[i], "slug"));
         char *out = out_for(p.s);
+        buf ok = {0};
+        buf_printf(&ok, "%s-%s", section, get(posts.items[i], "slug"));
+        make_og(&s, posts.items[i], ok.s);
+        buf_free(&ok);
         render(&s, t_post, posts.items[i], out);
         free(out);
         buf_free(&p);
         push(&all, posts.items[i]);
+    }
+
+    /* Search page and index */
+    if (search_on) {
+        buf idx = {0};
+        int first = 1;
+        buf_puts(&idx, "[\n");
+        add_to_index(&idx, &home, &first);
+        for (int i = 0; i < pages.n; i++) add_to_index(&idx, pages.items[i], &first);
+        for (int i = 0; i < posts.n; i++) add_to_index(&idx, posts.items[i], &first);
+        buf_puts(&idx, "\n]\n");
+        write_text(OUT "/search-index.json", &idx);
+        map sp = {0};
+        map_set(&sp, "kind", "page");
+        map_set(&sp, "title", "Search");
+        map_set(&sp, "robots", "noindex");
+        buf sd = {0};
+        buf_printf(&sd, "Search %s.", get(&s.cfg, "title"));
+        map_set(&sp, "description", sd.s);
+        buf_free(&sd);
+        buf su = {0};
+        buf_printf(&su, "%s/search/", base);
+        map_set(&sp, "url", su.s);
+        buf_free(&su);
+        buf sc = {0};
+        buf_printf(&sc,
+            "<link rel=\"stylesheet\" href=\"%s/assets/tantu-search.css\">\n"
+            "<div id=\"tantu-search\" data-index=\"%s/search-index.json\">\n"
+            "<form role=\"search\"><label for=\"ts-q\">Search this site</label>"
+            "<input id=\"ts-q\" type=\"search\" name=\"q\" placeholder=\"Type to search\" autocomplete=\"off\">"
+            "<button type=\"submit\">Search</button></form>\n"
+            "<p class=\"ts-status\" role=\"status\" aria-live=\"polite\"></p>\n<ol></ol>\n"
+            "<noscript><p>Search needs JavaScript. You can browse all pages from the menu.</p></noscript>\n"
+            "</div>\n<script src=\"%s/assets/tantu-search.js\" defer></script>\n", base, base, base);
+        map_set(&sp, "content", sc.s);
+        buf_free(&sc);
+        render(&s, t_page, &sp, OUT "/search/index.html");
+        map_free(&sp);
     }
 
     /* 404 page */
@@ -525,14 +814,10 @@ int cmd_build(const char *dir, int quiet) {
     write_text(OUT "/feed.xml", &b);
     seo_htaccess(&s.cfg, &b);
     write_text(OUT "/.htaccess", &b);
-    seo_headers_file(&b);
+    seo_headers_file(&s.cfg, &b);
     write_text(OUT "/_headers", &b);
     write_file(OUT "/.nojekyll", "", 0);
 
-    char *assets = path_join(s.theme_dir, "assets");
-    if (is_dir(assets)) copy_tree(assets, OUT "/assets");
-    free(assets);
-    if (is_dir("static")) copy_tree("static", OUT);
 
     struct timespec t1;
     clock_gettime(CLOCK_MONOTONIC, &t1);
@@ -541,6 +826,8 @@ int cmd_build(const char *dir, int quiet) {
         printf("Built %d pages (%d %s, %d %s) in %.1f ms", pages_written, posts.n,
                posts.n == 1 ? "post" : "posts", pages.n, pages.n == 1 ? "page" : "pages", ms);
         if (skipped) printf(", skipped %d drafts", skipped);
+        if (img_made) printf(", resized %d images", img_made);
+        if (og_made) printf(", drew %d social images", og_made);
         printf("\nYour site is ready in the \"%s\" folder.\n", OUT);
     }
 
@@ -593,6 +880,46 @@ static int cmd_new(const char *dir, const char *theme) {
 
 /* ---------- main ---------- */
 
+static char *ask_password(const char *prompt) {
+    const char *env = getenv("TANTU_FTP_PASSWORD");
+    if (env) return xstrdup(env);
+    fputs(prompt, stderr);
+    fflush(stderr);
+    struct termios old, quiet;
+    int tty = tcgetattr(0, &old) == 0;
+    if (tty) {
+        quiet = old;
+        quiet.c_lflag &= ~(tcflag_t)ECHO;
+        tcsetattr(0, TCSANOW, &quiet);
+    }
+    char line[512] = {0};
+    if (!fgets(line, sizeof line, stdin)) line[0] = '\0';
+    if (tty) tcsetattr(0, TCSANOW, &old);
+    fputc('\n', stderr);
+    size_t l = strlen(line);
+    while (l && (line[l - 1] == '\n' || line[l - 1] == '\r')) line[--l] = '\0';
+    return xstrdup(line);
+}
+
+static int cmd_publish(const char *dir, int all) {
+    if (cmd_build(dir, 0) != 0) return 1;
+    map cfg = {0};
+    char *conf = read_file("site.conf", NULL);
+    parse_conf(conf ? conf : "", &cfg);
+    free(conf);
+    if (!*get(&cfg, "ftp_host") || !*get(&cfg, "ftp_user"))
+        die("add ftp_host, ftp_user and ftp_dir to site.conf, or publish from the dashboard");
+    fprintf(stderr, "Note: plain FTP does not encrypt your password. Use it on a network you trust.\n");
+    char *pass = ask_password("FTP password: ");
+    ftp_opts o = {get(&cfg, "ftp_host"), atoi(get(&cfg, "ftp_port")), get(&cfg, "ftp_user"), pass,
+                  get(&cfg, "ftp_dir"), all};
+    int rc = ftp_publish(OUT, &o, stdout);
+    memset(pass, 0, strlen(pass));
+    free(pass);
+    map_free(&cfg);
+    return rc;
+}
+
 static void usage(void) {
     puts("tantu " VERSION ": build fast, secure websites from Markdown\n\n"
          "Usage:\n"
@@ -601,6 +928,7 @@ static void usage(void) {
          "  tantu dashboard [folder] [--port 8080] edit your site in the browser\n"
          "  tantu build [folder]                   build the site into public/\n"
          "  tantu serve [folder] [--port 8000]     build and preview on your computer\n"
+         "  tantu publish [folder] [--all]         upload the site to your hosting over FTP\n"
          "  tantu themes                           list the built-in themes\n"
          "  tantu version                          show the version\n\n"
          "Upload the public/ folder to any web host, GitHub Pages or Cloudflare Pages.");
@@ -651,11 +979,12 @@ int main(int argc, char **argv) {
         return 0;
     }
     const char *folder = NULL, *theme = "blog";
-    int port = 0, no_browser = 0;
+    int port = 0, no_browser = 0, all = 0;
     for (int i = 2; i < argc; i++) {
         if (!strcmp(argv[i], "--theme") && i + 1 < argc) theme = argv[++i];
         else if (!strcmp(argv[i], "--port") && i + 1 < argc) port = atoi(argv[++i]);
         else if (!strcmp(argv[i], "--no-browser")) no_browser = 1;
+        else if (!strcmp(argv[i], "--all")) all = 1;
         else if (argv[i][0] != '-' && !folder) folder = argv[i];
         else die("unknown option: %s", argv[i]);
     }
@@ -665,6 +994,7 @@ int main(int argc, char **argv) {
         return cmd_new(folder, theme);
     }
     if (!strcmp(cmd, "build")) return cmd_build(folder, 0);
+    if (!strcmp(cmd, "publish")) return cmd_publish(folder, all);
     if (!strcmp(cmd, "dashboard")) return dashboard_run(folder, port ? port : 8080, !no_browser);
     if (!strcmp(cmd, "serve")) {
         cmd_build(folder, 0);

@@ -1,0 +1,10 @@
+/* tantu site search */
+#tantu-search form { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0 1.5rem; }
+#tantu-search label { position: absolute; left: -9999px; }
+#tantu-search input { flex: 1; min-width: 12rem; font: inherit; padding: .7rem .9rem; border: 2px solid currentColor; border-radius: 8px; background: transparent; color: inherit; }
+#tantu-search button { font: inherit; font-weight: 600; padding: .7rem 1.2rem; border-radius: 8px; border: 2px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+#tantu-search .ts-status { opacity: .75; }
+#tantu-search ol { list-style: none; padding: 0; margin: 0; }
+#tantu-search li { padding: 1rem 0; border-bottom: 1px solid rgba(127, 127, 127, .3); }
+#tantu-search li a { font-weight: 600; font-size: 1.15rem; }
+#tantu-search li p { margin: .3rem 0 0; opacity: .8; }

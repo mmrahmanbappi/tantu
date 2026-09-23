@@ -41,6 +41,7 @@
 #include "site.h"
 #include "util.h"
 #include "zip.h"
+#include "ftp.h"
 
 #ifdef __COSMOPOLITAN__
 #include <cosmo.h>
@@ -644,6 +645,62 @@ static void api_export(int fd) {
     buf_free(&z);
 }
 
+/* ---------- API: publish over FTP ---------- */
+
+static void api_publish(int fd, const char *body, size_t n) {
+    map in = {0};
+    form_parse(body, n, &in);
+    if (!strcmp(get(&in, "remember"), "1")) {
+        map keep = {0};
+        const char *keys[] = {"ftp_host", "ftp_port", "ftp_user", "ftp_dir"};
+        const char *from[] = {"host", "port", "user", "dir"};
+        for (int i = 0; i < 4; i++) {
+            char *v = xstrdup(get(&in, from[i]));
+            for (char *c = v; *c; c++) if (*c == '\n' || *c == '\r') *c = ' ';
+            map_set(&keep, keys[i], trim(v));
+            free(v);
+        }
+        update_conf(&keep); /* the password is never saved */
+        map_free(&keep);
+    }
+    int pipefd[2];
+    if (pipe(pipefd) != 0) { map_free(&in); send_error(fd, 500, "Could not start the upload."); return; }
+    fflush(stdout);
+    pid_t pid = fork();
+    if (pid == 0) {
+        close(pipefd[0]);
+        dup2(pipefd[1], 1);
+        dup2(pipefd[1], 2);
+        FILE *log = fdopen(pipefd[1], "w");
+        if (cmd_build(NULL, 0) != 0) _exit(1);
+        fflush(stdout);
+        ftp_opts o = {get(&in, "host"), atoi(get(&in, "port")), get(&in, "user"), get(&in, "pass"),
+                      get(&in, "dir"), !strcmp(get(&in, "all"), "1")};
+        int rc = ftp_publish("public", &o, log ? log : stdout);
+        if (log) fflush(log);
+        _exit(rc);
+    }
+    close(pipefd[1]);
+    buf out = {0};
+    char tmp[4096];
+    ssize_t r;
+    while ((r = read(pipefd[0], tmp, sizeof tmp)) > 0) buf_put(&out, tmp, (size_t)r);
+    close(pipefd[0]);
+    int status = 0;
+    if (pid > 0) waitpid(pid, &status, 0);
+    /* wipe the password from memory */
+    for (int i = 0; i < in.n; i++)
+        if (!strcmp(in.items[i].k, "pass")) memset(in.items[i].v, 0, strlen(in.items[i].v));
+    map_free(&in);
+    buf o = {0};
+    buf_printf(&o, "{\"ok\":%s", pid > 0 && WIFEXITED(status) && WEXITSTATUS(status) == 0 ? "true" : "false");
+    json_str(&o, "output", out.s ? out.s : "", 1);
+    buf_puts(&o, "}");
+    send_json(fd, 200, &o);
+    buf_free(&o);
+    buf_free(&out);
+}
+
 /* ---------- request handling ---------- */
 
 typedef struct {
@@ -755,6 +812,7 @@ static void handle(int fd, const char *base) {
             else if (post && !strcmp(ep, "theme")) api_theme(fd, &q);
             else if (post && !strcmp(ep, "upload")) api_upload(fd, &q, r.body, r.blen);
             else if (get_ && !strcmp(ep, "export")) api_export(fd);
+            else if (post && !strcmp(ep, "publish")) api_publish(fd, r.body, r.blen);
             else send_error(fd, 404, "Unknown request.");
             map_free(&q);
         }

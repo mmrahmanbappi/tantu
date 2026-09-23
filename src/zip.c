@@ -15,7 +15,10 @@ static void crc_init(void) {
     }
 }
 
-static uint32_t crc32(const unsigned char *d, size_t n) {
+static int crc_ready = 0;
+
+unsigned zip_crc32(const unsigned char *d, size_t n) {
+    if (!crc_ready) { crc_init(); crc_ready = 1; }
     uint32_t c = 0xFFFFFFFFu;
     for (size_t i = 0; i < n; i++) c = crc_table[(c ^ d[i]) & 0xFF] ^ (c >> 8);
     return c ^ 0xFFFFFFFFu;
@@ -62,7 +65,7 @@ static int add_dir(const char *root, const char *rel, buf *out, entries *es) {
                 }
                 entry *e = &es->e[es->n++];
                 e->name = xstrdup(r);
-                e->crc = crc32((unsigned char *)data, n);
+                e->crc = zip_crc32((unsigned char *)data, n);
                 e->size = (uint32_t)n;
                 e->offset = (uint32_t)out->len;
                 u32(out, 0x04034b50);
@@ -84,7 +87,6 @@ static int add_dir(const char *root, const char *rel, buf *out, entries *es) {
 }
 
 int zip_dir(const char *dir, buf *out) {
-    crc_init();
     entries es = {0};
     if (add_dir(dir, "", out, &es) != 0) return -1;
     uint32_t cd_start = (uint32_t)out->len;

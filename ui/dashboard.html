@@ -384,10 +384,11 @@ const SETTINGS = [
   ["Basics", [["title", "Site name"], ["tagline", "Tagline", "a few words under the name"], ["description", "Site description", "used by Google, keep it under 160 characters"], ["author", "Your name or organization"]]],
   ["Address and language", [["base_url", "Site address", "for example https://yourname.github.io"], ["language", "Language code", "for example en"], ["locale", "Locale", "for example en_US"]]],
   ["Menu", [["menu", "Menu links", "Label:/path/ separated by commas, for example Home:/, Blog:/blog/, About:/about/"], ["section_title", "Name of your posts section"]]],
-  ["Search and social", [["social", "Social profile links", "separate with commas"], ["og_image", "Default social image", "for example /images/og-default.png"], ["twitter", "X (Twitter) handle", "for example @yourname"], ["google_verification", "Google Search Console code"], ["bing_verification", "Bing Webmaster code"]]]
+  ["Search and social", [["social", "Social profile links", "separate with commas"], ["og_image", "Default social image", "used when a page has no picture of its own"], ["auto_social_images", "Draw a social image for each page", "true or false"], ["search", "Search page", "true or false"], ["twitter", "X (Twitter) handle", "for example @yourname"]]],
+  ["Google, Bing and analytics", [["google_verification", "Google Search Console code", "only the code inside content=\"...\""], ["bing_verification", "Bing Webmaster code"], ["google_analytics", "Google Analytics measurement ID", "looks like G-XXXXXXXXXX"]]]
 ];
 function settings() {
-  const inputs = {}, shown = new Set(["theme", "section", "sort", "home_schema", "post_schema"]);
+  const inputs = {}, shown = new Set(["theme", "section", "sort", "home_schema", "post_schema", "ftp_host", "ftp_port", "ftp_user", "ftp_dir"]);
   const groups = SETTINGS.map(([name, fields]) => el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, name), fields.map(([k, label, hint]) => {
     shown.add(k);
     const inp = el("input", { type: "text", id: "s-" + k }); inp.value = state.site[k] || ""; inputs[k] = inp;
@@ -411,6 +412,41 @@ function settings() {
   ];
 }
 
+function ftpPanel() {
+  const f = {};
+  const row = (k, label, hint, type, val) => {
+    const inp = el("input", { type: type || "text", id: "ftp-" + k, autocomplete: type === "password" ? "current-password" : "off" });
+    inp.value = val || "";
+    f[k] = inp;
+    return el("div", {}, el("label", { for: "ftp-" + k }, label, hint ? el("span", { class: "hint" }, " " + hint) : null), inp);
+  };
+  const remember = el("input", { type: "checkbox", id: "ftp-remember", checked: !!state.site.ftp_host });
+  const all = el("input", { type: "checkbox", id: "ftp-all" });
+  const log = el("pre", { class: "log", hidden: true });
+  const go = el("button", { class: "btn", onclick: async () => {
+    if (!f.host.value || !f.user.value || !f.pass.value) { toast("Fill in host, user name and password.", true); return; }
+    go.disabled = true; log.hidden = false; log.textContent = "Building and uploading. This can take a minute...";
+    const body = new URLSearchParams({ host: f.host.value.trim(), port: f.port.value.trim(), user: f.user.value.trim(), pass: f.pass.value, dir: f.dir.value.trim(), remember: remember.checked ? "1" : "0", all: all.checked ? "1" : "0" });
+    try {
+      const r = await api("publish", { method: "POST", body: body.toString(), headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+      log.textContent = r.output; toast(r.ok ? "Your site is online" : "Upload did not finish. See the log.", !r.ok);
+    } catch (e) { log.textContent = e.message; toast(e.message, true); }
+    f.pass.value = ""; go.disabled = false;
+  } }, "Upload changed files");
+  return el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "Upload to your hosting (FTP)"),
+    el("p", { class: "hint" }, "Find these details in your hosting control panel under FTP accounts. Only files that changed since last time are sent. Nothing on the server is deleted."),
+    el("p", { class: "warn" }, "Plain FTP sends your password without encryption. Use it on a network you trust. tantu never saves your password. If you prefer, download the ZIP and upload it in your hosting file manager instead."),
+    el("div", { class: "fields" },
+      row("host", "FTP host", "for example ftp.yoursite.com", "text", state.site.ftp_host),
+      row("port", "Port", "usually 21", "text", state.site.ftp_port || "21"),
+      row("user", "User name", "", "text", state.site.ftp_user),
+      row("pass", "Password", "not saved", "password", ""),
+      el("div", { class: "full" }, row("dir", "Folder on the server", "usually public_html, or the folder of your subdomain", "text", state.site.ftp_dir || "public_html"))),
+    el("label", {}, remember, " Remember these details (not the password)"),
+    el("label", { style: "font-weight:400" }, all, " Upload every file, not only the changed ones"),
+    el("div", { class: "row", style: "margin-top:1rem" }, go), log);
+}
+
 function publish() {
   const log = el("pre", { class: "log" }, "Press Build to check your site.");
   const warn = /yourname/.test(state.site.base_url || "") ? el("p", { class: "warn" }, "Your site address is still " + state.site.base_url + ". Change it in Settings first.") : null;
@@ -418,21 +454,22 @@ function publish() {
     el("h1", {}, "Publish"),
     el("p", { class: "sub" }, "Your finished site is plain HTML. It works on free hosts and on any shared hosting plan."),
     warn,
-    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "1. Build and download"),
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "Build and download"),
       el("div", { class: "row" },
         el("button", { class: "btn alt", onclick: async () => { log.textContent = "Building..."; const r = await build(); log.textContent = r.output || "Done."; } }, "Build"),
         el("button", { class: "btn", onclick: async () => {
           try { toast("Preparing ZIP..."); const blob = await api("export"); const a = el("a", { href: URL.createObjectURL(blob), download: "site.zip" }); document.body.append(a); a.click(); a.remove(); }
           catch (e) { toast(e.message, true); }
         } }, "Download site as ZIP")), log),
-    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "2. Put it online"),
+    ftpPanel(),
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "Or upload it yourself"),
       el("h3", {}, "Shared hosting"),
       el("ol", { class: "steps" }, el("li", {}, "Unzip site.zip on your computer."), el("li", {}, "Open your hosting file manager or an FTP app."), el("li", {}, "Upload everything inside the folder into public_html (or the folder for your subdomain)."), el("li", {}, "Make sure the hidden .htaccess file is uploaded too. It adds security headers and the 404 page.")),
       el("h3", {}, "GitHub Pages (free)"),
       el("ol", { class: "steps" }, el("li", {}, "Create a repository on GitHub."), el("li", {}, "Upload the unzipped files."), el("li", {}, "Open Settings, then Pages, and publish from the main branch.")),
       el("h3", {}, "Cloudflare Pages (free)"),
       el("ol", { class: "steps" }, el("li", {}, "Create a Pages project and choose direct upload."), el("li", {}, "Drag in the unzipped folder."))),
-    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "3. Tell search engines"),
+    el("div", { class: "panel" }, el("h2", { style: "margin-top:0" }, "Tell search engines"),
       el("p", {}, "Add your site to Google Search Console and Bing Webmaster Tools, then submit your sitemap: ", el("code", {}, (state.site.base_url || "").replace(/\/$/, "") + "/sitemap.xml")),
       el("p", {}, "Paste their verification codes in Settings so tantu adds them to every page."))
   ];

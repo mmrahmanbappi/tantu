@@ -42,3 +42,7 @@ public/
 src/embedded.c
 tools/embed
 /tantu.com
+vendor.o
+vendor-cosmo.o
+tests/vendor-san.o
+.cache/

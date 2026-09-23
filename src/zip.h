@@ -8,4 +8,7 @@
  * of files, or -1 on error. Hidden files are included (such as .htaccess). */
 int zip_dir(const char *dir, buf *out);
 
+/* CRC-32 as used by zip and PNG. */
+unsigned zip_crc32(const unsigned char *d, size_t n);
+
 #endif

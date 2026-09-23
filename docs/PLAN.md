@@ -2,7 +2,7 @@
 
 tantu helps students build fast, secure websites for free. Every finished site is plain HTML, so it runs on any shared hosting plan or free subdomain such as GitHub Pages or Cloudflare Pages.
 
-Items marked **[done]** are available now (v0.5.0). Everything else is planned.
+Items marked **[done]** are available now (v1.0.0). Everything else is planned.
 
 ## Releases
 
@@ -10,7 +10,8 @@ Items marked **[done]** are available now (v0.5.0). Everything else is planned.
 |---|---|
 | **v0.1** | Command line tool, Markdown to HTML, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed, security headers **[done]** |
 | **v0.5** | Dashboard in the browser, editor with live preview, image uploads, SEO score per page, theme switcher, ZIP export, all ten themes, one download for Windows, macOS and Linux **[done]** |
-| v1.0 | FTP and SFTP publishing, site search, automatic social images, image resizing, setup wizard, full documentation |
+| **v1.0** | FTP publishing of changed files, site search, automatic social images, responsive images, Google Analytics **[done]** |
+| Next | FTPS and SFTP, WebP images, setup wizard, visual editor, backup and restore |
 
 ## 1. Install and setup
 
@@ -32,13 +33,15 @@ Items marked **[done]** are available now (v0.5.0). Everything else is planned.
 - Visual editing mode
 - [done] Pages and posts with drafts, tags and dates
 - [done] Image uploads with type and size checks
-- Drag and drop, automatic resizing
+- [done] Automatic resizing into 480, 960 and 1600 pixel versions
+- Drag and drop
 - Menu builder with drag and drop
 - [done] Theme switcher with all ten themes
 - Color and font options per theme
 - [done] SEO panel with a score and a list of fixes for every page
 - [done] Download the finished site as a ZIP file
-- Publishing over FTP or SFTP (only changed files) and GitHub Pages push
+- [done] Publishing over FTP, only changed files
+- FTPS and SFTP, and GitHub Pages push
 - Backup and restore in one file
 - [done] Settings for site details, social links and verification codes
 - [done] Dark mode and keyboard shortcuts
@@ -85,7 +88,7 @@ Checks in the dashboard:
 - [done] og:title, og:description, og:image, og:url, og:type, og:locale
 - [done] article:published_time, article:modified_time, article:tag
 - [done] Twitter/X cards
-- Automatic 1200 by 630 social images for every post in the theme colors
+- [done] Automatic 1200 by 630 social images for every page in the theme colors
 - Preview of how a shared link will look
 - Share buttons without tracking
 
@@ -94,7 +97,8 @@ Checks in the dashboard:
 - [done] No JavaScript in themes, system fonts, lazy loaded images
 - [done] Compression and caching rules in `.htaccess`
 - Minified HTML and CSS
-- Images converted to WebP and AVIF in several sizes
+- [done] Images in several sizes with srcset, width and height
+- WebP and AVIF versions
 - Page weight report
 - Target: 90 or more on Google PageSpeed
 
@@ -126,10 +130,11 @@ tantu itself:
 - [done] Responsive layouts and dark mode
 - [done] Skip links, visible focus and good contrast
 - [done] Print friendly styles
-- Site search that runs in the browser
+- [done] Site search that runs in the browser
 - Table of contents and code highlighting
 - Contact forms through free services such as Formspree or Web3Forms
 - Comments through Giscus (free, uses GitHub Discussions)
+- [done] Google Analytics 4, with the security policy updated to allow it
 - Privacy friendly analytics such as GoatCounter
 - Sites in more than one language
 
@@ -165,12 +170,12 @@ These C modules are built along the way and can be used on their own.
 | embedded | Themes and starters built into the program | done |
 | json | JSON reading and writing | planned |
 | watch | Rebuild when files change | planned |
-| image | Resizing, WebP and AVIF, social images | planned |
+| image | Resizing and social images | done |
 | minify | Smaller HTML and CSS | planned |
-| search | Search index for the browser | planned |
+| search | Search index for the browser | done |
 | crypto | Password hashing and checksums | planned |
 | upload | Safe image uploads | done |
-| publish | FTP, SFTP, ZIP and GitHub | planned |
+| publish | FTP and ZIP | done |
 | i18n | Multiple languages | planned |
 
 ## 10. Docs and community

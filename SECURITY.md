@@ -26,3 +26,19 @@ Include what you found, how to reproduce it, and which version you used. You wil
 - Uploads must be real PNG, JPEG, GIF or WebP files up to 10 MB. SVG uploads are refused because SVG files can contain scripts.
 - Deleted files are moved to `content/.trash`, not erased.
 - Builds run in a separate process, so a broken file cannot crash the dashboard.
+
+## Publishing over FTP
+
+- Plain FTP does not encrypt the password or the files. tantu shows this warning before every upload.
+- The password is never written to disk. In the dashboard it is sent once and wiped from memory after the upload. On the command line it is read without echo, or from the TANTU_FTP_PASSWORD environment variable.
+- Commands sent to the server cannot contain line breaks, so file names cannot inject FTP commands.
+- The data connection always goes to the same address as the control connection, even if the server reports a different one.
+- Files on the server are never deleted.
+
+## Analytics
+
+Google Analytics is only added when `google_analytics` is set, and the ID must look like `G-XXXXXXXXXX`. The Content-Security-Policy is widened only for Google's analytics domains in that case.
+
+## Third-party code
+
+Image decoding, resizing and font drawing use the public domain stb libraries in `src/vendor`. They only process files from your own site folder.

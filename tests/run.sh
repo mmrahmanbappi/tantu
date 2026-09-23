@@ -43,6 +43,35 @@ has public/index.html 'href="/sub/assets/style.css"'
 has public/sitemap.xml '<loc>https://example.com/sub/blog/'
 echo "ok: base path"
 
+# Social images, search and analytics
+[ -f public/og/home.png ] || fail "home social image missing"
+head -c 8 public/og/home.png | od -An -c | grep -q "P   N   G" || fail "social image is not a PNG"
+has public/index.html 'og:image:width'
+[ -f public/search-index.json ] || fail "search index missing"
+[ -f public/search/index.html ] || fail "search page missing"
+has public/search/index.html 'noindex'
+hasnt public/sitemap.xml '/search/'
+printf 'google_analytics = G-ABC123XYZ\n' >> site.conf
+"$BIN" build > /dev/null
+has public/index.html 'googletagmanager.com/gtag/js?id=G-ABC123XYZ'
+has public/.htaccess 'https://www.googletagmanager.com'
+[ -f public/assets/tantu-analytics.js ] || fail "analytics loader missing"
+printf 'google_analytics = <script>\n' >> site.conf
+"$BIN" build > /dev/null 2>&1
+hasnt public/index.html '<script>alert'
+echo "ok: social images, search, analytics"
+
+# Responsive images (needs Python with Pillow to make a test photo)
+if python3 -c "import PIL" 2> /dev/null; then
+  python3 -c "from PIL import Image; Image.new('RGB',(2000,1000),'#336699').save('static/images/wide.jpg')"
+  printf -- '---\ntitle: Photo test\ndate: 2026-01-02\n---\n![A blue test photo](/images/wide.jpg)\n' > content/posts/photo.md
+  "$BIN" build > /dev/null
+  [ -f public/images/w/wide-960.jpg ] || fail "resized image missing"
+  has public/blog/photo/index.html 'srcset="/sub/images/w/wide-480.jpg 480w'
+  has public/blog/photo/index.html 'width="2000" height="1000"'
+  echo "ok: responsive images"
+fi
+
 # Security: raw HTML and javascript: links in Markdown must be neutralised
 cat > content/posts/xss.md << 'MD'
 ---
@@ -105,5 +134,29 @@ python3 -c "import zipfile,sys; z=zipfile.ZipFile('site.zip'); n=z.namelist(); a
 [ "$(code "http://127.0.0.1:$PORT/_tantu/")" = 200 ] || fail "dashboard page should load"
 kill $DPID 2>/dev/null || true
 echo "ok: dashboard API and security"
+
+# FTP upload (needs Python with pyftpdlib)
+if python3 -c "import pyftpdlib" 2> /dev/null; then
+  mkdir -p "$TMP/ftproot/www"
+  python3 - "$TMP/ftproot" > /dev/null 2>&1 << 'PYFTP' &
+import sys
+from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.handlers import FTPHandler
+from pyftpdlib.servers import FTPServer
+a = DummyAuthorizer(); a.add_user("u", "p", sys.argv[1], perm="elradfmwMT")
+FTPHandler.authorizer = a
+FTPServer(("127.0.0.1", 18766), FTPHandler).serve_forever()
+PYFTP
+  FPID=$!
+  sleep 1
+  cd "$TMP/site-portfolio"
+  printf 'ftp_host = localhost\nftp_port = 18766\nftp_user = u\nftp_dir = /www\n' >> site.conf
+  TANTU_FTP_PASSWORD=p "$BIN" publish > ftp.log 2>&1 || { cat ftp.log; kill $FPID; fail "FTP upload failed"; }
+  [ -f "$TMP/ftproot/www/index.html" ] || { kill $FPID; fail "FTP did not upload index.html"; }
+  [ -f "$TMP/ftproot/www/.htaccess" ] || { kill $FPID; fail "FTP did not upload .htaccess"; }
+  TANTU_FTP_PASSWORD=p "$BIN" publish 2>&1 | grep -q "Nothing changed" || { kill $FPID; fail "second upload should send nothing"; }
+  kill $FPID 2>/dev/null || true
+  echo "ok: FTP upload"
+fi
 
 echo "All tests passed."

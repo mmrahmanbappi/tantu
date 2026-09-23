@@ -2,6 +2,6 @@
 <header class="site-header">
   <div class="wrap">
     <a class="site-title" href="{{base_path}}/">{{site_title}}</a>
-    <nav aria-label="Main">{{#each menu}}<a href="{{url}}">{{label}}</a>{{/each}}</nav>
+    <nav aria-label="Main">{{#each menu}}<a href="{{url}}">{{label}}</a>{{/each}}{{#if search_url}}<a href="{{search_url}}">Search</a>{{/if}}</nav>
   </div>
 </header>
