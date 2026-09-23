@@ -57,7 +57,6 @@
       "@type": "SoftwareSourceCode",
       "@id": "https://mmrahmanbappi.github.io/tantu/#software",
       "name": "tantu",
-      "alternateName": "তন্তু",
       "description": "An open-source web framework written in C, built module by module. The goal is one small API that runs on servers, on microcontrollers like the ESP32, and in the browser or at the edge through WebAssembly.",
       "url": "https://mmrahmanbappi.github.io/tantu/",
       "codeRepository": "https://github.com/mmrahmanbappi/tantu",
@@ -90,7 +89,7 @@
         {
           "@type": "Question",
           "name": "What does the name tantu mean?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Tantu is the Bengali word for thread or fiber. A web is made of many threads, and the framework is made of many small modules." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Tantu is an old Sanskrit word for thread or fiber. A web is made of many threads, and the framework is made of many small modules." }
         },
         {
           "@type": "Question",
@@ -253,7 +252,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
         <h2>Why it is called tantu</h2>
       </div>
       <div class="prose">
-        <p>Tantu (তন্তু) is the Bengali word for thread or fiber. A piece of cloth is made from thousands of threads crossing each other. The web works the same way, and so does this framework.</p>
+        <p>Tantu is an old Sanskrit word for thread or fiber. A piece of cloth is made from thousands of threads crossing each other. The web works the same way, and so does this framework.</p>
         <p>Instead of starting with one giant codebase, tantu grows from real projects. Each project adds one small, well-tested module, like a router or a WebSocket server. You only pull in the threads you need.</p>
       </div>
     </div>
@@ -339,7 +338,7 @@ int main(void) {
       <h2>Frequently asked questions</h2>
       <details><summary>Is tantu ready to use?</summary><p>Not yet. tantu is at an early stage and there is no release. The roadmap and design are public, and the first module, a small HTTP server, is the next step.</p></details>
       <details><summary>Is tantu free?</summary><p>Yes. tantu uses the MIT license, so you can use it in personal and commercial projects, change it, and share it.</p></details>
-      <details><summary>What does the name tantu mean?</summary><p>Tantu is the Bengali word for thread or fiber. A web is made of many threads, and the framework is made of many small modules.</p></details>
+      <details><summary>What does the name tantu mean?</summary><p>Tantu is an old Sanskrit word for thread or fiber. A web is made of many threads, and the framework is made of many small modules.</p></details>
       <details><summary>Can I run tantu on shared hosting?</summary><p>Usually not. Most shared hosting plans only run PHP and do not let you start your own server. You can run tantu on your own computer, on a VPS, or on a small device like the ESP32.</p></details>
       <details><summary>Why build a web framework in C and not Rust or Go?</summary><p>C runs almost everywhere, from tiny chips to large servers, and it compiles to WebAssembly. That makes one API for all of these places possible. Memory safety is handled with strict code review, sanitizers and fuzz testing.</p></details>
       <details><summary>How can I help with tantu?</summary><p>Start a conversation in GitHub Discussions, report a bug or idea in Issues, or send a pull request. Help with documentation and design reviews is just as welcome as code.</p></details>

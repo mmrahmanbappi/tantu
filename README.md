@@ -4,7 +4,7 @@
 
 Website: https://mmrahmanbappi.github.io/tantu/
 
-*tantu* (তন্তু) is Bengali for "fiber" or "thread". A web is woven from many small threads, and this framework is built the same way: one small, focused module at a time.
+*tantu* is an old Sanskrit word for "thread" or "fiber". A web is woven from many small threads, and this framework is built the same way: one small, focused module at a time.
 
 > **Status: early stage / planning.** There is no usable code yet. This is the perfect time to get involved and help shape the design.
 
