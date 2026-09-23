@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Tantu C Framework Plan: Releases and Features</title>
+<meta name="description" content="The full plan for Tantu C Framework: three releases covering setup, the dashboard, SEO, Open Graph, speed, security, site features, ten student themes and framework modules.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="mmrahmanbappi">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html">
+<meta name="theme-color" content="#1F2A5C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Tantu C Framework">
+<meta property="og:title" content="The Tantu C Framework Plan: Releases and Features">
+<meta property="og:description" content="The full plan for Tantu C Framework: three releases covering setup, the dashboard, SEO, Open Graph, speed, security, site features, ten student themes and framework modules.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Tantu C Framework Plan: Releases and Features">
+<meta name="twitter:description" content="The full plan for Tantu C Framework: three releases covering setup, the dashboard, SEO, Open Graph, speed, security, site features, ten student themes and framework modules.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "@id": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html#article", "headline": "The Tantu C Framework Plan: Releases and Features", "description": "The full plan for Tantu C Framework: three releases covering setup, the dashboard, SEO, Open Graph, speed, security, site features, ten student themes and framework modules.", "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html", "inLanguage": "en", "datePublished": "2026-09-23", "dateModified": "2026-09-23", "author": {"@type": "Person", "name": "mmrahmanbappi", "url": "https://github.com/mmrahmanbappi"}, "publisher": {"@type": "Person", "name": "mmrahmanbappi", "url": "https://github.com/mmrahmanbappi"}, "isPartOf": {"@id": "https://mmrahmanbappi.github.io/tantu-c-framework/#website"}, "image": "https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png", "about": {"@type": "SoftwareApplication", "name": "Tantu C Framework", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS, Windows"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/"}, {"@type": "ListItem", "position": 2, "name": "Docs", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/"}, {"@type": "ListItem", "position": 3, "name": "The tantu plan", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html"}]}]}</script>
+<style>:root{--ink:#1F2A5C;--text:#2B2F3F;--muted:#565C74;--line:#D5D9E5;--paper:#FFFFFF;--soft:#F2F4F9;--madder:#B23A3A;--turmeric:#C8912B;--indigo:#2E3F8F;
+--display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Literata",Georgia,"Times New Roman",serif;--mono:ui-monospace,"Cascadia Code",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);font:1.125rem/1.75 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-underline-offset:3px}a:hover{color:var(--madder)}
+:focus-visible{outline:3px solid var(--turmeric);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:.6rem 1rem}.skip:focus{left:1rem;top:1rem}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+h1,h2,h3{font-family:var(--display);color:var(--ink);line-height:1.15;margin:0 0 .75rem}
+h1{font-size:clamp(2.1rem,4.5vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,2.6vw,1.9rem);font-weight:700;margin-top:2.6rem;scroll-margin-top:1rem}
+h3{font-size:1.2rem;font-weight:500;margin-top:1.8rem}
+p{margin:0 0 1.1rem}
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4.25rem;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.top nav{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--display);font-size:1rem}
+.top nav a{color:var(--text);text-decoration:none}.top nav a:hover,.top nav a[aria-current]{color:var(--madder)}
+.crumbs{font-family:var(--display);font-size:.95rem;color:var(--muted);margin:2rem 0 1rem}.crumbs a{color:var(--muted)}
+.layout{display:grid;grid-template-columns:15rem 1fr;gap:3rem;padding-bottom:4rem}
+.side{position:sticky;top:1.5rem;align-self:start;font-family:var(--display);font-size:.98rem}
+.side h2{font-size:1rem;margin:0 0 .6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.side ul{list-style:none;margin:0 0 1.6rem;padding:0}.side li{margin:.35rem 0}
+.side a{color:var(--text);text-decoration:none}.side a:hover,.side a[aria-current]{color:var(--madder)}
+.prose{max-width:44rem;min-width:0}
+.lead{font-size:1.2rem;color:var(--muted)}
+.prose ul,.prose ol{padding-left:1.4rem;margin:0 0 1.1rem}.prose li{margin-bottom:.35rem}
+code{font-family:var(--mono);font-size:.93em;background:var(--soft);padding:.1rem .35rem;border-radius:4px}
+pre{background:var(--ink);color:#E9ECF5;padding:1.2rem 1.4rem;border-radius:8px;overflow-x:auto;line-height:1.6;margin:0 0 1.3rem}
+pre code{background:none;padding:0;color:inherit;font-size:.93rem}
+table{border-collapse:collapse;width:100%;margin:0 0 1.3rem;font-size:1rem;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:.55rem .7rem;text-align:left;vertical-align:top}th{font-family:var(--display);color:var(--ink)}
+.cards{list-style:none;padding:0;margin:2rem 0;display:grid;gap:1.4rem}
+.cards li{border:1px solid var(--line);border-top:4px solid var(--turmeric);border-radius:8px;padding:1.3rem 1.4rem}
+.cards h2{margin:0 0 .4rem;font-size:1.35rem}.cards p{margin:0;color:var(--muted)}
+.edit{font-family:var(--display);font-size:.95rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1.2rem;margin-top:2.5rem}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--display);margin-top:1.5rem}
+footer{border-top:1px solid var(--line);padding:2.5rem 0;font-size:1rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+@media(max-width:820px){.layout{grid-template-columns:1fr;gap:1rem}.side{position:static;border-bottom:1px solid var(--line);padding-bottom:.5rem}}</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../">Tantu C Framework</a>
+    <nav aria-label="Main">
+      <a href="../#start">Get started</a>
+      <a href="../#features">Features</a>
+      <a href="./" aria-current="page">Docs</a>
+      <a href="../#faq">FAQ</a>
+      <a href="https://github.com/mmrahmanbappi/tantu-c-framework">GitHub</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+<p class="crumbs"><a href="../">Home</a> / <a href="./">Docs</a> / The tantu plan</p>
+<div class="layout">
+<nav class="side" aria-label="Docs"><h2>Guides</h2><ul><li><a href="./">All docs</a></li><li><a href="developing.html">Developing tantu</a></li><li><a href="themes.html">Making a theme</a></li><li><a href="plan.html" aria-current="page">The tantu plan</a></li></ul></nav>
+<main id="main" class="prose">
+<h1>The tantu plan</h1>
+<p>tantu helps students build fast, secure websites for free. Every finished site is plain HTML, so it runs on any shared hosting plan or free subdomain such as GitHub Pages or Cloudflare Pages.</p>
+<p>Items marked <strong>[done]</strong> are available now (v1.0.0). Everything else is planned.</p>
+<h2 id="releases">Releases</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>What it includes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>v0.1</strong></td>
+<td>Command line tool, Markdown to HTML, blog and portfolio themes, full SEO, Open Graph, schema, sitemap, feed, security headers <strong>[done]</strong></td>
+</tr>
+<tr>
+<td><strong>v0.5</strong></td>
+<td>Dashboard in the browser, editor with live preview, image uploads, SEO score per page, theme switcher, ZIP export, all ten themes, one download for Windows, macOS and Linux <strong>[done]</strong></td>
+</tr>
+<tr>
+<td><strong>v1.0</strong></td>
+<td>FTP publishing of changed files, site search, automatic social images, responsive images, Google Analytics <strong>[done]</strong></td>
+</tr>
+<tr>
+<td>Next</td>
+<td>FTPS and SFTP, WebP images, setup wizard, visual editor, backup and restore</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-install-and-setup">1. Install and setup</h2>
+<ul>
+<li>[done] Build from source with one <code>make</code> command, no other libraries needed</li>
+<li>[done] <code>tantu new</code>, <code>tantu build</code>, <code>tantu serve</code></li>
+<li>[done] Works offline</li>
+<li>[done] One download for Windows, macOS and Linux, no install needed</li>
+<li>[done] Smaller than 10 MB and runs on old laptops</li>
+<li>[done] Double click to open the dashboard</li>
+<li>[done] First run creates a sample site and opens the dashboard</li>
+<li>Full setup wizard with name, theme and language</li>
+<li>[done] Portable: runs from any folder, including a USB drive</li>
+<li>One click update that keeps your site safe</li>
+</ul>
+<h2 id="2-dashboard">2. Dashboard</h2>
+<ul>
+<li>[done] Overview: number of pages and posts, last publish, SEO issues</li>
+<li>[done] Editor with Markdown, live preview and autosave</li>
+<li>Visual editing mode</li>
+<li>[done] Pages and posts with drafts, tags and dates</li>
+<li>[done] Image uploads with type and size checks</li>
+<li>[done] Automatic resizing into 480, 960 and 1600 pixel versions</li>
+<li>Drag and drop</li>
+<li>Menu builder with drag and drop</li>
+<li>[done] Theme switcher with all ten themes</li>
+<li>Color and font options per theme</li>
+<li>[done] SEO panel with a score and a list of fixes for every page</li>
+<li>[done] Download the finished site as a ZIP file</li>
+<li>[done] Publishing over FTP, only changed files</li>
+<li>FTPS and SFTP, and GitHub Pages push</li>
+<li>Backup and restore in one file</li>
+<li>[done] Settings for site details, social links and verification codes</li>
+<li>[done] Dark mode and keyboard shortcuts</li>
+</ul>
+<h2 id="3-seo">3. SEO</h2>
+<p>Per page:
+- [done] Title and meta description
+- [done] Clean URLs and custom slugs
+- [done] Canonical URL
+- [done] Robots meta (index or noindex)
+- [done] Length counters and warnings in the dashboard
+- Focus keyword check</p>
+<p>Site wide:
+- [done] sitemap.xml and robots.txt
+- [done] Atom feed
+- [done] 404 page with noindex
+- [done] Search Console and Bing verification tags
+- RSS 2.0 feed
+- Redirects for <code>.htaccess</code> and <code>_redirects</code>
+- hreflang for sites in more than one language
+- IndexNow ping when the site changes
+- llms.txt for AI search tools</p>
+<p>Schema (JSON-LD):
+- [done] WebSite, WebPage, Person, Organization
+- [done] BlogPosting, CreativeWork, CollectionPage, ProfilePage, AboutPage, ContactPage
+- [done] BreadcrumbList
+- [done] Event, Course, LearningResource, TechArticle, Service, VisualArtwork
+- FAQPage, HowTo
+- [done] LocalBusiness, ScholarlyArticle</p>
+<p>Checks in the dashboard:
+- [done] Missing image alt text
+- Heading order
+- Broken links
+- Internal link suggestions
+- [done] Duplicate titles or descriptions
+- [done] Very short pages</p>
+<h2 id="4-open-graph-and-social">4. Open Graph and social</h2>
+<ul>
+<li>[done] og:title, og:description, og:image, og:url, og:type, og:locale</li>
+<li>[done] article:published_time, article:modified_time, article:tag</li>
+<li>[done] Twitter/X cards</li>
+<li>[done] Automatic 1200 by 630 social images for every page in the theme colors</li>
+<li>Preview of how a shared link will look</li>
+<li>Share buttons without tracking</li>
+</ul>
+<h2 id="5-speed">5. Speed</h2>
+<ul>
+<li>[done] No JavaScript in themes, system fonts, lazy loaded images</li>
+<li>[done] Compression and caching rules in <code>.htaccess</code></li>
+<li>Minified HTML and CSS</li>
+<li>[done] Images in several sizes with srcset, width and height</li>
+<li>WebP and AVIF versions</li>
+<li>Page weight report</li>
+<li>Target: 90 or more on Google PageSpeed</li>
+</ul>
+<h2 id="6-security">6. Security</h2>
+<p>Dashboard:
+- [done] Preview server on 127.0.0.1 only
+- [done] A random security token for every dashboard session, which also blocks cross-site requests
+- [done] Host header check against DNS rebinding
+- [done] Upload checks for file type, content and size (SVG uploads refused)
+- [done] File access limited to content, images and site.conf
+- FTP passwords stored encrypted, SFTP preferred</p>
+<p>Finished site:
+- [done] Static files only, nothing to hack on the server
+- [done] All content escaped, unsafe links removed
+- [done] Content-Security-Policy and other security headers
+- [done] No secrets are ever written to the output folder
+- Subresource Integrity for any outside script</p>
+<p>tantu itself:
+- [done] Tests under AddressSanitizer and UndefinedBehaviorSanitizer
+- [done] Security policy in SECURITY.md
+- Fuzz testing for the Markdown and template parsers
+- Signed releases with checksums</p>
+<h2 id="7-features-on-the-finished-site">7. Features on the finished site</h2>
+<ul>
+<li>[done] Responsive layouts and dark mode</li>
+<li>[done] Skip links, visible focus and good contrast</li>
+<li>[done] Print friendly styles</li>
+<li>[done] Site search that runs in the browser</li>
+<li>Table of contents and code highlighting</li>
+<li>Contact forms through free services such as Formspree or Web3Forms</li>
+<li>Comments through Giscus (free, uses GitHub Discussions)</li>
+<li>[done] Google Analytics 4, with the security policy updated to allow it</li>
+<li>Privacy friendly analytics such as GoatCounter</li>
+<li>Sites in more than one language</li>
+</ul>
+<h2 id="8-ten-themes-for-students">8. Ten themes for students</h2>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>For</th>
+<th>Highlights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blog [done]</td>
+<td>Writers and students</td>
+<td>Tags, reading time, feed</td>
+</tr>
+<tr>
+<td>Portfolio [done]</td>
+<td>Designers and developers</td>
+<td>Project grid, case studies</td>
+</tr>
+<tr>
+<td>Resume [done]</td>
+<td>Job seekers</td>
+<td>One page CV that prints well</td>
+</tr>
+<tr>
+<td>Research [done]</td>
+<td>Thesis and research students</td>
+<td>Publications, citations, ScholarlyArticle schema</td>
+</tr>
+<tr>
+<td>Club [done]</td>
+<td>University clubs</td>
+<td>Members, activities, notices</td>
+</tr>
+<tr>
+<td>Event [done]</td>
+<td>Hackathons and meetups</td>
+<td>Schedule, speakers, Event schema</td>
+</tr>
+<tr>
+<td>Docs [done]</td>
+<td>Open source projects</td>
+<td>Sidebar, search, versions</td>
+</tr>
+<tr>
+<td>Course Notes [done]</td>
+<td>Teachers and tutors</td>
+<td>Chapters, code blocks, Course schema</td>
+</tr>
+<tr>
+<td>Small Business [done]</td>
+<td>Shops and freelancers</td>
+<td>Services, prices, map link, LocalBusiness schema</td>
+</tr>
+<tr>
+<td>Gallery [done]</td>
+<td>Photographers and artists</td>
+<td>Image grid, lightbox</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-framework-modules">9. Framework modules</h2>
+<p>These C modules are built along the way and can be used on their own.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Job</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>util</td>
+<td>Strings, files, folders, maps</td>
+<td>done</td>
+</tr>
+<tr>
+<td>markdown</td>
+<td>Safe Markdown to HTML</td>
+<td>done</td>
+</tr>
+<tr>
+<td>template</td>
+<td>Themes with variables, conditions, loops and partials</td>
+<td>done</td>
+</tr>
+<tr>
+<td>seo</td>
+<td>Meta tags, schema, sitemap, feed, headers</td>
+<td>done</td>
+</tr>
+<tr>
+<td>serve</td>
+<td>Local preview server</td>
+<td>done</td>
+</tr>
+<tr>
+<td>config</td>
+<td>TOML settings</td>
+<td>planned</td>
+</tr>
+<tr>
+<td>dashboard</td>
+<td>Browser dashboard and its API</td>
+<td>done</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>ZIP export</td>
+<td>done</td>
+</tr>
+<tr>
+<td>embedded</td>
+<td>Themes and starters built into the program</td>
+<td>done</td>
+</tr>
+<tr>
+<td>json</td>
+<td>JSON reading and writing</td>
+<td>planned</td>
+</tr>
+<tr>
+<td>watch</td>
+<td>Rebuild when files change</td>
+<td>planned</td>
+</tr>
+<tr>
+<td>image</td>
+<td>Resizing and social images</td>
+<td>done</td>
+</tr>
+<tr>
+<td>minify</td>
+<td>Smaller HTML and CSS</td>
+<td>planned</td>
+</tr>
+<tr>
+<td>search</td>
+<td>Search index for the browser</td>
+<td>done</td>
+</tr>
+<tr>
+<td>crypto</td>
+<td>Password hashing and checksums</td>
+<td>planned</td>
+</tr>
+<tr>
+<td>upload</td>
+<td>Safe image uploads</td>
+<td>done</td>
+</tr>
+<tr>
+<td>publish</td>
+<td>FTP and ZIP</td>
+<td>done</td>
+</tr>
+<tr>
+<td>i18n</td>
+<td>Multiple languages</td>
+<td>planned</td>
+</tr>
+</tbody>
+</table>
+<h2 id="10-docs-and-community">10. Docs and community</h2>
+<ul>
+<li>A five minute first site guide with screenshots</li>
+<li>A demo site for every theme</li>
+<li>Video tutorials</li>
+<li>A free hosting guide</li>
+<li>A showcase of student sites</li>
+<li>A "Built with tantu" badge</li>
+<li>Discussions for questions and "good first issue" labels for new contributors</li>
+</ul>
+<p class="edit">This page is made from <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/docs/PLAN.md">docs/PLAN.md</a>. Spotted a mistake? Open an issue or send a pull request on GitHub.</p>
+<nav class="pager" aria-label="More guides"><a href="themes.html">Previous: Making a theme</a><span></span></nav>
+</main>
+</div>
+</div>
+<footer>
+  <div class="wrap">
+    <p>tantu is open source under the <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/LICENSE">MIT license</a>.</p>
+    <p>&copy; 2026 tantu contributors. <a href="https://github.com/mmrahmanbappi/tantu-c-framework">Source on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Build and Change Tantu C Framework</title>
+<meta name="description" content="How to build, test and change Tantu C Framework: make commands, how a build works, where each source file lives, the code rules and how a release is made.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="mmrahmanbappi">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html">
+<meta name="theme-color" content="#1F2A5C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Tantu C Framework">
+<meta property="og:title" content="How to Build and Change Tantu C Framework">
+<meta property="og:description" content="How to build, test and change Tantu C Framework: make commands, how a build works, where each source file lives, the code rules and how a release is made.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Build and Change Tantu C Framework">
+<meta name="twitter:description" content="How to build, test and change Tantu C Framework: make commands, how a build works, where each source file lives, the code rules and how a release is made.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "@id": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html#article", "headline": "How to Build and Change Tantu C Framework", "description": "How to build, test and change Tantu C Framework: make commands, how a build works, where each source file lives, the code rules and how a release is made.", "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html", "inLanguage": "en", "datePublished": "2026-09-23", "dateModified": "2026-09-23", "author": {"@type": "Person", "name": "mmrahmanbappi", "url": "https://github.com/mmrahmanbappi"}, "publisher": {"@type": "Person", "name": "mmrahmanbappi", "url": "https://github.com/mmrahmanbappi"}, "isPartOf": {"@id": "https://mmrahmanbappi.github.io/tantu-c-framework/#website"}, "image": "https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png", "about": {"@type": "SoftwareApplication", "name": "Tantu C Framework", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS, Windows"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/"}, {"@type": "ListItem", "position": 2, "name": "Docs", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/"}, {"@type": "ListItem", "position": 3, "name": "Developing tantu", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html"}]}]}</script>
+<style>:root{--ink:#1F2A5C;--text:#2B2F3F;--muted:#565C74;--line:#D5D9E5;--paper:#FFFFFF;--soft:#F2F4F9;--madder:#B23A3A;--turmeric:#C8912B;--indigo:#2E3F8F;
+--display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Literata",Georgia,"Times New Roman",serif;--mono:ui-monospace,"Cascadia Code",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);font:1.125rem/1.75 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-underline-offset:3px}a:hover{color:var(--madder)}
+:focus-visible{outline:3px solid var(--turmeric);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:.6rem 1rem}.skip:focus{left:1rem;top:1rem}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+h1,h2,h3{font-family:var(--display);color:var(--ink);line-height:1.15;margin:0 0 .75rem}
+h1{font-size:clamp(2.1rem,4.5vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,2.6vw,1.9rem);font-weight:700;margin-top:2.6rem;scroll-margin-top:1rem}
+h3{font-size:1.2rem;font-weight:500;margin-top:1.8rem}
+p{margin:0 0 1.1rem}
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4.25rem;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.top nav{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--display);font-size:1rem}
+.top nav a{color:var(--text);text-decoration:none}.top nav a:hover,.top nav a[aria-current]{color:var(--madder)}
+.crumbs{font-family:var(--display);font-size:.95rem;color:var(--muted);margin:2rem 0 1rem}.crumbs a{color:var(--muted)}
+.layout{display:grid;grid-template-columns:15rem 1fr;gap:3rem;padding-bottom:4rem}
+.side{position:sticky;top:1.5rem;align-self:start;font-family:var(--display);font-size:.98rem}
+.side h2{font-size:1rem;margin:0 0 .6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.side ul{list-style:none;margin:0 0 1.6rem;padding:0}.side li{margin:.35rem 0}
+.side a{color:var(--text);text-decoration:none}.side a:hover,.side a[aria-current]{color:var(--madder)}
+.prose{max-width:44rem;min-width:0}
+.lead{font-size:1.2rem;color:var(--muted)}
+.prose ul,.prose ol{padding-left:1.4rem;margin:0 0 1.1rem}.prose li{margin-bottom:.35rem}
+code{font-family:var(--mono);font-size:.93em;background:var(--soft);padding:.1rem .35rem;border-radius:4px}
+pre{background:var(--ink);color:#E9ECF5;padding:1.2rem 1.4rem;border-radius:8px;overflow-x:auto;line-height:1.6;margin:0 0 1.3rem}
+pre code{background:none;padding:0;color:inherit;font-size:.93rem}
+table{border-collapse:collapse;width:100%;margin:0 0 1.3rem;font-size:1rem;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:.55rem .7rem;text-align:left;vertical-align:top}th{font-family:var(--display);color:var(--ink)}
+.cards{list-style:none;padding:0;margin:2rem 0;display:grid;gap:1.4rem}
+.cards li{border:1px solid var(--line);border-top:4px solid var(--turmeric);border-radius:8px;padding:1.3rem 1.4rem}
+.cards h2{margin:0 0 .4rem;font-size:1.35rem}.cards p{margin:0;color:var(--muted)}
+.edit{font-family:var(--display);font-size:.95rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1.2rem;margin-top:2.5rem}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--display);margin-top:1.5rem}
+footer{border-top:1px solid var(--line);padding:2.5rem 0;font-size:1rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+@media(max-width:820px){.layout{grid-template-columns:1fr;gap:1rem}.side{position:static;border-bottom:1px solid var(--line);padding-bottom:.5rem}}</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../">Tantu C Framework</a>
+    <nav aria-label="Main">
+      <a href="../#start">Get started</a>
+      <a href="../#features">Features</a>
+      <a href="./" aria-current="page">Docs</a>
+      <a href="../#faq">FAQ</a>
+      <a href="https://github.com/mmrahmanbappi/tantu-c-framework">GitHub</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+<p class="crumbs"><a href="../">Home</a> / <a href="./">Docs</a> / Developing tantu</p>
+<div class="layout">
+<nav class="side" aria-label="Docs"><h2>Guides</h2><ul><li><a href="./">All docs</a></li><li><a href="developing.html" aria-current="page">Developing tantu</a></li><li><a href="themes.html">Making a theme</a></li><li><a href="plan.html">The tantu plan</a></li></ul></nav>
+<main id="main" class="prose">
+<h1>Developing tantu</h1>
+<p>This guide explains how tantu is built, so you can change it with confidence.</p>
+<h2 id="build-and-test">Build and test</h2>
+<pre><code class="language-sh">make          # builds ./tantu
+make test     # builds with AddressSanitizer and UBSan, then runs tests/run.sh
+make cosmo    # builds tantu.com, one file for Windows, macOS and Linux (needs cosmocc)
+make clean
+</code></pre>
+<p>The tests use Python for a few checks. Install Pillow and pyftpdlib to run every test:</p>
+<pre><code class="language-sh">python3 -m pip install --user pillow pyftpdlib
+</code></pre>
+<p>Every push and pull request runs the tests on Linux and macOS with GitHub Actions.</p>
+<h2 id="how-a-build-works">How a build works</h2>
+<ol>
+<li><code>site.conf</code> is read into a map (<code>parse_conf</code> in <code>src/main.c</code>).</li>
+<li>Theme templates and partials are loaded from <code>themes/&lt;name&gt;/</code>.</li>
+<li>Markdown files in <code>content/posts</code> and <code>content/pages</code> are read. Front matter becomes variables, the body becomes HTML (<code>src/markdown.c</code>).</li>
+<li>Posts are sorted by <code>date</code> (newest first) or by the <code>sort</code> key in <code>site.conf</code>.</li>
+<li><code>static/</code> is copied, and JPEG and PNG images get smaller versions (<code>src/image.c</code>, cached in <code>.cache/images</code>).</li>
+<li>Each page gets its SEO tags (<code>src/seo.c</code>), an automatic social image if it has none (<code>src/image.c</code>, cached in <code>.cache/og</code>), and is rendered with its template (<code>src/template.c</code>).</li>
+<li>sitemap.xml, robots.txt, feed.xml, search-index.json, .htaccess and _headers are written.</li>
+</ol>
+<h2 id="source-files">Source files</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/main.c</code></td>
+<td>Commands, loading content, the build</td>
+</tr>
+<tr>
+<td><code>src/markdown.c</code></td>
+<td>Safe Markdown to HTML. Raw HTML is always escaped</td>
+</tr>
+<tr>
+<td><code>src/template.c</code></td>
+<td><code>{{ var }}</code>, <code>{{{ raw }}}</code>, <code>{{#if}}</code>, <code>{{#each}}</code>, <code>{{&gt; partial}}</code></td>
+</tr>
+<tr>
+<td><code>src/seo.c</code></td>
+<td>Meta tags, Open Graph, JSON-LD, sitemap, feed, security headers</td>
+</tr>
+<tr>
+<td><code>src/image.c</code></td>
+<td>Resizing and social images, using the stb libraries</td>
+</tr>
+<tr>
+<td><code>src/dashboard.c</code></td>
+<td>The dashboard server and its API</td>
+</tr>
+<tr>
+<td><code>src/serve.c</code></td>
+<td>The local preview server</td>
+</tr>
+<tr>
+<td><code>src/ftp.c</code></td>
+<td>FTP publishing</td>
+</tr>
+<tr>
+<td><code>src/zip.c</code></td>
+<td>ZIP export and CRC-32</td>
+</tr>
+<tr>
+<td><code>src/util.c</code></td>
+<td>Strings, files, folders and a small map</td>
+</tr>
+<tr>
+<td><code>src/embedded_api.c</code></td>
+<td>Reads files compiled into the program</td>
+</tr>
+<tr>
+<td><code>ui/dashboard.html</code></td>
+<td>The dashboard page</td>
+</tr>
+<tr>
+<td><code>tools/embed.c</code></td>
+<td>Turns themes, starters, ui and assets into <code>src/embedded.c</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>src/embedded.c</code> is generated by <code>make</code> and not stored in Git.</p>
+<h2 id="adding-a-schema-type">Adding a schema type</h2>
+<p>Schema is written in <code>seo_head</code> in <code>src/seo.c</code>. The type comes from <code>home_schema</code> or <code>post_schema</code> in <code>site.conf</code>, or <code>schema</code> in a page's front matter. Add a branch for your type next to <code>Event</code>, <code>Course</code> and <code>Service</code>, add a starter site that uses it, and add it to the JSON-LD check in <code>tests/run.sh</code>.</p>
+<h2 id="adding-a-theme">Adding a theme</h2>
+<p>See <a href="themes.html">THEMES.md</a>.</p>
+<h2 id="rules-for-code">Rules for code</h2>
+<ul>
+<li>C11, no compiler extensions, no new outside libraries unless they are single-file and public domain or MIT</li>
+<li>Build without warnings using <code>-Wall -Wextra -Wpedantic</code></li>
+<li>Escape everything that goes into HTML (<code>esc_html</code>) or JSON (<code>esc_json</code>)</li>
+<li>Never let the finished site depend on server code: it must work on shared hosting and static hosts</li>
+<li>Keep user-facing text plain and short</li>
+</ul>
+<h2 id="updating-the-docs-website">Updating the docs website</h2>
+<p>The guides in <code>docs/</code> are also published as web pages at <a href="https://mmrahmanbappi.github.io/tantu-c-framework/docs/">mmrahmanbappi.github.io/tantu-c-framework/docs/</a>. After you edit a guide, rebuild the pages and commit both files:</p>
+<pre><code class="language-sh">python3 -m pip install --user markdown
+python3 tools/build-docs.py
+</code></pre>
+<p>Edit the <code>.md</code> file, never the <code>.html</code> file, because the script writes the HTML again each time.</p>
+<h2 id="making-a-release">Making a release</h2>
+<ol>
+<li>Update <code>VERSION</code> in <code>src/main.c</code> and <code>GENERATOR</code> in <code>src/seo.c</code>.</li>
+<li>Update README and docs/PLAN.md.</li>
+<li>Push a tag: <code>git tag v1.1.0 &amp;&amp; git push origin v1.1.0</code>. The release workflow builds, tests and uploads the files.</li>
+</ol>
+<p class="edit">This page is made from <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/docs/DEVELOPING.md">docs/DEVELOPING.md</a>. Spotted a mistake? Open an issue or send a pull request on GitHub.</p>
+<nav class="pager" aria-label="More guides"><span></span><a href="themes.html">Next: Making a theme</a></nav>
+</main>
+</div>
+</div>
+<footer>
+  <div class="wrap">
+    <p>tantu is open source under the <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/LICENSE">MIT license</a>.</p>
+    <p>&copy; 2026 tantu contributors. <a href="https://github.com/mmrahmanbappi/tantu-c-framework">Source on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

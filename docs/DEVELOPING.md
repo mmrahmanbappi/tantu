@@ -65,6 +65,17 @@ See [THEMES.md](THEMES.md).
 - Never let the finished site depend on server code: it must work on shared hosting and static hosts
 - Keep user-facing text plain and short
 
+## Updating the docs website
+
+The guides in `docs/` are also published as web pages at [mmrahmanbappi.github.io/tantu-c-framework/docs/](https://mmrahmanbappi.github.io/tantu-c-framework/docs/). After you edit a guide, rebuild the pages and commit both files:
+
+```sh
+python3 -m pip install --user markdown
+python3 tools/build-docs.py
+```
+
+Edit the `.md` file, never the `.html` file, because the script writes the HTML again each time.
+
 ## Making a release
 
 1. Update `VERSION` in `src/main.c` and `GENERATOR` in `src/seo.c`.

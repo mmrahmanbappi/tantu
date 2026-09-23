@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tantu C Framework Documentation: Guides for Building and Themes</title>
+<meta name="description" content="Documentation for Tantu C Framework, the free website builder written in C. Guides for building and changing the code, making themes, and the full release plan.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="mmrahmanbappi">
+<link rel="canonical" href="https://mmrahmanbappi.github.io/tantu-c-framework/docs/">
+<meta name="theme-color" content="#1F2A5C">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Tantu C Framework">
+<meta property="og:title" content="Tantu C Framework Documentation: Guides for Building and Themes">
+<meta property="og:description" content="Documentation for Tantu C Framework, the free website builder written in C. Guides for building and changing the code, making themes, and the full release plan.">
+<meta property="og:url" content="https://mmrahmanbappi.github.io/tantu-c-framework/docs/">
+<meta property="og:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tantu C Framework Documentation: Guides for Building and Themes">
+<meta name="twitter:description" content="Documentation for Tantu C Framework, the free website builder written in C. Guides for building and changing the code, making themes, and the full release plan.">
+<meta name="twitter:image" content="https://mmrahmanbappi.github.io/tantu-c-framework/og-image.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "CollectionPage", "@id": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/", "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/", "name": "Tantu C Framework Documentation: Guides for Building and Themes", "description": "Documentation for Tantu C Framework, the free website builder written in C. Guides for building and changing the code, making themes, and the full release plan.", "inLanguage": "en", "isPartOf": {"@id": "https://mmrahmanbappi.github.io/tantu-c-framework/#website"}, "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/developing.html", "name": "Developing tantu"}, {"@type": "ListItem", "position": 2, "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/themes.html", "name": "Making a theme"}, {"@type": "ListItem", "position": 3, "url": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/plan.html", "name": "The tantu plan"}]}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/"}, {"@type": "ListItem", "position": 2, "name": "Docs", "item": "https://mmrahmanbappi.github.io/tantu-c-framework/docs/"}]}]}</script>
+<style>:root{--ink:#1F2A5C;--text:#2B2F3F;--muted:#565C74;--line:#D5D9E5;--paper:#FFFFFF;--soft:#F2F4F9;--madder:#B23A3A;--turmeric:#C8912B;--indigo:#2E3F8F;
+--display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Literata",Georgia,"Times New Roman",serif;--mono:ui-monospace,"Cascadia Code",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);font:1.125rem/1.75 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--indigo);text-underline-offset:3px}a:hover{color:var(--madder)}
+:focus-visible{outline:3px solid var(--turmeric);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:.6rem 1rem}.skip:focus{left:1rem;top:1rem}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+h1,h2,h3{font-family:var(--display);color:var(--ink);line-height:1.15;margin:0 0 .75rem}
+h1{font-size:clamp(2.1rem,4.5vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,2.6vw,1.9rem);font-weight:700;margin-top:2.6rem;scroll-margin-top:1rem}
+h3{font-size:1.2rem;font-weight:500;margin-top:1.8rem}
+p{margin:0 0 1.1rem}
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:4.25rem;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.top nav{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--display);font-size:1rem}
+.top nav a{color:var(--text);text-decoration:none}.top nav a:hover,.top nav a[aria-current]{color:var(--madder)}
+.crumbs{font-family:var(--display);font-size:.95rem;color:var(--muted);margin:2rem 0 1rem}.crumbs a{color:var(--muted)}
+.layout{display:grid;grid-template-columns:15rem 1fr;gap:3rem;padding-bottom:4rem}
+.side{position:sticky;top:1.5rem;align-self:start;font-family:var(--display);font-size:.98rem}
+.side h2{font-size:1rem;margin:0 0 .6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.side ul{list-style:none;margin:0 0 1.6rem;padding:0}.side li{margin:.35rem 0}
+.side a{color:var(--text);text-decoration:none}.side a:hover,.side a[aria-current]{color:var(--madder)}
+.prose{max-width:44rem;min-width:0}
+.lead{font-size:1.2rem;color:var(--muted)}
+.prose ul,.prose ol{padding-left:1.4rem;margin:0 0 1.1rem}.prose li{margin-bottom:.35rem}
+code{font-family:var(--mono);font-size:.93em;background:var(--soft);padding:.1rem .35rem;border-radius:4px}
+pre{background:var(--ink);color:#E9ECF5;padding:1.2rem 1.4rem;border-radius:8px;overflow-x:auto;line-height:1.6;margin:0 0 1.3rem}
+pre code{background:none;padding:0;color:inherit;font-size:.93rem}
+table{border-collapse:collapse;width:100%;margin:0 0 1.3rem;font-size:1rem;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:.55rem .7rem;text-align:left;vertical-align:top}th{font-family:var(--display);color:var(--ink)}
+.cards{list-style:none;padding:0;margin:2rem 0;display:grid;gap:1.4rem}
+.cards li{border:1px solid var(--line);border-top:4px solid var(--turmeric);border-radius:8px;padding:1.3rem 1.4rem}
+.cards h2{margin:0 0 .4rem;font-size:1.35rem}.cards p{margin:0;color:var(--muted)}
+.edit{font-family:var(--display);font-size:.95rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1.2rem;margin-top:2.5rem}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--display);margin-top:1.5rem}
+footer{border-top:1px solid var(--line);padding:2.5rem 0;font-size:1rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+@media(max-width:820px){.layout{grid-template-columns:1fr;gap:1rem}.side{position:static;border-bottom:1px solid var(--line);padding-bottom:.5rem}}</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../">Tantu C Framework</a>
+    <nav aria-label="Main">
+      <a href="../#start">Get started</a>
+      <a href="../#features">Features</a>
+      <a href="./" aria-current="page">Docs</a>
+      <a href="../#faq">FAQ</a>
+      <a href="https://github.com/mmrahmanbappi/tantu-c-framework">GitHub</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+<p class="crumbs"><a href="../">Home</a> / Docs</p>
+<div class="layout">
+<nav class="side" aria-label="Docs"><h2>Guides</h2><ul><li><a href="./" aria-current="page">All docs</a></li><li><a href="developing.html">Developing tantu</a></li><li><a href="themes.html">Making a theme</a></li><li><a href="plan.html">The tantu plan</a></li></ul></nav>
+<main id="main" class="prose">
+<h1>Tantu documentation</h1>
+<p class="lead">Everything you need to build tantu from source, change how it works, make your own theme, and see what is coming next.</p>
+<p>New to tantu? Start on the <a href="../#start">home page</a> to make your first site in a few minutes, then come back here when you want to go further.</p>
+<ul class="cards"><li><h2><a href="developing.html">Developing tantu</a></h2><p>Build and test the code, learn how a site build works, find each source file and follow the code rules.</p></li><li><h2><a href="themes.html">Making a theme</a></h2><p>Copy a starter theme, set up theme.conf, and use the template language and variables to build your own look.</p></li><li><h2><a href="plan.html">The tantu plan</a></h2><p>Every release and feature on the way: setup, dashboard, SEO, social cards, speed, security, themes and modules.</p></li></ul>
+<p class="edit">These guides are made from the Markdown files in the <a href="https://github.com/mmrahmanbappi/tantu-c-framework/tree/main/docs">docs folder on GitHub</a>, so they always match the code.</p>
+</main>
+</div>
+</div>
+<footer>
+  <div class="wrap">
+    <p>tantu is open source under the <a href="https://github.com/mmrahmanbappi/tantu-c-framework/blob/main/LICENSE">MIT license</a>.</p>
+    <p>&copy; 2026 tantu contributors. <a href="https://github.com/mmrahmanbappi/tantu-c-framework">Source on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

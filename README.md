@@ -8,7 +8,7 @@ Tantu C Framework (tantu for short) turns simple Markdown files into a complete 
 
 tantu is made for students and anyone who wants a good website without paying for it. The name is an old Sanskrit word for thread or fiber: the framework is woven from small modules, one thread at a time.
 
-> **Status: v1.0.0.** Dashboard, ten themes, site search, automatic social images, responsive images and FTP publishing, in one download for Windows, macOS and Linux. See [the full plan](docs/PLAN.md).
+> **Status: v1.0.0.** Dashboard, ten themes, site search, automatic social images, responsive images and FTP publishing, in one download for Windows, macOS and Linux. See [the full plan](docs/PLAN.md), or read all the guides on the [documentation site](https://mmrahmanbappi.github.io/tantu-c-framework/docs/).
 
 ## What works today
 
@@ -132,7 +132,7 @@ tantu themes                            list the ten themes
 | `themes/` | The ten built-in themes |
 | `starters/` | Sample content used by `tantu new` |
 | `tests/` | Tests, run with `make test` under AddressSanitizer and UBSan |
-| `docs/` | The full plan and other documents |
+| `docs/` | The guides as Markdown, plus the web pages made from them |
 
 ## Contributing
 
